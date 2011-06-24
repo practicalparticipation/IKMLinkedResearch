@@ -1,0 +1,10 @@
+You will need up-to-date copies of arc2 and the rap-rdf API in this folder.
+
+Fetch these with:
+
+git clone https://github.com/semsol/arc2.git
+
+and downloading RAP from:
+
+http://sourceforge.net/projects/rdfapi-php/files/rdfapi-php/V%200.9.6/rap-v096.zip/download 
+
