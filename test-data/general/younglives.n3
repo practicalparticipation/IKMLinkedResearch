@@ -1,0 +1,88 @@
+# A file for recording key facts about the structure of the Young Lives Study
+# To be published at http://data.younglives.org.uk/vocab/younglivesStudyStructure#
+
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix yls:  <http://data.younglives.org.uk/vocab/younglivesStudyStructure#> .
+
+# Young Lives Rounds
+
+yls:Round a rdfs:Class;
+	rdfs:label "Study Round"@en;
+	rdfs:description "The Young Lives Study is a longitudinal study carried out over a series of rounds."@en.
+	
+yls:RoundOne a yls:Round;
+	rdfs:label "Study Round 1"@en.
+
+yls:RoundTwo a yls:Round	;
+	rdfs:label "Study Round 2"@en.
+
+yls:RoundThree a yls:Round;
+	rdfs:label "Study Round 3"@en.
+
+yls:RoundFour a yls:Round;
+	rdfs:label "Study Round 4"@en.
+
+yls:RoundFive a yls:Round;
+	rdfs:label "Study Round 5"@en.
+		
+yls:inRound a rdf:Property;
+	rdfs:label "Describes the study round which this applies to"@en;
+	rdfs:range yls:Round.
+
+# Young Lives Cohorts
+yls:Cohort a rdfs:Class;
+	rdfs:label "Cohort"@en;
+	rdfs:description "The Young Lives study follows two cohorts of young people, divided based on their age in Round 1 of the study"@en.
+	
+yls:YoungCohort a yls:Cohort;
+	rdfs:label "Younger Cohort"@en;
+	rdfs:description "The Younger Cohort were aged one-years-old in round one of the study"@en;
+	rdfs:subPropertyOf yls:AllCohorts.
+
+yls:OlderCohort a yls:Cohort;
+	rdfs:label "Older Cohort"@en;
+	rdfs:description "The Older Cohort were aged eight-years-old in round one of the study"@en;
+	rdfs:subPropertyOf yls:AllCohorts.
+
+yls:AllCohorts a yls:Cohort.
+
+yls:inCohort a rdfs:Property;
+	rdfs:label "Describes the study cohort that this applies to"@en.
+	rdfs:range yls:Cohort.
+
+
+# Young Lives Countries
+# We can same-as these to other identifiers for these countries in future. 
+
+yls:askedInCountry a rdfs:Property;
+	rdfs:label "Asked in Country"@en.
+	rdfs:description "The question was asked in the given country"@en;
+	
+yls:Country a rdfs:Class;
+	rdfs:label "Young Lives Country"@en.
+	
+yls:Ethiopia a yls:Country;
+	rdfs:label "Ethipia"@en;
+	rdfs:description "Young Lives research is based in 20 communities in the states of Amhara, Oromia, the Southern Nations, Nationalities and Peoples Region (SNNP) and Tigray, as well as in the capital, Addis Ababa. Together, these five areas cover different geographical regions, levels of development, urban/rural locations and population characteristics."@en.
+
+yls:India a yls:Country;
+	rdfs:label "India (Andhra Pradesh)"@en;
+	rdfs:description "Young Lives research is based in Hyderabad plus 6 districts of Andhra Pradesh: Skrikakulam and West Godavari in the Coastal region; Anantapur and Cuddapah in Rayalaseema; and Mahboobnager and Karimnaga in Telangana. Together, these areas cover different geographical regions, levels of development, urban/rural locations and population characteristics."@en.
+	
+yls:Peru a yls:Country;
+	rdfs:label "Peru"@en;
+	rdfs:description "Young Lives has study sites in many areas of Peru including (in alphabetical order): Amazonas, Ancash, Apurimac, Arequipa, Ayacucho, Cajamarca, Huánuco, Junín, La Libertad, Lima, Piura, Puno, San Martin and Tumbes. Together, these areas cover different geographical regions, levels of development, urban/rural location and population characteristics."@en.
+	
+yls:Vietnam a yls:Country;
+	rdfs:label "Vietnam"@en;
+	rdfs:description "Young Lives research is based in 20 communities in the communes of Lao Cai in the north-west, Hung Yen province in the Red River Delta, the city of Danang on the coast, Phu Yen province from the South Central Coast and Ben Tre province on the Mekong River Delta. Together, these five areas cover different geographical regions, levels of development, urban/rural locations and population characteristics. For a map showing the sample sites, a full description of the sample sites and key findings so far, follow the links. "@en.
+	
+
+	
+#Provenance
+
+yls:provenaceExtractedFromFile a rdfs:property;
+	rdfs:label "This data was found in the related survey file"@en.

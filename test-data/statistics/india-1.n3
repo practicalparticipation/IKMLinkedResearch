@@ -1,0 +1,280 @@
+# DEMONSTRATION OF COUNTRY STATISTIC DATA
+# For each observation extracted from a spreadsheet we need to:
+# 1) Find a suitable URI to use for the dimension value (e.g. for dimension = Male read dimension = sdmx-code:sex-M )
+# 2) From this target URI, work out what type of dimension we are dealing with (e.g. for dimension = sdmx-code:sex-M we can identify that the dimension should be sdmx-dimension:sex)
+# 3) Having done this for all dimensions, construct or find appropriate Data Structure Definition;
+# 4) Having done this, create an appropriate dataset with that DSD and attach that to the observation we have now created.
+
+# To be published to http://data.younglives.org.uk/data/summary/
+# Using data cube vocabulary: http://publishing-statistical-data.googlecode.com/svn/trunk/specs/src/main/html/cube.html
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix qb:   <http://purl.org/linked-data/cube#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sdmx-code: <http://purl.org/linked-data/sdmx/2009/code#> .
+@prefix sdmx-dimension: <http://purl.org/linked-data/sdmx/2009/dimension#> .
+@prefix sdmx-measure: <http://purl.org/linked-data/sdmx/2009/measures#> .
+@prefix yls:  <http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/> . #See this in the 'general' folder under 'younglives.n3'
+@prefix yldd: <http://data.younglives.org.uk/data/structure/> .
+@prefix ylcs: <http://data.younglives.org.uk/data/summary/> . #Country Statistics
+
+# The first sheet of the India statistics sheet provides 'General Sample Characteristics' 
+# We need to specify what sort of 'measure' we are recording. We should be able to select from all the available qb:MeasureProperties in our dataset, or to create a new one. 
+
+yls:measure-ProportionOfSample a rdf:Property, qb:MeasureProperty;
+	rdfs:label "The proportion of the total sample that belong in all the categories noted"@en;
+	rdfs:subPropertyOf sdmx-measure:obsValue;
+	rdfs:range xsd:decimal .
+
+# The data structure definition is needed to help application make sense of the data. 
+# We need a data structure definition for each variation in measure and in the collection of dimensions we are using. 
+# We can make use of rdfs:subClassOf to build our data structure definitions by extending a common DSD
+
+ylcs:structureProportionOfSample a qb:DataStructureDefinition;  
+	qb:component [ qb:dimension yls:cohort; ],
+				 [ qb:dimension yls:country; ],
+	 			 [ qb:dimension yls:round; ],
+	 			 [ qb:dimension yls:sampleSize; ],
+				 [ qb:measure yls:measure-ProportionOfSample; ].
+
+## GENDER 
+
+# We extend the basic 'Proportion of Sample' DSD and add a dataset that uses it. Inference aware RDF tools should be able to add all the relevant triples in (I hope)
+ylcs:structureProportionOfSampleGender rdfs:subClassOf ylcs:structureProportionOfSample;  
+	qb:component [ qb:dimension sdmx-dimension:sex; ].
+
+# The Dataset
+ylcs:datasetProportionOfSampleGender a qb:DataSet;
+	qb:structure ylcs:structureProportionOfSampleGender.
+
+# The Observations for Gender
+ylcs:statistic1 a qb:Observation;
+	qb:dataset ylcs:datasetProportionOfSampleGender;
+	yls:cohort yls:OlderCohort;
+	yls:sampleSize "1930"^^<http://www.w3.org/2001/XMLSchema#integer>;
+	yls:country yls:India;
+	yls:round yls:RoundThree;
+	sdmx-dimension:sex sdmx-code:sex-M;
+	yls:measure-ProportionOfSample "0.54"^^<http://www.w3.org/2001/XMLSchema#decimal>. #Should measure be decimal or percentage? 
+
+ylcs:statistic2 a qb:Observation;
+	qb:dataset ylcs:datasetProportionOfSampleGender; 
+	yls:cohort yls:OlderCohort;
+	yls:sampleSize "1930"^^<http://www.w3.org/2001/XMLSchema#integer>; 
+	yls:country yls:India;
+	yls:round yls:RoundThree;
+	sdmx-dimension:sex sdmx-code:sex-F;
+	yls:measure-ProportionOfSample "0.46"^^<http://www.w3.org/2001/XMLSchema#decimal>. 
+	
+ylcs:statistic3 a qb:Observation;
+	qb:dataset ylcs:datasetProportionOfSampleGender;
+	yls:cohort yls:OlderCohort;
+	yls:sampleSize "976"^^<http://www.w3.org/2001/XMLSchema#integer>; 
+	yls:country yls:India;
+	yls:round yls:RoundThree;
+	sdmx-dimension:sex sdmx-code:sex-M;
+	yls:measure-ProportionOfSample "0.49"^^<http://www.w3.org/2001/XMLSchema#decimal>. #Should measure be decimal or percentage? 
+
+ylcs:statistic4 a qb:Observation;
+	qb:dataset ylcs:datasetProportionOfSampleGender; 
+	yls:cohort yls:OlderCohort;
+	yls:sampleSize "976"^^<http://www.w3.org/2001/XMLSchema#integer>; 
+	yls:country yls:India;
+	yls:round yls:RoundThree;
+	sdmx-dimension:sex sdmx-code:sex-F;
+	yls:measure-ProportionOfSample "0.51"^^<http://www.w3.org/2001/XMLSchema#decimal>. 
+
+
+## URBAN OR RURAL 
+
+# We now extend our DSD for an alternative use
+ylcs:structureProportionOfSampleUrbanOrRural rdfs:subClassOf ylcs:structureProportionOfSample;  
+	qb:component [ qb:dimension yls:urbanOrRural; ].
+
+# The Dataset
+ylcs:datasetProportionOfSampleUrbanOrRural a qb:DataSet;
+	qb:structure ylcs:structureProportionOfSampleUrbanOrRural.
+
+ylcs:statistic5 a qb:Observation;
+	qb:dataset ylcs:datasetProportionOfSampleUrbanOrRural; 
+	yls:cohort yls:OlderCohort;
+	yls:sampleSize "1930"^^<http://www.w3.org/2001/XMLSchema#integer>; 
+	yls:country yls:India;
+	yls:round yls:RoundThree;
+	yls:urbanOrRural yls:urban;
+	yls:measure-ProportionOfSample "0.26"^^<http://www.w3.org/2001/XMLSchema#decimal>. 
+
+ylcs:statistic6 a qb:Observation;
+	qb:dataset ylcs:datasetProportionOfSampleUrbanOrRural; 
+	yls:cohort yls:OlderCohort;
+	yls:sampleSize "1930"^^<http://www.w3.org/2001/XMLSchema#integer>; 
+	yls:country yls:India;
+	yls:round yls:RoundThree;
+	yls:urbanOrRural yls:rural;
+	yls:measure-ProportionOfSample "0.74"^^<http://www.w3.org/2001/XMLSchema#decimal>. 
+	
+ylcs:statistic7 a qb:Observation;
+	qb:dataset ylcs:datasetProportionOfSampleUrbanOrRural; 
+	yls:cohort yls:OlderCohort;
+	yls:sampleSize "976"^^<http://www.w3.org/2001/XMLSchema#integer>; 
+	yls:country yls:India;
+	yls:round yls:RoundThree;
+	yls:urbanOrRural yls:urban;
+	yls:measure-ProportionOfSample "0.25"^^<http://www.w3.org/2001/XMLSchema#decimal>. 
+
+ylcs:statistic8 a qb:Observation;
+	qb:dataset ylcs:datasetProportionOfSampleUrbanOrRural; 
+	yls:cohort yls:OlderCohort;
+	yls:sampleSize "976"^^<http://www.w3.org/2001/XMLSchema#integer>; 
+	yls:country yls:India;
+	yls:round yls:RoundThree;
+	yls:urbanOrRural yls:rural;
+	yls:measure-ProportionOfSample "0.75"^^<http://www.w3.org/2001/XMLSchema#decimal>.
+	
+## MATERNAL EDUCATION
+
+# We now extend our DSD for an alternative use
+ylcs:structureProportionOfSampleMothersEducation rdfs:subClassOf ylcs:structureProportionOfSample;  
+	qb:component [ qb:dimension yls:mothersEducation; ].
+
+# The Dataset
+ylcs:datasetProportionOfSampleMothersEducation a qb:DataSet;
+	qb:structure ylcs:structureProportionOfSampleMothersEducation.
+
+ylcs:statistic9 a qb:Observation;
+	qb:dataset ylcs:datasetProportionOfSampleMothersEducation; 
+	yls:cohort yls:OlderCohort;
+	yls:sampleSize "1930"^^<http://www.w3.org/2001/XMLSchema#integer>; 
+	yls:country yls:India;
+	yls:round yls:RoundThree;
+	yls:mothersEducation yls:MotherNoEducation;
+	yls:measure-ProportionOfSample "0.51"^^<http://www.w3.org/2001/XMLSchema#decimal>. 
+
+ylcs:statistic10 a qb:Observation;
+	qb:dataset ylcs:datasetProportionOfSampleMothersEducation; 
+	yls:cohort yls:OlderCohort;
+	yls:sampleSize "1930"^^<http://www.w3.org/2001/XMLSchema#integer>; 
+	yls:country yls:India;
+	yls:round yls:RoundThree;
+	yls:mothersEducation yls:MotherPrimaryEducationOrBelow;
+	yls:measure-ProportionOfSample "0.18"^^<http://www.w3.org/2001/XMLSchema#decimal>. 
+
+ylcs:statistic11 a qb:Observation;
+	qb:dataset ylcs:datasetProportionOfSampleMothersEducation; 
+	yls:cohort yls:OlderCohort;
+	yls:sampleSize "1930"^^<http://www.w3.org/2001/XMLSchema#integer>; 
+	yls:country yls:India;
+	yls:round yls:RoundThree;
+	yls:mothersEducation yls:MotherSecondaryEducationOrBelow;
+	yls:measure-ProportionOfSample "0.25"^^<http://www.w3.org/2001/XMLSchema#decimal>. 
+
+ylcs:statistic12 a qb:Observation;
+	qb:dataset ylcs:datasetProportionOfSampleMothersEducation; 
+	yls:cohort yls:OlderCohort;
+	yls:sampleSize "1930"^^<http://www.w3.org/2001/XMLSchema#integer>; 
+	yls:country yls:India;
+	yls:round yls:RoundThree;
+	yls:mothersEducation yls:MotherAboveSecondaryEducation;
+	yls:measure-ProportionOfSample "0.06"^^<http://www.w3.org/2001/XMLSchema#decimal>. 
+
+ylcs:statistic13 a qb:Observation;
+	qb:dataset ylcs:datasetProportionOfSampleMothersEducation; 
+	yls:cohort yls:OlderCohort;
+	yls:sampleSize "976"^^<http://www.w3.org/2001/XMLSchema#integer>; 
+	yls:country yls:India;
+	yls:round yls:RoundThree;
+	yls:mothersEducation yls:MotherNoEducation;
+	yls:measure-ProportionOfSample "0.60"^^<http://www.w3.org/2001/XMLSchema#decimal>. 
+
+ylcs:statistic14 a qb:Observation;
+	qb:dataset ylcs:datasetProportionOfSampleMothersEducation; 
+	yls:cohort yls:OlderCohort;
+	yls:sampleSize "976"^^<http://www.w3.org/2001/XMLSchema#integer>; 
+	yls:country yls:India;
+	yls:round yls:RoundThree;
+	yls:mothersEducation yls:MotherPrimaryEducationOrBelow;
+	yls:measure-ProportionOfSample "0.18"^^<http://www.w3.org/2001/XMLSchema#decimal>. 
+
+ylcs:statistic15 a qb:Observation;
+	qb:dataset ylcs:datasetProportionOfSampleMothersEducation; 
+	yls:cohort yls:OlderCohort;
+	yls:sampleSize "976"^^<http://www.w3.org/2001/XMLSchema#integer>; 
+	yls:country yls:India;
+	yls:round yls:RoundThree;
+	yls:mothersEducation yls:MotherSecondaryEducationOrBelow;
+	yls:measure-ProportionOfSample "0.17"^^<http://www.w3.org/2001/XMLSchema#decimal>. 
+
+ylcs:statistic16 a qb:Observation;
+	qb:dataset ylcs:datasetProportionOfSampleMothersEducation; 
+	yls:cohort yls:OlderCohort;
+	yls:sampleSize "976"^^<http://www.w3.org/2001/XMLSchema#integer>; 
+	yls:country yls:India;
+	yls:round yls:RoundThree;
+	yls:mothersEducation yls:MotherAboveSecondaryEducation;
+	yls:measure-ProportionOfSample "0.04"^^<http://www.w3.org/2001/XMLSchema#decimal>.
+
+## REGION
+
+# We now extend our DSD for an alternative use
+ylcs:structureProportionOfSampleRegion rdfs:subClassOf ylcs:structureProportionOfSample;  
+	qb:component [ qb:dimension yls:region; ].
+
+# The Dataset
+ylcs:datasetProportionOfSampleRegion a qb:DataSet;
+	qb:structure ylcs:structureProportionOfSampleRegion.
+
+ylcs:statistic17 a qb:Observation;
+	qb:dataset ylcs:datasetProportionOfSampleRegion; 
+	yls:cohort yls:OlderCohort;
+	yls:sampleSize "1930"^^<http://www.w3.org/2001/XMLSchema#integer>; 
+	yls:country yls:India;
+	yls:round yls:RoundThree;
+	yls:region yls:regionCoastalAndhra;
+	yls:measure-ProportionOfSample "0.35"^^<http://www.w3.org/2001/XMLSchema#decimal>. 
+
+ylcs:statistic18 a qb:Observation;
+	qb:dataset ylcs:datasetProportionOfSampleRegion; 
+	yls:cohort yls:OlderCohort;
+	yls:sampleSize "1930"^^<http://www.w3.org/2001/XMLSchema#integer>; 
+	yls:country yls:India;
+	yls:round yls:RoundThree;
+	yls:region yls:regionRayalseema;
+	yls:measure-ProportionOfSample "0.30"^^<http://www.w3.org/2001/XMLSchema#decimal>. 
+
+ylcs:statistic19 a qb:Observation;
+	qb:dataset ylcs:datasetProportionOfSampleRegion; 
+	yls:cohort yls:OlderCohort;
+	yls:sampleSize "1930"^^<http://www.w3.org/2001/XMLSchema#integer>; 
+	yls:country yls:India;
+	yls:round yls:RoundThree;
+	yls:region yls:regionTelangana;
+	yls:measure-ProportionOfSample "0.35"^^<http://www.w3.org/2001/XMLSchema#decimal>. 
+
+ylcs:statistic21 a qb:Observation;
+	qb:dataset ylcs:datasetProportionOfSampleRegion; 
+	yls:cohort yls:OlderCohort;
+	yls:sampleSize "976"^^<http://www.w3.org/2001/XMLSchema#integer>; 
+	yls:country yls:India;
+	yls:round yls:RoundThree;
+	yls:region yls:regionCoastalAndhra;
+	yls:measure-ProportionOfSample "0.35"^^<http://www.w3.org/2001/XMLSchema#decimal>. 
+
+ylcs:statistic22 a qb:Observation;
+	qb:dataset ylcs:datasetProportionOfSampleRegion; 
+	yls:cohort yls:OlderCohort;
+	yls:sampleSize "976"^^<http://www.w3.org/2001/XMLSchema#integer>; 
+	yls:country yls:India;
+	yls:round yls:RoundThree;
+	yls:region yls:regionRayalseema;
+	yls:measure-ProportionOfSample "0.30"^^<http://www.w3.org/2001/XMLSchema#decimal>. 
+
+ylcs:statistic23 a qb:Observation;
+	qb:dataset ylcs:datasetProportionOfSampleRegion; 
+	yls:cohort yls:OlderCohort;
+	yls:sampleSize "976"^^<http://www.w3.org/2001/XMLSchema#integer>; 
+	yls:country yls:India;
+	yls:round yls:RoundThree;
+	yls:region yls:regionTelangana;
+	yls:measure-ProportionOfSample "0.35"^^<http://www.w3.org/2001/XMLSchema#decimal>.
