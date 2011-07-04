@@ -50,7 +50,7 @@ yls:OlderCohort a yls:Cohort;
 yls:AllCohorts a yls:Cohort.
 
 yls:inCohort a rdfs:Property;
-	rdfs:label "Describes the study cohort that this applies to"@en.
+	rdfs:label "Describes the study cohort that this applies to"@en;
 	rdfs:range yls:Cohort.
 
 
@@ -58,8 +58,8 @@ yls:inCohort a rdfs:Property;
 # We can same-as these to other identifiers for these countries in future. 
 
 yls:askedInCountry a rdfs:Property;
-	rdfs:label "Asked in Country"@en.
-	rdfs:description "The question was asked in the given country"@en;
+	rdfs:label "Asked in Country"@en;
+	rdfs:description "The question was asked in the given country"@en.
 	
 yls:Country a rdfs:Class;
 	rdfs:label "Young Lives Country"@en.
