@@ -65,7 +65,7 @@ yls:Country a rdfs:Class;
 	rdfs:label "Young Lives Country"@en.
 	
 yls:Ethiopia a yls:Country;
-	rdfs:label "Ethipia"@en;
+	rdfs:label "Ethiopia"@en;
 	rdfs:description "Young Lives research is based in 20 communities in the states of Amhara, Oromia, the Southern Nations, Nationalities and Peoples Region (SNNP) and Tigray, as well as in the capital, Addis Ababa. Together, these five areas cover different geographical regions, levels of development, urban/rural locations and population characteristics."@en.
 
 yls:India a yls:Country;
