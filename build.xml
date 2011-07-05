@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="data.younglives.org.uk" default="dev-build">
+    <property name="builddir" value="build" />
+    <property name="ontowiki_repos" value="https://ontowiki.googlecode.com/hg/"/>
+
+   <target name="clean">
+        <echo msg="Cleaning..." />
+        <delete  includeemptydirs="true">
+            <fileset dir="${builddir}" defaultexcludes="false" casesensitive="false">
+                <include name="**/**" />
+            </fileset>
+        </delete>
+    </target>
+    
+    <target name="prepare">
+        <echo msg="Preparing..." />
+        <mkdir dir="${builddir}" />
+    </target>
+    
+    <target name="dev-build">
+        <echo msg="Cloning Ontowiki from ${ontowiki_repos} ..."/>
+        <exec command="hg clone ${ontowiki_repos} ${builddir}" />
+
+        <echo msg="Running ontowiki make install..." />
+        <exec command="make  --directory ${builddir} install" logoutput="true"/>
+
+        <echo msg="Copying in default config file ${owconfig}"/>
+        <copy file="./www/conf/config.ini.younglives" tofile="./${builddir}/config.ini" overwrite="true"  />            
+    </target>
+</project>
+
