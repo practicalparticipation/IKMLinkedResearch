@@ -10,11 +10,7 @@
                 <include name="**/**" />
             </fileset>
         </delete>
-    </target>
-    
-    <target name="prepare">
-        <echo msg="Preparing..." />
-        <mkdir dir="${builddir}" />
+        <delete  dir="${builddir}" includeemptydirs="true" />
     </target>
     
     <target name="dev-build">
@@ -24,8 +20,26 @@
         <echo msg="Running ontowiki make install..." />
         <exec command="make  --directory ${builddir} install" logoutput="true"/>
 
-        <echo msg="Copying in default config file ${owconfig}"/>
-        <copy file="./www/conf/config.ini.younglives" tofile="./${builddir}/config.ini" overwrite="true"  />            
+        <input propertyname="owConfigFile" 
+                    validargs="younglives-mysql,virtuoso"
+                    defaultValue="younglives-mysql"
+                    >
+            Choose
+        </input>
+        <copy file="./conf/config.ini.${owConfigFile}" tofile="./${builddir}/config.ini" overwrite="true"  />    
+        
+        <phingcall target="csvimport"/>        
+    </target>
+    
+    <target name="csvimport">
+        <echo msg="Performing setup for CSVImport extension"/>
+        
+        <chmod file="${builddir}/extensions/csvimport" mode="0777"/>
+        
+        <mkdir dir="${builddir}/extensions/csvimport/logs"/>
+        <chmod file="${builddir}/extensions/csvimport/logs" mode="0777"/>
+        <mkdir dir="${builddir}/extensions/csvimport/configs"/>
+        <chmod file="${builddir}/extensions/csvimport/configs" mode="0777"/>
     </target>
 </project>
 
