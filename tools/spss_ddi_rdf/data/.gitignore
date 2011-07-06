@@ -1,4 +1,9 @@
+<<<<<<< Updated upstream
 ddi/*.xml
 spss/*.sav
 !ddi/
 !spss/
+=======
+ddi/*
+spss/*
+>>>>>>> Stashed changes
