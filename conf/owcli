@@ -1,0 +1,5 @@
+[default] 
+baseuri = "http://localhost/IKMLinkedResearch/build/"
+user = "Admin"
+password = "admin"
+

@@ -3,6 +3,7 @@
     <property name="builddir" value="build" />
     <property name="ontowiki_repos" 
                      value="https://ontowiki.googlecode.com/hg/"/>
+    <property name="default_kb" value="http://data.younglives.org.uk"/>
 
    <target name="clean">
         <echo msg="Cleaning..." />
@@ -19,11 +20,9 @@
     <target name="dev-build">
         <echo msg="Cloning Ontowiki from ${ontowiki_repos} ..."/>
         <exec command="hg clone ${ontowiki_repos} ${builddir}" />
-
         <echo msg="Running ontowiki make install..." />
         <exec command="make  --directory ${builddir} install" 
                    logoutput="true"/>
-
         <input propertyname="owConfigFile" 
                     validargs="younglives-mysql,virtuoso"
                     defaultValue="younglives-mysql"
@@ -31,69 +30,71 @@
             Choose a config file to match your backend
         </input>
         <copy file="./conf/config.ini.${owConfigFile}" 
-                   tofile="./${builddir}/config.ini" overwrite="true"  />    
-        
-        <phingcall target="dev-csvimport"/>        
+                   tofile="./${builddir}/config.ini" overwrite="true"  />  
+                   
+        <phingcall target="overwrite-sysont"/>
+        <phingcall target="dev-csvimport"/>   
+        <phingcall target="create-kb"/>   
+        <phingcall target="load-general-triples"/>
+        <phingcall target="load-statistics-triples"/>  
     </target>
     
-    <target name="csvimport">
+    <target name="overwrite-sysont">
+        <echo msg="Installing Overriden SysOnt in order to establish Admin password" />
+        <copy file="./conf/SysOntLocal.rdf" 
+                   tofile="./${builddir}/libraries/Erfurt/Erfurt/include/SysOntLocal.rdf"
+                   overwrite="true" />
+    </target>
+    
+    <target name="dev-csvimport">
         <echo msg="Performing setup for CSVImport extension"/>
-        
         <echo msg="Remove existing CSVImport installation"/>
         <delete  includeemptydirs="true">
             <fileset dir="${builddir}/extensions/csvimport" 
-                         defaultexcludes="false" 
-                         casesensitive="false">
+                     defaultexcludes="false" 
+                     casesensitive="false">
                 <include name="**/**" />
             </fileset>
         </delete>
         <delete  dir="${builddir}/extensions/csvimport"
                       includeemptydirs="true" />
-        
-        <echo msg="Copy in our own version" />
-        <mkdir dir="${builddir}/extensions/csvimport" />
-        <copy todir="${builddir}/extensions/csvimport">
-            <fileset dir="ow_extensions/csvimport" 
-                         defaultexcludes="false" 
-                         casesensitive="false">
-                <include name="**/**" />
-            </fileset>
-        </copy>        
-                
-        <chmod file="${builddir}/extensions/csvimport" mode="0777"/>
-        
+        <echo msg="Link in our own version" />
+        <exec command="ln -s ${application.startdir}/ow_extensions/csvimport ${builddir}/extensions"/>    
         <mkdir dir="${builddir}/extensions/csvimport/logs"/>
         <chmod file="${builddir}/extensions/csvimport/logs" mode="0777"/>
         <mkdir dir="${builddir}/extensions/csvimport/configs"/>
         <chmod file="${builddir}/extensions/csvimport/configs" mode="0777"/>
     </target>
     
-    <target name="dev-csvimport">
-        <echo msg="Performing setup for CSVImport extension"/>
-        
-        
-            
-                <echo msg="Remove existing CSVImport installation"/>
-                <delete  includeemptydirs="true">
-                    <fileset dir="${builddir}/extensions/csvimport" 
-                             defaultexcludes="false" 
-                             casesensitive="false">
-                        <include name="**/**" />
-                    </fileset>
-                </delete>
-                <delete  dir="${builddir}/extensions/csvimport"
-                              includeemptydirs="true" />
-            
-        
-        <echo msg="Link in our own version" />
-        <exec command="ln -s ${application.startdir}/ow_extensions/csvimport ${builddir}/extensions"/>    
-                
-        
-        
-        <mkdir dir="${builddir}/extensions/csvimport/logs"/>
-        <chmod file="${builddir}/extensions/csvimport/logs" mode="0777"/>
-        <mkdir dir="${builddir}/extensions/csvimport/configs"/>
-        <chmod file="${builddir}/extensions/csvimport/configs" mode="0777"/>
+    <target name="create-kb">
+        <echo msg="Creating default Knowlege Base ${default_kb}" />
+        <exec command="owcli -c conf/owcli -m ${default_kb} -e model:create" 
+                   logoutput="true"/>
     </target>
+    
+    <target name="load-rdf">
+        <echo  msg="Loading${absname} into ${default_kb}"/>
+        <exec command="owcli -c conf/owcli -m ${default_kb} -e model:add -i ${absname}"
+                logoutput="true" />
+    </target>
+    
+    <target name="load-general-triples">
+        <echo msg="Loading all Triples from RDF files in initial_data/general" />
+        <foreach param="name" absparam="absname" target="load-rdf" >
+            <fileset dir="initial_data/general">
+                <include name="*.rdf" />
+            </fileset>
+        </foreach>
+    </target>
+    
+    <target name="load-statistics-triples">
+        <echo msg="Loading all Triples from RDF files in initial_data/statistics" />
+        <foreach param="name" absparam="absname" target="load-rdf" >
+            <fileset dir="initial_data/statistics">
+                <include name="*.rdf" />
+            </fileset>
+        </foreach>
+    </target>
+
 </project>
 
