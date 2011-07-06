@@ -205,16 +205,22 @@ function parse_codelist(&$xpath,$representation_id,$context,$ns,&$questions,&$co
 			$rdql[] = "(<{$codelist_prefix}".format_var_string($category_title)."> skos:inScheme ?schemeid)";
 		}
 	}
-	print_r($category_array);
+
+	//We use RQDL to check if this code-list already exists
 
 	$rdql_query = "SELECT ?schemeid WHERE\n".implode(",\n",$rdql);
+	$rdqlIter = $codelists->rdqlQueryasIterator($rdql_query);
+	if($rdqlIter->countResults()) {
+		$result_labels=$rdqlIter->getResultLabels();
+		log_message("Existing codelist",0);
+		print_r($result_labels);
+	} else {
+		log_message("New codelist",0)
+	}
+	print_r($category_array);
 	echo $rdql_query;
 	
-	//We serialize the concept scheme and check if we've seen it before using an array of cached concepts;
-	$concept_to_check_for = serialize($category_array);
-	if(is_array($scheme_cache)) { 
-		$prior_concept = array_search($concept_to_check_for,$scheme_cache);
-	}
+
 	
 //	if($prior_concept) {
 	if(true) {
