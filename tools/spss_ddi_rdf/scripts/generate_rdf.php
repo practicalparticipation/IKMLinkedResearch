@@ -8,7 +8,7 @@
  * If you want to omit and argument and use the defaults, enter 'default' for that argument.
  * 
  */
-error_reporting(E_ERROR | E_WARNING | E_PARSE);
+//error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 define("RDFAPI_INCLUDE_DIR",dirname(__FILE__)."/../../rap/api/");
 include_once(RDFAPI_INCLUDE_DIR."RdfAPI.php");
@@ -58,6 +58,7 @@ foreach($files as $file => $name) {
 }
 $questions->writeAsHTML();
 $questions->saveAs("../data/rdf/questions.rdf");
+$codelists->saveAs("../data/rdf/codelists.rdf");
 
 
 
@@ -187,8 +188,10 @@ function parse_file($filename, $name, $context, $ns, &$questions, &$codelists) {
  */
 
 function parse_codelist(&$xpath,$representation_id,$context,$ns,&$questions,&$codelists) {
+	include("models.php");
 	log_message("Checking for codelist ". $representation_id,0);
 	$codelist_prefix = $ns['*']."codelist-";
+	$code_prefix = $ns['*']."code-";
 	
 	$results = $xpath->query("//s:StudyUnit/l:LogicalProduct/l:CodeScheme[@id='$representation_id']");
 	foreach($results as $result) {
@@ -202,58 +205,38 @@ function parse_codelist(&$xpath,$representation_id,$context,$ns,&$questions,&$co
 			}
 			
 		 	$category_array[$category_value] = $category_title;
-			$rdql[] = "(<{$codelist_prefix}".format_var_string($category_title)."> skos:inScheme ?schemeid)";
+			$rdql[] = "(<{$code_prefix}".format_var_string($category_title)."> skos:inScheme ?schemeid)";
 		}
 	}
 
 	//We use RQDL to check if this code-list already exists
 
-	$rdql_query = "SELECT ?schemeid WHERE\n".implode(",\n",$rdql);
+	$rdql_query = "SELECT ?schemeid WHERE\n".implode(",\n",$rdql)." USING skos FOR <http://www.w3.org/2004/02/skos/core#>";
 	$rdqlIter = $codelists->rdqlQueryasIterator($rdql_query);
+	
 	if($rdqlIter->countResults()) {
 		$result_labels=$rdqlIter->getResultLabels();
 		log_message("Existing codelist",0);
 		print_r($result_labels);
+		
 	} else {
-		log_message("New codelist",0)
+		log_message("New codelist",0);
+		
+		//Create our concept-scheme
+		$concept_scheme = new Resource($codelist_prefix.$representation_id);
+		$codelists->addWithoutDuplicates(new Statement($concept_scheme,$RDF_type,$SKOS_ConceptScheme));
+
+		//Look through each code and create an entry
+		foreach($category_array as $key => $concept_value) {
+			$concept = new Resource($code_prefix.format_var_string($concept_value));
+			$codelists->addWithoutDuplicates(new Statement($concept,$RDF_type,$SKOS_Concept));
+			$codelists->addWithoutDuplicates(new Statement($concept,$SKOS_prefLabel,new Literal($concept_value,"en")));
+			$codelists->addWithoutDuplicates(new Statement($concept,$SKOS_inScheme,$concept_scheme));
+		}
 	}
 	print_r($category_array);
 	echo $rdql_query;
-	
 
-	
-//	if($prior_concept) {
-	if(true) {
-		//We should set a qb:codeList to the concept id...
-		$concept_scheme = $concept_scheme_cache[$prior_concept];
-	} else {
-		//We need to create a skos concept scheme here. 
-		$concept_scheme = new Resource($prefix_variable."codeList-{$representation_id}");
-		$model->add(new Statement($concept_scheme,$RDF_type,$SKOS_ConceptScheme));
-		foreach($category_array as $key => $concept_value) {
-			
-			if(!is_array($concept_cache)) { $concept_cache = array(); }
-			if(array_key_exists($concept_value,$concept_cache)) {
-				
-				$concept = $concept_cache[$concept_value];
-				$model->add(new Statement($concept,$SKOS_inScheme,$concept_scheme));
-				
-			} else {		
-
-				$concept = new Resource($prefix_variable."codes-".formatVarString($concept_value));
-				$model->add(new Statement($concept,$RDF_type,$SKOS_Concept));
-				$model->add(new Statement($concept,$SKOS_prefLabel,new Literal($concept_value,"en")));
-				$model->add(new Statement($concept,$SKOS_inScheme,$concept_scheme));
-				
-				$concept_cache[$concept_value] = $concept;
-			}
-		}
-		//Save this concept to the cache so we don't create it again...
-		$scheme_cache[$representation_id] = $concept_to_check_for;
-		$concept_scheme_cache[$representation_id] = $concept_scheme;
-	}
-	
-	//$model->add(new Statement($model_var,$QB_codeList,$concept_scheme));	
 	
 }
 
