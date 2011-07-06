@@ -1,9 +1,9 @@
 data.younglives.org.uk
 ======================
 
-This is an experiment in making a phing based build for the project
+This project uses phing as a build tool
 
-NB: Currently this build is for a mysql baced oOntowiki and it assumes you've already got a database as per the conf/config.ini.younglives  file
+NB: Currently this build defaults to configuring mysql based Ontowiki and it assumes you've already got a database as per the conf/config.ini.younglives-mysql  file. An alternative virtuoso based config is available
 
 Make sure you've got Phing:
 
