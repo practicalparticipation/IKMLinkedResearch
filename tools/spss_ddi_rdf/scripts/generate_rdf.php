@@ -38,9 +38,6 @@ $questions = ModelFactory::getDefaultModel();
 add_namespaces(&$questions,$ns);
 add_namespaces(&$codelists,$ns);
 
-print_r($codelists);
-
-
 //Get our list of files and now loop through them to process
 $files = directory_list();
 $n=0;
@@ -173,7 +170,8 @@ function parse_file($filename, $name, $context, $ns, &$questions, &$codelists) {
 				case "l:CodeRepresentation":
 					$questions->add(new Statement($model_var,resource_or_literal("studymeta:variableRepresentation",$ns),resource_or_literal("studymeta:CodeRepresentation",$ns)));
 					$representation_id = $representation_type->getElementsByTagName("ID")->item(0)->nodeValue;
-					parse_codelist(&$xpath,$representation_id,$context,$ns,&$questions,&$codelists);
+					$concept_scheme = parse_codelist(&$xpath,$representation_id,$context,$ns,&$questions,&$codelists);
+					$questions->add(new Statement($model_var,$QB_codeList,$concept_scheme));
 				break;
 			}
 		}
@@ -215,12 +213,13 @@ function parse_codelist(&$xpath,$representation_id,$context,$ns,&$questions,&$co
 	$rdqlIter = $codelists->rdqlQueryasIterator($rdql_query);
 	
 	if($rdqlIter->countResults()) {
-		$result_labels=$rdqlIter->getResultLabels();
-		log_message("Existing codelist",0);
-		print_r($result_labels);
+
+		$result = $rdqlIter->next();
+		log_message("Using existing codelist ". (string)$result["?schemeid"],0);
+		return $result["?schemeid"];
 		
 	} else {
-		log_message("New codelist",0);
+		log_message("Creating new codelist - $representation_id with ". count($category_array). " codes.",0);
 		
 		//Create our concept-scheme
 		$concept_scheme = new Resource($codelist_prefix.$representation_id);
@@ -233,10 +232,9 @@ function parse_codelist(&$xpath,$representation_id,$context,$ns,&$questions,&$co
 			$codelists->addWithoutDuplicates(new Statement($concept,$SKOS_prefLabel,new Literal($concept_value,"en")));
 			$codelists->addWithoutDuplicates(new Statement($concept,$SKOS_inScheme,$concept_scheme));
 		}
+		
+		return $concept_scheme;
 	}
-	print_r($category_array);
-	echo $rdql_query;
-
 	
 }
 
