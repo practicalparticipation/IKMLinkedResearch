@@ -18,6 +18,8 @@ $path = dirname(__FILE__);
 
 $instructions = "library(\"spssDDI\");\n";
 $instructions .= "setwd(\"$path\")";
+$n = 0;
+echo "Processing ";
 
 if ($handle = opendir($path."/../data/spss/")) {
 
@@ -27,12 +29,13 @@ if ($handle = opendir($path."/../data/spss/")) {
 			$name = $file_parts['filename'];
 			$instructions .= str_replace("~NAME~",$name,str_replace("~FILE~",$file,$r_function_template));
 			$n++;
+			echo ".";
 		}
     }
     closedir($handle);
 
 file_put_contents("convert.r",$instructions);
-echo "Instructions to convert $n files have been written to the convert.r script. You should be able to run this in R with the current working directory set to 'spss_ddi_rdf' then you should get converted DDI files in the ddi directory.";
+echo "\n\nInstructions to convert $n files have been written to the convert.r script. You should be able to run this in R with the current working directory set to 'spss_ddi_rdf' then you should get converted DDI files in the ddi directory.\n\n";
 }
 
 ?>

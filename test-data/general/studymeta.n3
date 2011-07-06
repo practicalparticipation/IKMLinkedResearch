@@ -1,0 +1,38 @@
+# A very basic attempt to capture some properties and relationships which may later for handled by an RDF version of DDI
+
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix studymeta: <http://data.younglives.org.uk/data/incubator/studyMetaData/>.
+
+
+studymeta:ddirel a rdf:Property;
+ 	rdfs:label "Short notes on possible relationships of Young Lives study meta-data and DDI";
+	rdfs:comment "The conversion of certain elements of Young Lives data to Linked Data is taking place as a pilot project. At present no agreed ontologies for representing study meta-data are widely available/used, although efforts are taking place to develop an RDF version of the Data Documentation Initiative (DDI) standard. As a result we are annotating some of our properties where relevant with possible DDI mappings, to aid future conversion or integration between our pilot data and future stable Linked Data and DDI approaches to sharing study meta-data.".
+
+studymeta:fromFile a rdf:Property;
+	rdfs:label "Variable found in file";
+	rdfs:comment "This property identifies the files in which this variable may be found";
+	studymeta:ddirel "file".
+	
+studymeta:variableDefinition a rdf:Property;
+	rdfs:label "Additional variable definition";
+	rdfs:comment "Additional variable definition - usually contains note ons missing values etc.";
+	studymeta:ddirel "defntn".
+
+studymeta:variableRepresentation a rdf:Property;
+	rdfs:label "Variable representation";
+	rdfs:comment "Indicates whether this variable is recorded as free text, a number or a code-lists response".
+	
+studymeta:TextRepresentation a rdf:Class;
+	rdfs:label "Text";
+	rdfs:comment "This variable is recorded as text".
+	
+studymeta:NumericRepresentation a rdf:Class;
+	rdfs:label "Numeric";
+	rdfs:comment "This variable is recorded as a number".
+
+studymeta:CodeRepresentation a rdf:Class;
+	rdfs:label "Codelist";
+	rdfs:comment "This variable is recorded using a codelist".

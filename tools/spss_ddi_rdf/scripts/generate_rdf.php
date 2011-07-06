@@ -10,12 +10,16 @@
  */
 //error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
-define("RDFAPI_INCLUDE_DIR",dirname(__FILE__)."/../../../www/admin/include/rdfapi-php/api/");
+define("RDFAPI_INCLUDE_DIR",dirname(__FILE__)."/../../rap/api/");
 include_once(RDFAPI_INCLUDE_DIR."RdfAPI.php");
 
 //We need to load our context, config and then fetch our existing store of code-list values. 
 $context = load_context((!($argv[1] == "default")) ? $argv[1] : null);
 $ns = load_config((!($argv[2] == "default")) ? $argv[2] : null);
+
+//Check for our required namespaces
+if(!$ns['*']) { log_message("Please make sure config.csv includes a default namespace (*) to be used in generating provenance information (etc.)",1);}
+if(!$ns['studymeta']) { log_message("Please make sure config.csv includes a namespace for 'studymeta' to hold study meta-data",1);}
 
 //We set up our code-list model. In future we might want to be able to fetch from the server as well and merge into our model
 $codelists = ModelFactory::getDefaultModel();
@@ -29,18 +33,14 @@ if(file_exists("../data/rdf/codelists.rdf")) {
 
 //Set set up our target model for questions
 $questions = ModelFactory::getDefaultModel();
-$questions->addWithoutDuplicates(new Statement(new Resource("http://www.w3.org/Home/Lassila"),
-new Resource("http://description.org/schema/Description"),
-new Literal("Lassila's personal Homepage", "en")));
 
 //Add namespaces
 add_namespaces(&$questions,$ns);
 add_namespaces(&$codelists,$ns);
 
-print_r($codelists);
-
 //Get our list of files and now loop through them to process
 $files = directory_list();
+$n=0;
 foreach($files as $file => $name) {
 		$n++; if($n > 2) { break 1;} // Limit routine - make sure we only run through a few times
 		
@@ -55,6 +55,7 @@ foreach($files as $file => $name) {
 }
 $questions->writeAsHTML();
 $questions->saveAs("../data/rdf/questions.rdf");
+$codelists->saveAs("../data/rdf/codelists.rdf");
 
 
 
@@ -92,6 +93,25 @@ function directory_list($directory = null) {
 }
 
 /**
+ * function fetch a resource or literal to include in a triple. 
+ * We allow users to specify abbreviated URIs in context.csv files
+ * We can use the details of namespaces in config.csv to provide a full URI where requested
+ * If neither : or http are present, assume we have a literal. 
+ * This function checks if we have a full URI already, and if not tries to created it. 
+ */ 
+function resource_or_literal($resource,$ns) {
+	if(stripos(" ".$resource,"http")) { 
+		$output = new Resource($resource);	
+	} elseif(strpos($resource,":")) {
+		$output_parts = explode(":",$resource); 
+		$output = new Resource(($ns[$output_parts[0]] ? $ns[$output_parts[0]] : "http://localhost/ns0/").$output_parts[1]); 
+	} else {
+		$output = new Literal($resource);
+	}	
+	return $output;
+}
+
+/**
  * function parse_file
  * Takes an individual file and:
  * - Checks for additional triples that should be ascribed to all such files
@@ -118,35 +138,106 @@ function parse_file($filename, $name, $context, $ns, &$questions, &$codelists) {
 		$var_name = $variable->getElementsByTagName("Name")->item(0)->nodeValue;
 			log_message(" - variable: {$var_name}");
 		$var_label = $variable->getElementsByTagName("Label")->item(0)->nodeValue;
+		$var_definition = $variable->getElementsByTagName("VariableDefinition")->item(0)->nodeValue;
 		$model_var = new Resource($ns['var'].$var_name);
 		
 		$questions->add(new Statement($model_var,$RDF_type,$QB_MeasureProperty));
 		$questions->add(new Statement($model_var,$RDF_type,$RDF_Property));
 		$questions->add(new Statement($model_var,$RDFS_label,new Literal($var_label,"en")));
 		$questions->add(new Statement($model_var,$RDFS_subPropertyOf,$SDMX_obsValue));
+		$questions->add(new Statement($model_var,resource_or_literal("studymeta:variableDefinition",$ns),new Literal($var_definition)));
+
 		
 		//Add our additional triples in from here
 		foreach(array_merge((array)$context['*'], (array)$context[$name]) as $additional) {
-			
-			if(!strpos($additional['s'],"http")) { 
-				$additional_predicate_parts = explode(":",$additional['s']); 
-				$additional_predicate = new Resource(($ns[$additional_predicate_parts[0]] ? $ns[$additional_predicate_parts[0]] : "http://localhost/ns0/").$additional_predicate_parts[1]);
-			} else {
-				$additional_predicate = new Resource($additional['s']);
-			}
-			if(!strpos($additional['o'],"http")) {
-				$additional_object = new Resource($additional['o']);
-			} else {
-				$additional_object = new Literal($additional['o']);
-			}
-		 	
-			$questions->add(new Statement($model_var,$additional_predicate,$additional_object));
+			$questions->add(new Statement($model_var,resource_or_literal($additional['p'],$ns),resource_or_literal($additional['o'],$ns)));
+		}
+		//Add a note on the file this is originally from
+		$questions->add(new Statement($model_var,resource_or_literal("studymeta:fromFile",$ns),resource_or_literal($ns['*'].$name,$ns)));
 
+
+	 
+		//Add representation information
+		$representation = $variable->getElementsByTagName("Representation")->item(0);
+		foreach($representation->childNodes as $representation_type) {
+			switch($representation_type->nodeName) {
+				case "l:TextRepresentation":
+					$questions->add(new Statement($model_var,resource_or_literal("studymeta:variableRepresentation",$ns),resource_or_literal("studymeta:TextRepresentation",$ns)));
+				break;
+				case "l:NumericRepresentation":
+					$questions->add(new Statement($model_var,resource_or_literal("studymeta:variableRepresentation",$ns),resource_or_literal("studymeta:NumericRepresentation",$ns)));
+				break;
+				case "l:CodeRepresentation":
+					$questions->add(new Statement($model_var,resource_or_literal("studymeta:variableRepresentation",$ns),resource_or_literal("studymeta:CodeRepresentation",$ns)));
+					$representation_id = $representation_type->getElementsByTagName("ID")->item(0)->nodeValue;
+					$concept_scheme = parse_codelist(&$xpath,$representation_id,$context,$ns,&$questions,&$codelists);
+					$questions->add(new Statement($model_var,$QB_codeList,$concept_scheme));
+				break;
+			}
 		}
 	}//End foreach($variables as $variable)
 	
-
 }
+
+
+/**
+ * parse_code_list
+ * 
+ */
+
+function parse_codelist(&$xpath,$representation_id,$context,$ns,&$questions,&$codelists) {
+	include("models.php");
+	log_message("Checking for codelist ". $representation_id,0);
+	$codelist_prefix = $ns['*']."codelist-";
+	$code_prefix = $ns['*']."code-";
+	
+	$results = $xpath->query("//s:StudyUnit/l:LogicalProduct/l:CodeScheme[@id='$representation_id']");
+	foreach($results as $result) {
+		foreach($result->getElementsByTagName("Code") as $code) {
+			$category_ref = $code->getElementsByTagName("ID")->item(0)->nodeValue;
+			$category_value = $code->getElementsByTagName("Value")->item(0)->nodeValue;
+			$category_titles_data = $xpath->query("//s:StudyUnit/l:LogicalProduct/l:CategoryScheme/l:Category[@id='$category_ref']");
+			
+			foreach($category_titles_data as $category_title_data) {
+				$category_title = $category_title_data->getElementsByTagName("Label")->item(0)->nodeValue;
+			}
+			
+		 	$category_array[$category_value] = $category_title;
+			$rdql[] = "(<{$code_prefix}".format_var_string($category_title)."> skos:inScheme ?schemeid)";
+		}
+	}
+
+	//We use RQDL to check if this code-list already exists
+
+	$rdql_query = "SELECT ?schemeid WHERE\n".implode(",\n",$rdql)." USING skos FOR <http://www.w3.org/2004/02/skos/core#>";
+	$rdqlIter = $codelists->rdqlQueryasIterator($rdql_query);
+	
+	if($rdqlIter->countResults()) {
+
+		$result = $rdqlIter->next();
+		log_message("Using existing codelist ". (string)$result["?schemeid"],0);
+		return $result["?schemeid"];
+		
+	} else {
+		log_message("Creating new codelist - $representation_id with ". count($category_array). " codes.",0);
+		
+		//Create our concept-scheme
+		$concept_scheme = new Resource($codelist_prefix.$representation_id);
+		$codelists->addWithoutDuplicates(new Statement($concept_scheme,$RDF_type,$SKOS_ConceptScheme));
+
+		//Look through each code and create an entry
+		foreach($category_array as $key => $concept_value) {
+			$concept = new Resource($code_prefix.format_var_string($concept_value));
+			$codelists->addWithoutDuplicates(new Statement($concept,$RDF_type,$SKOS_Concept));
+			$codelists->addWithoutDuplicates(new Statement($concept,$SKOS_prefLabel,new Literal($concept_value,"en")));
+			$codelists->addWithoutDuplicates(new Statement($concept,$SKOS_inScheme,$concept_scheme));
+		}
+		
+		return $concept_scheme;
+	}
+	
+}
+
 
 /**
  * function load_context
@@ -160,7 +251,7 @@ function load_context($filename=null) {
 		while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
 		        $row++;
 				if($row > 1) {
-					$context[$data[0]][] = array("s"=>$data[1], "o" => $data[2]);
+					$context[$data[0]][] = array("p"=>$data[1], "o" => $data[2]);
 				}
 		    }
 		    fclose($handle);
@@ -208,5 +299,13 @@ function add_namespaces($model,$ns) {
 	}
 	return true;
 }
+
+/**
+ * Prepare a variable string to use
+ */
+function format_var_string($string) {
+   return str_replace("/","",str_replace("'","",str_replace(",","-",str_replace("(","-",str_replace(")","-",str_replace(" ","",ucwords($string)))))));
+}
+
 
 ?>

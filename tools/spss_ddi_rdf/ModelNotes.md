@@ -4,10 +4,10 @@ At present an RDF rendering of Data Documentation Initiative is not currently av
 
 Given the pilot-nature of this project, we are initially adopting a conversion of variables to our own simplified ontology. Our goal is to be able to:
 
-* Express the code, label, description (where available), and definition or notes relating to a variable;
-* Relate variables to their code lists;
-* Identify the original file a variable is taken from;
-* Identify the country and round in which a variable was present;
+* Express the code, label, description (where available), and definition or notes relating to a variable; [Done]
+* Relate variables to their code lists; [Done]
+* Identify the original file a variable is taken from; [Done]
+* Identify the country and round in which a variable was present; [Done]
 * Relate variables together in groups (DDI has varGrp)
 
 Where possible we should draw upon DDI, SDMX and DataCube concepts - and aim for our interfaces to be easy to convert to work with a full DDI RDF specification should one be developed in the near future. 
