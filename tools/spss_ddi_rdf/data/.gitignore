@@ -1,2 +1,4 @@
-ddi/*
-spss/*
+ddi/*.xml
+spss/*.sav
+!ddi/
+!spss/
