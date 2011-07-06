@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="data.younglives.org.uk" default="dev-build">
     <property name="builddir" value="build" />
-    <property name="ontowiki_repos" value="https://ontowiki.googlecode.com/hg/"/>
+    <property name="ontowiki_repos" 
+                     value="https://ontowiki.googlecode.com/hg/"/>
 
    <target name="clean">
         <echo msg="Cleaning..." />
         <delete  includeemptydirs="true">
-            <fileset dir="${builddir}" defaultexcludes="false" casesensitive="false">
+            <fileset dir="${builddir}" 
+                         defaultexcludes="false" 
+                         casesensitive="false">
                 <include name="**/**" />
             </fileset>
         </delete>
@@ -18,23 +21,74 @@
         <exec command="hg clone ${ontowiki_repos} ${builddir}" />
 
         <echo msg="Running ontowiki make install..." />
-        <exec command="make  --directory ${builddir} install" logoutput="true"/>
+        <exec command="make  --directory ${builddir} install" 
+                   logoutput="true"/>
 
         <input propertyname="owConfigFile" 
                     validargs="younglives-mysql,virtuoso"
                     defaultValue="younglives-mysql"
                     >
-            Choose
+            Choose a config file to match your backend
         </input>
-        <copy file="./conf/config.ini.${owConfigFile}" tofile="./${builddir}/config.ini" overwrite="true"  />    
+        <copy file="./conf/config.ini.${owConfigFile}" 
+                   tofile="./${builddir}/config.ini" overwrite="true"  />    
         
-        <phingcall target="csvimport"/>        
+        <phingcall target="dev-csvimport"/>        
     </target>
     
     <target name="csvimport">
         <echo msg="Performing setup for CSVImport extension"/>
         
+        <echo msg="Remove existing CSVImport installation"/>
+        <delete  includeemptydirs="true">
+            <fileset dir="${builddir}/extensions/csvimport" 
+                         defaultexcludes="false" 
+                         casesensitive="false">
+                <include name="**/**" />
+            </fileset>
+        </delete>
+        <delete  dir="${builddir}/extensions/csvimport"
+                      includeemptydirs="true" />
+        
+        <echo msg="Copy in our own version" />
+        <mkdir dir="${builddir}/extensions/csvimport" />
+        <copy todir="${builddir}/extensions/csvimport">
+            <fileset dir="ow_extensions/csvimport" 
+                         defaultexcludes="false" 
+                         casesensitive="false">
+                <include name="**/**" />
+            </fileset>
+        </copy>        
+                
         <chmod file="${builddir}/extensions/csvimport" mode="0777"/>
+        
+        <mkdir dir="${builddir}/extensions/csvimport/logs"/>
+        <chmod file="${builddir}/extensions/csvimport/logs" mode="0777"/>
+        <mkdir dir="${builddir}/extensions/csvimport/configs"/>
+        <chmod file="${builddir}/extensions/csvimport/configs" mode="0777"/>
+    </target>
+    
+    <target name="dev-csvimport">
+        <echo msg="Performing setup for CSVImport extension"/>
+        
+        
+            
+                <echo msg="Remove existing CSVImport installation"/>
+                <delete  includeemptydirs="true">
+                    <fileset dir="${builddir}/extensions/csvimport" 
+                             defaultexcludes="false" 
+                             casesensitive="false">
+                        <include name="**/**" />
+                    </fileset>
+                </delete>
+                <delete  dir="${builddir}/extensions/csvimport"
+                              includeemptydirs="true" />
+            
+        
+        <echo msg="Link in our own version" />
+        <exec command="ln -s ${application.startdir}/ow_extensions/csvimport ${builddir}/extensions"/>    
+                
+        
         
         <mkdir dir="${builddir}/extensions/csvimport/logs"/>
         <chmod file="${builddir}/extensions/csvimport/logs" mode="0777"/>
