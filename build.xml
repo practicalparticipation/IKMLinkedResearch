@@ -37,6 +37,7 @@
         <phingcall target="create-kb"/>   
         <phingcall target="load-general-triples"/>
         <phingcall target="load-statistics-triples"/>  
+        <phingcall target="load-studystructure-triples"/>  
     </target>
     
     <target name="overwrite-sysont">
@@ -91,6 +92,15 @@
         <echo msg="Loading all Triples from RDF files in initial_data/statistics" />
         <foreach param="name" absparam="absname" target="load-rdf" >
             <fileset dir="initial_data/statistics">
+                <include name="*.rdf" />
+            </fileset>
+        </foreach>
+    </target>
+
+    <target name="load-studystructure-triples">
+        <echo msg="Loading all Triples from RDF files in initial_data/studystructure" />
+        <foreach param="name" absparam="absname" target="load-rdf" >
+            <fileset dir="initial_data/studystructure">
                 <include name="*.rdf" />
             </fileset>
         </foreach>
