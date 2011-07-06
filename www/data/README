@@ -1,5 +1,0 @@
-Please install a full copy of Ontowiki from source into this directory. You can fetch ontowiki from Mercurial using:
-
-hg clone https://ontowiki.googlecode.com/hg/ .
-
-And then following the instructions here to fetch and set-up the Zend framework and other dependencies: http://code.google.com/p/ontowiki/wiki/InstallFromMercurial
