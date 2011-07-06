@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:yls="http://data.younglives.org.uk/vocab/younglivesStudyStructure#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<yls:Round rdf:about="http://data.younglives.org.uk/vocab/younglivesStudyStructure#RoundOne">
+		<rdfs:label xml:lang="en">Study Round 1</rdfs:label>
+	</yls:Round>
+	<yls:Round rdf:about="http://data.younglives.org.uk/vocab/younglivesStudyStructure#RoundTwo">
+		<rdfs:label xml:lang="en">Study Round 2</rdfs:label>
+	</yls:Round>
+	<yls:Round rdf:about="http://data.younglives.org.uk/vocab/younglivesStudyStructure#RoundThree">
+		<rdfs:label xml:lang="en">Study Round 3</rdfs:label>
+	</yls:Round>
+	<yls:Round rdf:about="http://data.younglives.org.uk/vocab/younglivesStudyStructure#RoundFour">
+		<rdfs:label xml:lang="en">Study Round 4</rdfs:label>
+	</yls:Round>
+	<yls:Round rdf:about="http://data.younglives.org.uk/vocab/younglivesStudyStructure#RoundFive">
+		<rdfs:label xml:lang="en">Study Round 5</rdfs:label>
+	</yls:Round>
+	<rdf:Property rdf:about="http://data.younglives.org.uk/vocab/younglivesStudyStructure#inRound">
+		<rdfs:label xml:lang="en">Describes the study round which this applies to</rdfs:label>
+		<rdfs:range>
+			<rdfs:Class rdf:about="http://data.younglives.org.uk/vocab/younglivesStudyStructure#Round">
+				<rdfs:label xml:lang="en">Study Round</rdfs:label>
+				<rdfs:description xml:lang="en">The Young Lives Study is a longitudinal study carried out over a series of rounds.</rdfs:description>
+			</rdfs:Class>
+		</rdfs:range>
+	</rdf:Property>
+	<yls:Cohort rdf:about="http://data.younglives.org.uk/vocab/younglivesStudyStructure#YoungCohort">
+		<rdfs:label xml:lang="en">Younger Cohort</rdfs:label>
+		<rdfs:description xml:lang="en">The Younger Cohort were aged one-years-old in round one of the study</rdfs:description>
+		<rdfs:subPropertyOf>
+			<yls:Cohort rdf:about="http://data.younglives.org.uk/vocab/younglivesStudyStructure#AllCohorts" />
+		</rdfs:subPropertyOf>
+	</yls:Cohort>
+	<yls:Cohort rdf:about="http://data.younglives.org.uk/vocab/younglivesStudyStructure#OlderCohort">
+		<rdfs:label xml:lang="en">Older Cohort</rdfs:label>
+		<rdfs:description xml:lang="en">The Older Cohort were aged eight-years-old in round one of the study</rdfs:description>
+		<rdfs:subPropertyOf rdf:resource="http://data.younglives.org.uk/vocab/younglivesStudyStructure#AllCohorts" />
+	</yls:Cohort>
+	<rdfs:Property rdf:about="http://data.younglives.org.uk/vocab/younglivesStudyStructure#inCohort">
+		<rdfs:label xml:lang="en">Describes the study cohort that this applies to</rdfs:label>
+		<rdfs:range>
+			<rdfs:Class rdf:about="http://data.younglives.org.uk/vocab/younglivesStudyStructure#Cohort">
+				<rdfs:label xml:lang="en">Cohort</rdfs:label>
+				<rdfs:description xml:lang="en">The Young Lives study follows two cohorts of young people, divided based on their age in Round 1 of the study</rdfs:description>
+			</rdfs:Class>
+		</rdfs:range>
+	</rdfs:Property>
+	<rdfs:Property rdf:about="http://data.younglives.org.uk/vocab/younglivesStudyStructure#askedInCountry">
+		<rdfs:label xml:lang="en">Asked in Country</rdfs:label>
+		<rdfs:description xml:lang="en">The question was asked in the given country</rdfs:description>
+	</rdfs:Property>
+	<rdfs:Class rdf:about="http://data.younglives.org.uk/vocab/younglivesStudyStructure#Country">
+		<rdfs:label xml:lang="en">Young Lives Country</rdfs:label>
+	</rdfs:Class>
+	<yls:Country rdf:about="http://data.younglives.org.uk/vocab/younglivesStudyStructure#Ethiopia">
+		<rdfs:label xml:lang="en">Ethiopia</rdfs:label>
+		<rdfs:description xml:lang="en">Young Lives research is based in 20 communities in the states of Amhara, Oromia, the Southern Nations, Nationalities and Peoples Region (SNNP) and Tigray, as well as in the capital, Addis Ababa. Together, these five areas cover different geographical regions, levels of development, urban/rural locations and population characteristics.</rdfs:description>
+	</yls:Country>
+	<yls:Country rdf:about="http://data.younglives.org.uk/vocab/younglivesStudyStructure#India">
+		<rdfs:label xml:lang="en">India (Andhra Pradesh)</rdfs:label>
+		<rdfs:description xml:lang="en">Young Lives research is based in Hyderabad plus 6 districts of Andhra Pradesh: Skrikakulam and West Godavari in the Coastal region; Anantapur and Cuddapah in Rayalaseema; and Mahboobnager and Karimnaga in Telangana. Together, these areas cover different geographical regions, levels of development, urban/rural locations and population characteristics.</rdfs:description>
+	</yls:Country>
+	<yls:Country rdf:about="http://data.younglives.org.uk/vocab/younglivesStudyStructure#Peru">
+		<rdfs:label xml:lang="en">Peru</rdfs:label>
+		<rdfs:description xml:lang="en">Young Lives has study sites in many areas of Peru including (in alphabetical order): Amazonas, Ancash, Apurimac, Arequipa, Ayacucho, Cajamarca, Huánuco, Junín, La Libertad, Lima, Piura, Puno, San Martin and Tumbes. Together, these areas cover different geographical regions, levels of development, urban/rural location and population characteristics.</rdfs:description>
+	</yls:Country>
+	<yls:Country rdf:about="http://data.younglives.org.uk/vocab/younglivesStudyStructure#Vietnam">
+		<rdfs:label xml:lang="en">Vietnam</rdfs:label>
+		<rdfs:description xml:lang="en">Young Lives research is based in 20 communities in the communes of Lao Cai in the north-west, Hung Yen province in the Red River Delta, the city of Danang on the coast, Phu Yen province from the South Central Coast and Ben Tre province on the Mekong River Delta. Together, these five areas cover different geographical regions, levels of development, urban/rural locations and population characteristics. For a map showing the sample sites, a full description of the sample sites and key findings so far, follow the links. </rdfs:description>
+	</yls:Country>
+	<rdfs:property rdf:about="http://data.younglives.org.uk/vocab/younglivesStudyStructure#provenaceExtractedFromFile">
+		<rdfs:label xml:lang="en">This data was found in the related survey file</rdfs:label>
+	</rdfs:property>
+</rdf:RDF>

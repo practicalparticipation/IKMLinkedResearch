@@ -1,0 +1,283 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:qb="http://purl.org/linked-data/cube#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:sdmx-measure="http://purl.org/linked-data/sdmx/2009/measures#" xmlns:sdmx-code="http://purl.org/linked-data/sdmx/2009/code#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:yls="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/" xmlns:ylcs="http://data.younglives.org.uk/data/summary/" xmlns:sdmx-dimension="http://purl.org/linked-data/sdmx/2009/dimension#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<qb:DataStructureDefinition rdf:about="http://data.younglives.org.uk/data/summary/structureProportionOfSample">
+		<qb:component>
+			<rdf:Description>
+				<qb:dimension rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/cohort" />
+			</rdf:Description>
+		</qb:component>
+		<qb:component>
+			<rdf:Description>
+				<qb:dimension rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/country" />
+			</rdf:Description>
+		</qb:component>
+		<qb:component>
+			<rdf:Description>
+				<qb:dimension rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/round" />
+			</rdf:Description>
+		</qb:component>
+		<qb:component>
+			<rdf:Description>
+				<qb:dimension rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/sampleSize" />
+			</rdf:Description>
+		</qb:component>
+		<qb:component>
+			<rdf:Description>
+				<qb:measure>
+					<rdf:Property rdf:about="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/measure-ProportionOfSample">
+						<rdf:type rdf:resource="http://purl.org/linked-data/cube#MeasureProperty" />
+						<rdfs:label xml:lang="en">The proportion of the total sample that belong in all the categories noted</rdfs:label>
+						<rdfs:subPropertyOf rdf:resource="http://purl.org/linked-data/sdmx/2009/measures#obsValue" />
+						<rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal" />
+					</rdf:Property>
+				</qb:measure>
+			</rdf:Description>
+		</qb:component>
+	</qb:DataStructureDefinition>
+	<qb:DataSet rdf:about="http://data.younglives.org.uk/data/summary/datasetProportionOfSampleGender">
+		<qb:structure>
+			<rdf:Description rdf:about="http://data.younglives.org.uk/data/summary/structureProportionOfSampleGender">
+				<rdfs:subClassOf rdf:resource="http://data.younglives.org.uk/data/summary/structureProportionOfSample" />
+				<qb:component>
+					<rdf:Description>
+						<qb:dimension rdf:resource="http://purl.org/linked-data/sdmx/2009/dimension#sex" />
+					</rdf:Description>
+				</qb:component>
+			</rdf:Description>
+		</qb:structure>
+	</qb:DataSet>
+	<qb:Observation rdf:about="http://data.younglives.org.uk/data/summary/statistic1">
+		<qb:dataset rdf:resource="http://data.younglives.org.uk/data/summary/datasetProportionOfSampleGender" />
+		<yls:cohort rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/OlderCohort" />
+		<yls:sampleSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1930</yls:sampleSize>
+		<yls:country rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India" />
+		<yls:round rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/RoundThree" />
+		<sdmx-dimension:sex rdf:resource="http://purl.org/linked-data/sdmx/2009/code#sex-M" />
+		<yls:measure-ProportionOfSample rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.54</yls:measure-ProportionOfSample>
+	</qb:Observation>
+	<qb:Observation rdf:about="http://data.younglives.org.uk/data/summary/statistic2">
+		<qb:dataset rdf:resource="http://data.younglives.org.uk/data/summary/datasetProportionOfSampleGender" />
+		<yls:cohort rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/OlderCohort" />
+		<yls:sampleSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1930</yls:sampleSize>
+		<yls:country rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India" />
+		<yls:round rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/RoundThree" />
+		<sdmx-dimension:sex rdf:resource="http://purl.org/linked-data/sdmx/2009/code#sex-F" />
+		<yls:measure-ProportionOfSample rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.46</yls:measure-ProportionOfSample>
+	</qb:Observation>
+	<qb:Observation rdf:about="http://data.younglives.org.uk/data/summary/statistic3">
+		<qb:dataset rdf:resource="http://data.younglives.org.uk/data/summary/datasetProportionOfSampleGender" />
+		<yls:cohort rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/OlderCohort" />
+		<yls:sampleSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">976</yls:sampleSize>
+		<yls:country rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India" />
+		<yls:round rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/RoundThree" />
+		<sdmx-dimension:sex rdf:resource="http://purl.org/linked-data/sdmx/2009/code#sex-M" />
+		<yls:measure-ProportionOfSample rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.49</yls:measure-ProportionOfSample>
+	</qb:Observation>
+	<qb:Observation rdf:about="http://data.younglives.org.uk/data/summary/statistic4">
+		<qb:dataset rdf:resource="http://data.younglives.org.uk/data/summary/datasetProportionOfSampleGender" />
+		<yls:cohort rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/OlderCohort" />
+		<yls:sampleSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">976</yls:sampleSize>
+		<yls:country rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India" />
+		<yls:round rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/RoundThree" />
+		<sdmx-dimension:sex rdf:resource="http://purl.org/linked-data/sdmx/2009/code#sex-F" />
+		<yls:measure-ProportionOfSample rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.51</yls:measure-ProportionOfSample>
+	</qb:Observation>
+	<qb:DataSet rdf:about="http://data.younglives.org.uk/data/summary/datasetProportionOfSampleUrbanOrRural">
+		<qb:structure>
+			<rdf:Description rdf:about="http://data.younglives.org.uk/data/summary/structureProportionOfSampleUrbanOrRural">
+				<rdfs:subClassOf rdf:resource="http://data.younglives.org.uk/data/summary/structureProportionOfSample" />
+				<qb:component>
+					<rdf:Description>
+						<qb:dimension rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/urbanOrRural" />
+					</rdf:Description>
+				</qb:component>
+			</rdf:Description>
+		</qb:structure>
+	</qb:DataSet>
+	<qb:Observation rdf:about="http://data.younglives.org.uk/data/summary/statistic5">
+		<qb:dataset rdf:resource="http://data.younglives.org.uk/data/summary/datasetProportionOfSampleUrbanOrRural" />
+		<yls:cohort rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/OlderCohort" />
+		<yls:sampleSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1930</yls:sampleSize>
+		<yls:country rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India" />
+		<yls:round rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/RoundThree" />
+		<yls:urbanOrRural rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/urban" />
+		<yls:measure-ProportionOfSample rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.26</yls:measure-ProportionOfSample>
+	</qb:Observation>
+	<qb:Observation rdf:about="http://data.younglives.org.uk/data/summary/statistic6">
+		<qb:dataset rdf:resource="http://data.younglives.org.uk/data/summary/datasetProportionOfSampleUrbanOrRural" />
+		<yls:cohort rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/OlderCohort" />
+		<yls:sampleSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1930</yls:sampleSize>
+		<yls:country rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India" />
+		<yls:round rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/RoundThree" />
+		<yls:urbanOrRural rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/rural" />
+		<yls:measure-ProportionOfSample rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.74</yls:measure-ProportionOfSample>
+	</qb:Observation>
+	<qb:Observation rdf:about="http://data.younglives.org.uk/data/summary/statistic7">
+		<qb:dataset rdf:resource="http://data.younglives.org.uk/data/summary/datasetProportionOfSampleUrbanOrRural" />
+		<yls:cohort rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/OlderCohort" />
+		<yls:sampleSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">976</yls:sampleSize>
+		<yls:country rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India" />
+		<yls:round rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/RoundThree" />
+		<yls:urbanOrRural rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/urban" />
+		<yls:measure-ProportionOfSample rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.25</yls:measure-ProportionOfSample>
+	</qb:Observation>
+	<qb:Observation rdf:about="http://data.younglives.org.uk/data/summary/statistic8">
+		<qb:dataset rdf:resource="http://data.younglives.org.uk/data/summary/datasetProportionOfSampleUrbanOrRural" />
+		<yls:cohort rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/OlderCohort" />
+		<yls:sampleSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">976</yls:sampleSize>
+		<yls:country rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India" />
+		<yls:round rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/RoundThree" />
+		<yls:urbanOrRural rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/rural" />
+		<yls:measure-ProportionOfSample rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.75</yls:measure-ProportionOfSample>
+	</qb:Observation>
+	<qb:DataSet rdf:about="http://data.younglives.org.uk/data/summary/datasetProportionOfSampleMothersEducation">
+		<qb:structure>
+			<rdf:Description rdf:about="http://data.younglives.org.uk/data/summary/structureProportionOfSampleMothersEducation">
+				<rdfs:subClassOf rdf:resource="http://data.younglives.org.uk/data/summary/structureProportionOfSample" />
+				<qb:component>
+					<rdf:Description>
+						<qb:dimension rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/mothersEducation" />
+					</rdf:Description>
+				</qb:component>
+			</rdf:Description>
+		</qb:structure>
+	</qb:DataSet>
+	<qb:Observation rdf:about="http://data.younglives.org.uk/data/summary/statistic9">
+		<qb:dataset rdf:resource="http://data.younglives.org.uk/data/summary/datasetProportionOfSampleMothersEducation" />
+		<yls:cohort rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/OlderCohort" />
+		<yls:sampleSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1930</yls:sampleSize>
+		<yls:country rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India" />
+		<yls:round rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/RoundThree" />
+		<yls:mothersEducation rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/MotherNoEducation" />
+		<yls:measure-ProportionOfSample rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.51</yls:measure-ProportionOfSample>
+	</qb:Observation>
+	<qb:Observation rdf:about="http://data.younglives.org.uk/data/summary/statistic10">
+		<qb:dataset rdf:resource="http://data.younglives.org.uk/data/summary/datasetProportionOfSampleMothersEducation" />
+		<yls:cohort rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/OlderCohort" />
+		<yls:sampleSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1930</yls:sampleSize>
+		<yls:country rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India" />
+		<yls:round rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/RoundThree" />
+		<yls:mothersEducation rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/MotherPrimaryEducationOrBelow" />
+		<yls:measure-ProportionOfSample rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.18</yls:measure-ProportionOfSample>
+	</qb:Observation>
+	<qb:Observation rdf:about="http://data.younglives.org.uk/data/summary/statistic11">
+		<qb:dataset rdf:resource="http://data.younglives.org.uk/data/summary/datasetProportionOfSampleMothersEducation" />
+		<yls:cohort rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/OlderCohort" />
+		<yls:sampleSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1930</yls:sampleSize>
+		<yls:country rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India" />
+		<yls:round rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/RoundThree" />
+		<yls:mothersEducation rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/MotherSecondaryEducationOrBelow" />
+		<yls:measure-ProportionOfSample rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.25</yls:measure-ProportionOfSample>
+	</qb:Observation>
+	<qb:Observation rdf:about="http://data.younglives.org.uk/data/summary/statistic12">
+		<qb:dataset rdf:resource="http://data.younglives.org.uk/data/summary/datasetProportionOfSampleMothersEducation" />
+		<yls:cohort rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/OlderCohort" />
+		<yls:sampleSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1930</yls:sampleSize>
+		<yls:country rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India" />
+		<yls:round rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/RoundThree" />
+		<yls:mothersEducation rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/MotherAboveSecondaryEducation" />
+		<yls:measure-ProportionOfSample rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.06</yls:measure-ProportionOfSample>
+	</qb:Observation>
+	<qb:Observation rdf:about="http://data.younglives.org.uk/data/summary/statistic13">
+		<qb:dataset rdf:resource="http://data.younglives.org.uk/data/summary/datasetProportionOfSampleMothersEducation" />
+		<yls:cohort rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/OlderCohort" />
+		<yls:sampleSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">976</yls:sampleSize>
+		<yls:country rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India" />
+		<yls:round rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/RoundThree" />
+		<yls:mothersEducation rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/MotherNoEducation" />
+		<yls:measure-ProportionOfSample rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.60</yls:measure-ProportionOfSample>
+	</qb:Observation>
+	<qb:Observation rdf:about="http://data.younglives.org.uk/data/summary/statistic14">
+		<qb:dataset rdf:resource="http://data.younglives.org.uk/data/summary/datasetProportionOfSampleMothersEducation" />
+		<yls:cohort rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/OlderCohort" />
+		<yls:sampleSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">976</yls:sampleSize>
+		<yls:country rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India" />
+		<yls:round rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/RoundThree" />
+		<yls:mothersEducation rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/MotherPrimaryEducationOrBelow" />
+		<yls:measure-ProportionOfSample rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.18</yls:measure-ProportionOfSample>
+	</qb:Observation>
+	<qb:Observation rdf:about="http://data.younglives.org.uk/data/summary/statistic15">
+		<qb:dataset rdf:resource="http://data.younglives.org.uk/data/summary/datasetProportionOfSampleMothersEducation" />
+		<yls:cohort rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/OlderCohort" />
+		<yls:sampleSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">976</yls:sampleSize>
+		<yls:country rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India" />
+		<yls:round rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/RoundThree" />
+		<yls:mothersEducation rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/MotherSecondaryEducationOrBelow" />
+		<yls:measure-ProportionOfSample rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.17</yls:measure-ProportionOfSample>
+	</qb:Observation>
+	<qb:Observation rdf:about="http://data.younglives.org.uk/data/summary/statistic16">
+		<qb:dataset rdf:resource="http://data.younglives.org.uk/data/summary/datasetProportionOfSampleMothersEducation" />
+		<yls:cohort rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/OlderCohort" />
+		<yls:sampleSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">976</yls:sampleSize>
+		<yls:country rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India" />
+		<yls:round rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/RoundThree" />
+		<yls:mothersEducation rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/MotherAboveSecondaryEducation" />
+		<yls:measure-ProportionOfSample rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.04</yls:measure-ProportionOfSample>
+	</qb:Observation>
+	<qb:DataSet rdf:about="http://data.younglives.org.uk/data/summary/datasetProportionOfSampleRegion">
+		<qb:structure>
+			<rdf:Description rdf:about="http://data.younglives.org.uk/data/summary/structureProportionOfSampleRegion">
+				<rdfs:subClassOf rdf:resource="http://data.younglives.org.uk/data/summary/structureProportionOfSample" />
+				<qb:component>
+					<rdf:Description>
+						<qb:dimension rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/region" />
+					</rdf:Description>
+				</qb:component>
+			</rdf:Description>
+		</qb:structure>
+	</qb:DataSet>
+	<qb:Observation rdf:about="http://data.younglives.org.uk/data/summary/statistic17">
+		<qb:dataset rdf:resource="http://data.younglives.org.uk/data/summary/datasetProportionOfSampleRegion" />
+		<yls:cohort rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/OlderCohort" />
+		<yls:sampleSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1930</yls:sampleSize>
+		<yls:country rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India" />
+		<yls:round rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/RoundThree" />
+		<yls:region rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/regionCoastalAndhra" />
+		<yls:measure-ProportionOfSample rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.35</yls:measure-ProportionOfSample>
+	</qb:Observation>
+	<qb:Observation rdf:about="http://data.younglives.org.uk/data/summary/statistic18">
+		<qb:dataset rdf:resource="http://data.younglives.org.uk/data/summary/datasetProportionOfSampleRegion" />
+		<yls:cohort rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/OlderCohort" />
+		<yls:sampleSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1930</yls:sampleSize>
+		<yls:country rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India" />
+		<yls:round rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/RoundThree" />
+		<yls:region rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/regionRayalseema" />
+		<yls:measure-ProportionOfSample rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.30</yls:measure-ProportionOfSample>
+	</qb:Observation>
+	<qb:Observation rdf:about="http://data.younglives.org.uk/data/summary/statistic19">
+		<qb:dataset rdf:resource="http://data.younglives.org.uk/data/summary/datasetProportionOfSampleRegion" />
+		<yls:cohort rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/OlderCohort" />
+		<yls:sampleSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1930</yls:sampleSize>
+		<yls:country rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India" />
+		<yls:round rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/RoundThree" />
+		<yls:region rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/regionTelangana" />
+		<yls:measure-ProportionOfSample rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.35</yls:measure-ProportionOfSample>
+	</qb:Observation>
+	<qb:Observation rdf:about="http://data.younglives.org.uk/data/summary/statistic21">
+		<qb:dataset rdf:resource="http://data.younglives.org.uk/data/summary/datasetProportionOfSampleRegion" />
+		<yls:cohort rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/OlderCohort" />
+		<yls:sampleSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">976</yls:sampleSize>
+		<yls:country rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India" />
+		<yls:round rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/RoundThree" />
+		<yls:region rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/regionCoastalAndhra" />
+		<yls:measure-ProportionOfSample rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.35</yls:measure-ProportionOfSample>
+	</qb:Observation>
+	<qb:Observation rdf:about="http://data.younglives.org.uk/data/summary/statistic22">
+		<qb:dataset rdf:resource="http://data.younglives.org.uk/data/summary/datasetProportionOfSampleRegion" />
+		<yls:cohort rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/OlderCohort" />
+		<yls:sampleSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">976</yls:sampleSize>
+		<yls:country rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India" />
+		<yls:round rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/RoundThree" />
+		<yls:region rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/regionRayalseema" />
+		<yls:measure-ProportionOfSample rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.30</yls:measure-ProportionOfSample>
+	</qb:Observation>
+	<qb:Observation rdf:about="http://data.younglives.org.uk/data/summary/statistic23">
+		<qb:dataset rdf:resource="http://data.younglives.org.uk/data/summary/datasetProportionOfSampleRegion" />
+		<yls:cohort rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/OlderCohort" />
+		<yls:sampleSize rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">976</yls:sampleSize>
+		<yls:country rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India" />
+		<yls:round rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/RoundThree" />
+		<yls:region rdf:resource="http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/regionTelangana" />
+		<yls:measure-ProportionOfSample rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.35</yls:measure-ProportionOfSample>
+	</qb:Observation>
+</rdf:RDF>
