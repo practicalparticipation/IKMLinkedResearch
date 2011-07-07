@@ -43,7 +43,9 @@ $SKOS_ConceptScheme = new Resource($SKOS_prefix."ConceptScheme");
 $SKOS_Concept = new Resource($SKOS_prefix."Concept");
 $SKOS_inScheme = new Resource($SKOS_prefix."inScheme");
 $SKOS_prefLabel = new Resource($SKOS_prefix."prefLabel");
-
+$SKOS_topConceptOf = new Resource($SKOS_prefix."topConceptOf");
+$SKOS_hasTopConcept = new Resource($SKOS_prefix."hasTopConcept");
+$SKOS_notation = new Resource($SKOS_prefix."notation");
 
 //Set up SCOVO
 $SKOVO_prefix = "http://purl.org/NET/scovo#";

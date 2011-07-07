@@ -12,6 +12,8 @@
 
 define("RDFAPI_INCLUDE_DIR",dirname(__FILE__)."/../../rap/api/");
 include_once(RDFAPI_INCLUDE_DIR."RdfAPI.php");
+include_once("../../shared_functions/functions.php");
+ini_set('memory_limit', '512M');
 
 //We need to load our context, config and then fetch our existing store of code-list values. 
 $context = load_context((!($argv[1] == "default")) ? $argv[1] : null);
@@ -20,33 +22,33 @@ $ns = load_config((!($argv[2] == "default")) ? $argv[2] : null);
 //Check for our required namespaces
 if(!$ns['*']) { log_message("Please make sure config.csv includes a default namespace (*) to be used in generating provenance information (etc.)",1);}
 if(!$ns['studymeta']) { log_message("Please make sure config.csv includes a namespace for 'studymeta' to hold study meta-data",1);}
-
-//We set up our code-list model. In future we might want to be able to fetch from the server as well and merge into our model
-$codelists = ModelFactory::getDefaultModel();
-$codelistfile = !($argv[3] == "default") ? $argv[3] : null;
-if(file_exists("../data/rdf/codelists.rdf")) { 
-	$codelists->load("../data/rdf/codelists.rdf");
-	log_message("Found an existing code-list file to work from",0);
-} else {
-	log_message("No code-list file found");
-}
-
-//Set set up our target model for questions
-$questions = ModelFactory::getDefaultModel();
-
-//Add namespaces
-add_namespaces(&$questions,$ns);
-add_namespaces(&$codelists,$ns);
+if(!$ns['var']) { log_message("Please make sure config.csv includes a namespace for 'var' to profile a prefix for variables",1);}
 
 //Get our list of files and now loop through them to process
 $files = directory_list();
-$n=0;
+
 foreach($files as $file => $name) {
-		$n++; if($n > 2) { break 1;} // Limit routine - make sure we only run through a few times
-		
+	
 	if(!file_exists("../data/rdf/$name.rdf")) {
 		log_message("Processing $name");
+		$questions = ModelFactory::getDefaultModel();
+		add_namespaces(&$questions,$ns);
+		
+		//We set up our code-list model. In future we might want to be able to fetch from the server as well and merge into our model
+		$codelists = ModelFactory::getDefaultModel();
+		$codelistfile = !($argv[3] == "default") ? $argv[3] : null;
+		if(file_exists("../data/rdf/codelists.rdf")) { 
+			$codelists->load("../data/rdf/codelists.rdf");
+			log_message("Found an existing code-list file to work from",0);
+		} else {
+			log_message("No code-list file found");
+		}
+		//Set set up our target model for questions
+		add_namespaces(&$codelists,$ns);
+		
 		parse_file($file,$name,$context,$ns,&$questions,&$codelists);
+		$questions->saveAs("../data/rdf/$name.rdf");
+		$codelists->saveAs("../data/rdf/codelists.rdf");
 		log_message("Processed");
 	} else {
 		log_message("$name has already been converted");
@@ -54,62 +56,15 @@ foreach($files as $file => $name) {
 
 }
 $questions->writeAsHTML();
-$questions->saveAs("../data/rdf/questions.rdf");
-$codelists->saveAs("../data/rdf/codelists.rdf");
+
+
 
 
 
 
 /*********************************************************************/
 
-/**
- * function log_message
- * Outputs log messages
- * type 1 = error
- * type 2 = warning
- */
-function log_message($message,$type = 1) {
-	echo $message. "\n";
-}
 
-/**
- * function directory_list
- * Fetch list of all files in directory
- */ 
-function directory_list($directory = null) {
-	if(!$directory) { $directory = "../data/ddi/"; }
-	if ($handle = opendir($directory)) {
-	    while (false !== ($file = readdir($handle))) {
-			$file_parts = pathinfo($file);
-			if($file_parts["extension"] == "xml") {
-				$files[$directory.$file] = $file_parts["filename"];
-			}
-		}
-		return $files;
-	} else {
-		log_message("Data files directory not found");
-	}
-
-}
-
-/**
- * function fetch a resource or literal to include in a triple. 
- * We allow users to specify abbreviated URIs in context.csv files
- * We can use the details of namespaces in config.csv to provide a full URI where requested
- * If neither : or http are present, assume we have a literal. 
- * This function checks if we have a full URI already, and if not tries to created it. 
- */ 
-function resource_or_literal($resource,$ns) {
-	if(stripos(" ".$resource,"http")) { 
-		$output = new Resource($resource);	
-	} elseif(strpos($resource,":")) {
-		$output_parts = explode(":",$resource); 
-		$output = new Resource(($ns[$output_parts[0]] ? $ns[$output_parts[0]] : "http://localhost/ns0/").$output_parts[1]); 
-	} else {
-		$output = new Literal($resource);
-	}	
-	return $output;
-}
 
 /**
  * function parse_file
@@ -141,10 +96,15 @@ function parse_file($filename, $name, $context, $ns, &$questions, &$codelists) {
 		$var_definition = $variable->getElementsByTagName("VariableDefinition")->item(0)->nodeValue;
 		$model_var = new Resource($ns['var'].$var_name);
 		
-		$questions->add(new Statement($model_var,$RDF_type,$QB_MeasureProperty));
-		$questions->add(new Statement($model_var,$RDF_type,$RDF_Property));
+		//$questions->add(new Statement($model_var,$RDF_type,$QB_MeasureProperty));
+		$questions->add(new Statement($model_var,$RDF_type,resource_or_literal($ns['*'].'Variable',$ns)));
+		if(strpos("?",$var_label)) { 
+			$questions->add(new Statement($model_var,$RDF_type,resource_or_literal($ns['*'].'Question',$ns)));			
+		}
+		$questions->add(new Statement($model_var,$SKOS_notation,new Literal($var_name)));
+		//$questions->add(new Statement($model_var,$RDF_type,$RDF_Property));
 		$questions->add(new Statement($model_var,$RDFS_label,new Literal($var_label,"en")));
-		$questions->add(new Statement($model_var,$RDFS_subPropertyOf,$SDMX_obsValue));
+		//$questions->add(new Statement($model_var,$RDFS_subPropertyOf,$SDMX_obsValue));
 		$questions->add(new Statement($model_var,resource_or_literal("studymeta:variableDefinition",$ns),new Literal($var_definition)));
 
 		
@@ -231,6 +191,8 @@ function parse_codelist(&$xpath,$representation_id,$context,$ns,&$questions,&$co
 			$codelists->addWithoutDuplicates(new Statement($concept,$RDF_type,$SKOS_Concept));
 			$codelists->addWithoutDuplicates(new Statement($concept,$SKOS_prefLabel,new Literal($concept_value,"en")));
 			$codelists->addWithoutDuplicates(new Statement($concept,$SKOS_inScheme,$concept_scheme));
+			$codelists->addWithoutDuplicates(new Statement($concept,$SKOS_topConceptOf,$concept_scheme));
+			$codelists->addWithoutDuplicates(new Statement($concept,$SKOS_notation,new Literal($key)));
 		}
 		
 		return $concept_scheme;
@@ -239,73 +201,6 @@ function parse_codelist(&$xpath,$representation_id,$context,$ns,&$questions,&$co
 }
 
 
-/**
- * function load_context
- * Loads the context.csv file unless otherwise specified
- */
-function load_context($filename=null) {
-	if(!$filename) { $filename = "../data/context.csv"; }
-	
-	$row = 0;
-	if (($handle = fopen($filename, "r")) !== FALSE) {
-		while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-		        $row++;
-				if($row > 1) {
-					$context[$data[0]][] = array("p"=>$data[1], "o" => $data[2]);
-				}
-		    }
-		    fclose($handle);
-		return $context;
-	} else {
-		log_message("Context file not found",1);
-		return false;
-	}
-}
-
-/**
- * function load_context
- * Loads the config.csv file unless otherwise specified
- */
-function load_config($filename=null) {
-	if(!$filename) { $filename = "../data/config.csv"; }
-
-	$row = 0;	
-	if (($handle = fopen($filename, "r")) !== FALSE) {
-		while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-		        $row++;
-				if($row > 1) {
-					$config[$data[0]] = $data[1];
-				}
-		    }
-		    fclose($handle);
-		//We need to check for the default variable namespace
-		if(!$config['var']) {
-			$config['var'] = "http://localhost/variablesNS0/";
-		}
-		return $config;
-	} else {
-		log_message("Config file not found",1);
-		return false;
-	}
-	
-}
-
-/**
- * function add_namespaces($model,$config)
- */
-function add_namespaces($model,$ns) {
-	foreach($ns as $namespace => $uri) {
-		$model->addNamespace($namespace,$uri);
-	}
-	return true;
-}
-
-/**
- * Prepare a variable string to use
- */
-function format_var_string($string) {
-   return str_replace("/","",str_replace("'","",str_replace(",","-",str_replace("(","-",str_replace(")","-",str_replace(" ","",ucwords($string)))))));
-}
 
 
 ?>
