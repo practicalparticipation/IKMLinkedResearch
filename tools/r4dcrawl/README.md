@@ -75,5 +75,39 @@ CONSTRUCT {
         ?s ?p ?o.
 	}" > round2.sparql 
 	
-roqet -i sparql construct.sparql -D all.rdf > roundone.ttl
+roqet -i sparql round2.sparql -D all.rdf > round2.ttl
+
+echo "
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+CONSTRUCT {
+		?s ?p ?o. 
+		?s <http://data.younglives.org.uk/data/younglivesStudyStructure/inRound> <http://data.younglives.org.uk/data/younglivesStudyStructure/RoundThree>.
+	} WHERE 
+	{ 
+		?s dcterms:isPartOf <http://www.dfid.gov.uk/r4d/SearchResearchDatabase.asp?projectid=60420> .
+        ?s ?p ?o.
+	}" > round3.sparql 
+	
+roqet -i sparql round3.sparql -D all.rdf > round3.ttl
+
+echo "
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+CONSTRUCT {
+		?s ?p ?o. 
+		?s <http://data.younglives.org.uk/data/younglivesStudyStructure/inRound> <http://data.younglives.org.uk/data/younglivesStudyStructure/RoundFour>.
+	} WHERE 
+	{ 
+		?s dcterms:isPartOf <http://www.dfid.gov.uk/r4d/SearchResearchDatabase.asp?projectid=60637> .
+        ?s ?p ?o.
+	}" > round4.sparql 
+	
+roqet -i sparql round4.sparql -D all.rdf > round4.ttl
+```
+
+At the end of the process we can use rdfcat again to get everything into one file:
+
+```
+rdfcat *.ttl > younglives.ttl
 ```
