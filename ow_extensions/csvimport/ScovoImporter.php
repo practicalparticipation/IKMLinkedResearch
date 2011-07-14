@@ -68,6 +68,8 @@ class ScovoImporter extends Importer
             $pattern = '/\'/i';
             $replacement = "\\'";
             $this->view->configs = array();
+$this->logEvent('stored configs are : ');
+$this->logEvent(var_export($this->storedConfigurations, true));
             if(isset($this->storedConfigurations)){
                 foreach ($this->storedConfigurations as $configNum => $config) {
                     $this->view->configs[$i] = preg_replace($pattern, $replacement, $config['config']);
@@ -116,62 +118,116 @@ class ScovoImporter extends Importer
         $ontowiki = OntoWiki::getInstance();
         
         if( !isset($this->configuration) ) die ("config not set!");
-
+	/*
         $elements = array();
 
-        // classes vars
+	
+	//this is not used now as all data come through from the user at the front end. this is managed by javascript in csvimport.js
+
+        // classes vars these are from the ini file, and are all uri's
         $type = $this->componentConfig->class->type;
         $label = $this->componentConfig->class->label;
         $value_predicate = $this->componentConfig->class->value;
         $subPropertyOf = $this->componentConfig->class->subPropertyOf;
         $comment = $this->componentConfig->class->comment;
         
-        // qb vars
+        // qb vars these are from the ini file, and are all uri's
         $qbDimensionProperty = $this->componentConfig->qb->DimensionProperty;
         $qbconcept = $this->componentConfig->qb->concept;
-        
-        foreach ($this->configuration as $url => $dim) {
-            // filter blank stuff
+        */
+	//what is configuration?? i think it is the incoming json
+$this->logEvent(var_export($this->configuration, true));
+	//yes it is
+
+	//plan b. keep it simple.
+	//just believe in the json we got. it is  decoded so pass in to make triples from.
+
+
+	$elements = $this->configuration;
+	$ontowiki->selectedModel->addMultipleStatements($elements);
+/*
+//important update
+//adding new top level citizens to configuration of 'dimensions' and 'measures' and 'attributes'
+
+	//attributes
+	foreach ($this->configuration['attributes'] as $url => $dim) {
+	       	// filter blank stuff 
+		//blank stuff is defined as a json object without a 'label'
+            	if(strlen($dim['label']) < 1) continue;
+		// empty array
+		$element = array();
+		// class attributes as defined here should have a type, label and uri in the json
+		$element[$url] = array(
+		$type => array(
+			array(
+			'type' => 'uri',
+			'value' => $dim['uri']
+			)
+			),
+		$label => array(
+			array(
+			'type' => 'literal',
+			'value' => $dim['label']
+			)
+			),
+		$comment => array(
+			array(
+			'type' => 'literal',
+			'value' => $dim['value']
+			)
+		)
+		);
+	//TODO undestand why this is commented, and what was the oringinators purpose.
+$this->logEvent('start attributes/n');
+$this->logEvent(var_export($element, true));
+$this->logEvent('end attributes/n');
+		$ontowiki->selectedModel->addMultipleStatements($element);
+		//$elements[] = $element;
+		continue;
+           
+	}
+
+$this->logEvent(var_export($this->configuration['measures'], true));
+	//measures  
+	foreach ($this->configuration['measures'] as $url => $dim) {
+            // filter blank stuff 
+	    //blank stuff is defined as a json object without a 'label'
             if(strlen($dim['label']) < 1) continue;
-            
-            // if it's attribute
-            if( isset($dim['attribute']) && $dim['attribute'] == true){                
-                // save measure
-                $this->measures[] = array(
+
+		// save measure
+		//measures is used later and may not be set here, 
+//TODO fix this to make real datacube measures from the json
+
+                $this->measures[$dim['uri']] = array(
                     'url' => $url,
                     'uri' => $dim['uri'],
-                    'label' => $dim['label'],
-                    'value' => $dim['value']
+                    'label' => array(
+				array(
+					'type' => 'literal',
+					'value' => $dim['label']
+					)
+				),
+                    //'value' => $dim['value'],
+		    $subPropertyOf => array(
+					array(
+						'type' => 'uri',
+						'value' => $dim['subproperty']
+					)
+                        	      ),
+		    'range' => $dim['range'],
+		    'property' => $dim['property']
                 );
-                
-                // empty array
-                $element = array();
-                // class
-                $element[$url] = array(
-                    $type => array(
-                        array(
-                            'type' => 'uri',
-                            'value' => $dim['uri']
-                            )
-                        ),
-                    $label => array(
-                        array(
-                            'type' => 'literal',
-                            'value' => $dim['label']
-                            )
-                        ),
-                    $comment => array(
-                        array(
-                            'type' => 'literal',
-                            'value' => $dim['value']
-                        )
-                    )
-                );
-                
-                //$ontowiki->selectedModel->addMultipleStatements($element);
-                $elements[] = $element;
-                continue;
-            }
+$this->logEvent('start measures/n');
+$this->logEvent(var_export($element, true));
+$this->logEvent('end measures/n');
+		$ontowiki->selectedModel->addMultipleStatements($element);
+	}
+
+	//dimensions
+        foreach ($this->configuration['dimensions'] as $url => $dim) {
+            // filter blank stuff 
+	    //blank stuff is defined as a json object without a 'label'
+            if(strlen($dim['label']) < 1) continue;
 
             $element = array();
 
@@ -190,7 +246,7 @@ class ScovoImporter extends Importer
                         )
                     )
             );
-            
+//ok if my initial reading is right then we do this if the label has only digits in it?
             if( preg_match('/\D/', $dim['label']) <= 0  ){
                 $element[$url] = array_merge($element[$url],
                     array(
@@ -292,6 +348,8 @@ class ScovoImporter extends Importer
         //echo '<pre>';
         //echo print_r( $elements );
         //echo '</pre>';
+*/
+
     }
     
     protected function _createDataset(){
@@ -363,7 +421,7 @@ class ScovoImporter extends Importer
         $count = 0;
 
         foreach($dimensions as $url => $dim){
-            if(  is_array($dim) and isset($dim['elements'])  ){
+            if( isset($dim['elements']) ){
                 foreach($dim['elements'] as $eurl => $elem){
                     $dims[] = array(
                         'uri' => $eurl,
