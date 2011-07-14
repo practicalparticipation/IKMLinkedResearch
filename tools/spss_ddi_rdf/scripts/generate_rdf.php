@@ -14,6 +14,7 @@ define("RDFAPI_INCLUDE_DIR",dirname(__FILE__)."/../../rap/api/");
 include_once(RDFAPI_INCLUDE_DIR."RdfAPI.php");
 include_once("../../shared_functions/functions.php");
 ini_set('memory_limit', '512M');
+global $category_cache;
 
 //We need to load our context, config and then fetch our existing store of code-list values. 
 $context = load_context((!($argv[1] == "default")) ? $argv[1] : null);
@@ -79,7 +80,7 @@ $questions->writeAsHTML();
  */
 function parse_file($filename, $name, $context, $ns, &$questions, &$codelists) {
 	//We need our models to be accessible
-	include("models.php");
+	include("../../shared_functions/models.php");
 	
 	$dom = new DOMDocument();
 	$dom->preserveWhiteSpace = false;
@@ -146,6 +147,7 @@ function parse_file($filename, $name, $context, $ns, &$questions, &$codelists) {
  */
 
 function parse_codelist(&$xpath,$representation_id,$context,$ns,&$questions,&$codelists) {
+	global $category_cache;
 	include("models.php");
 	log_message("Checking for codelist ". $representation_id,0);
 	$codelist_prefix = $ns['*']."codelist-";
@@ -166,17 +168,22 @@ function parse_codelist(&$xpath,$representation_id,$context,$ns,&$questions,&$co
 			$rdql[] = "(<{$code_prefix}".format_var_string($category_title)."> skos:inScheme ?schemeid)";
 		}
 	}
+	
+	if($concept_scheme = array_search(serialize($category_array),$category_cache)) {
+		log_message("Found code list concept in local cache");
+		return new Resource($concept_scheme);
+	} 
 
-	//We use RQDL to check if this code-list already exists
-
+	//If we didn't find the concept in the local cache we use RQDL to check if this code-list already exists
 	$rdql_query = "SELECT ?schemeid WHERE\n".implode(",\n",$rdql)." USING skos FOR <http://www.w3.org/2004/02/skos/core#>";
 	$rdqlIter = $codelists->rdqlQueryasIterator($rdql_query);
-	
-	if($rdqlIter->countResults()) {
 
+	if($rdqlIter->countResults()) {
 		$result = $rdqlIter->next();
-		log_message("Using existing codelist ". (string)$result["?schemeid"],0);
-		return $result["?schemeid"];
+		log_message("Using code list concept found in RDF cache ". (string)$result["?schemeid"],0);
+		$concept_scheme = $result["?schemeid"];
+		$category_cache[str_replace(array("Resource(\"","\")"),"",(string)$concept_scheme)] = serialize($category_array);
+		return $concept_scheme;
 		
 	} else {
 		log_message("Creating new codelist - $representation_id with ". count($category_array). " codes.",0);
@@ -194,6 +201,7 @@ function parse_codelist(&$xpath,$representation_id,$context,$ns,&$questions,&$co
 			$codelists->addWithoutDuplicates(new Statement($concept,$SKOS_topConceptOf,$concept_scheme));
 			$codelists->addWithoutDuplicates(new Statement($concept,$SKOS_notation,new Literal($key)));
 		}
+		$category_cache[$codelist_prefix.$representation_id] = serialize($category_array);
 		
 		return $concept_scheme;
 	}

@@ -1,6 +1,7 @@
 <?php
 /*
  * Annotate tool - for adding annotations to variables based on a simple file pattern. 
+ * Caters for 'Variable = ' and VARNAME as first thing on line.
  */
 include_once("../../shared_functions/functions.php");
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -14,6 +15,7 @@ if(!$ns['var']) { log_message("Please make sure config.csv includes a namespace 
 if(!$ns['studymeta']) { log_message("Please make sure config.csv includes a namespace for 'studymeta' to hold study meta-data",1);}
 
 $varexp = "/Variable = ([a-zA-Z0-9]*)/";
+$varexp2 = "/(^[A-Z]+[A-Z0-9]+ )/";
 $posexp = "/Pos\. = ([0-9]*)/";
 $addmatch = "/^>([A-Z]+)/";
 
@@ -24,7 +26,7 @@ foreach($files as $file => $name) {
 	$file_parts = pathinfo($file);
 	$name = str_replace("_UKDA_Data_Dictionary","",$file_parts['filename']);
 	
-	$contents = file_get_contents($file);
+	$contents = str_replace("\t"," ",file_get_contents($file));
 	$lines = explode("\n",$contents);
 	foreach($lines as $line) {
 
@@ -48,12 +50,21 @@ foreach($files as $file => $name) {
 
 		preg_match($varexp,$line,$match);
 		if(count($match)) { 
-			$model_var = new Resource($ns['var'].$match[1]);
+			$model_var = new Resource(trim($ns['var'].$match[1]));
 			foreach($stack as $key => $values) {
 				echo $match[1]. "-> $key ".$values['p']." - ".$values['o']. "\n";
 				$model->add(new Statement($model_var,resource_or_literal($values['p'],$ns),resource_or_literal($values['o'],$ns)));
 			}
 		}
+		
+		preg_match($varexp2,$line,$match);
+			if(count($match)) { 
+				$model_var = new Resource(trim($ns['var'].$match[1]));
+				foreach($stack as $key => $values) {
+					echo $match[1]. "-> $key ".$values['p']." - ".$values['o']. "\n";
+					$model->add(new Statement($model_var,resource_or_literal($values['p'],$ns),resource_or_literal($values['o'],$ns)));
+				}
+			}
 		
 		preg_match($posexp,$line,$posmatch);
 		if(count($posmatch)) {
