@@ -884,11 +884,6 @@ so we will start with making a data struct that reflects the user input then we 
 	dimensions_raw['sampleSize'] = {'values' : [{'1930' : get_coords(make_point('1','3'), make_point('1','20'))}, 
 					{'976' : get_coords(make_point('2','3'), make_point('2','20'))}]}; 
 	//TODO work out how to handle number strings, do we do this with user input or just set them if they parseInt? (this is bad for year dates eg 2011, but easy)
-
-	//TODO and IMPORTANT
-	//all values from the speadsheet that are going to become uri's must have all spaces removed and replaced with something safe
-	//my current best suggestion is to replace all spaces with underscores, utf-8 chars like ħħ ß work just fine, and ;' too
-	//neil thinks this is a limitaion of ontowiki, he has tried to send spaces and %20 both of which fail
 	dimensions_raw['gender'] = {'dimension_uri' : 'http://purl.org/linked-data/sdmx/2009/dimension#sex',
 				'values' : [{'Male' : get_coords(top_left, bottom_right, make_point('0','3'))}, 
 						{'Female' : get_coords(top_left, bottom_right, make_point('0','4'))}]};
@@ -896,13 +891,12 @@ so we will start with making a data struct that reflects the user input then we 
 				'values' : [{'Urban' : get_coords(top_left, bottom_right, make_point('0','5'))}, 
 						{'rural' : get_coords(top_left, bottom_right, make_point('0','6'))}]};
 	dimensions_raw['MothersEducation'] = {'dimension_uri' : 'http://data.younglives.org.uk/data/summary/MothersEducation',
-				'values' : [{'Mother_has_no_education' : get_coords(top_left, bottom_right, make_point('0','7'))}, 
-						{'Mother_has_primary_educ_or_below' : get_coords(top_left, bottom_right, make_point('0','8'))},
-						//not !!! {'Mother has primary educ or below' : get_coords(top_left, bottom_right, make_point('0','8'))},
-						{'Mother_has_secondary_educ_or_below' : get_coords(top_left, bottom_right, make_point('0','9'))}, 
-						{'Mother_has_above_secondary_educ' : get_coords(top_left, bottom_right, make_point('0','10'))}]};
+				'values' : [{'Mother has no education' : get_coords(top_left, bottom_right, make_point('0','7'))}, 
+						{'Mother has primary educ or below' : get_coords(top_left, bottom_right, make_point('0','8'))},
+						{'Mother has secondary educ or below' : get_coords(top_left, bottom_right, make_point('0','9'))}, 
+						{'Mother has above secondary educ' : get_coords(top_left, bottom_right, make_point('0','10'))}]};
 	dimensions_raw['Region'] = {'dimension_uri' : 'http://data.younglives.org.uk/data/summary/Region',
-				'values' : [{'Coastal_andhra' : get_coords(top_left, bottom_right, make_point('0','11'))}, 
+				'values' : [{'Coastal andhra' : get_coords(top_left, bottom_right, make_point('0','11'))}, 
 						{'Rayalseema' : get_coords(top_left, bottom_right, make_point('0','12'))},
 						{'Telangana' : get_coords(top_left, bottom_right, make_point('0','13'))}]};
 //end set from ui
@@ -1008,7 +1002,7 @@ triples[ylcs + datacube_uuid + "_r4_c2"][yls + "measure-ProportionOfSample"] = [
 				}
 			}
 			//ok at this point we should have an observation
-			observations[datacube_uuid + loc_str] = observation[datacube_uuid + loc_str];
+			observations[datacube_uuid + loc_str] = [observation[datacube_uuid + loc_str]];
 		}
 	}
 	
@@ -1016,19 +1010,9 @@ triples[ylcs + datacube_uuid + "_r4_c2"][yls + "measure-ProportionOfSample"] = [
 	
 	//use jquery to merge objects together.
 	jQuery.extend(triples, dsd, bnodes, measure, dimensions, observations);
-
+	
 	//dimensionString = $.toJSON(observations);
-
-
-
-
-//IMPORTANT!!!!! we cannot pass a space in a uri value, nor a %20. ie this will not work!!!! ie this will fail, but will work if the first 3 %20 are removed, the last appears to work, I do not know why. 
-	//dimensionString = $.toJSON( {"http://data.younglives.org.uk//7829f2eacb60b5f76a60316eae8573d9/74d71e57-8e62-4845-81e2-506b67006c94c1_r79":{"http://www.w3.org/1999/02/22-rdf-syntax-ns#type":[{"type":"uri","value":"http://purl.org/linked-data/cube#Observation"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/measure-ProportionOfSample":[{"type":"literal","value":"0.51","datatype":"http://www.w3.org/2001/XMLSchema#decimal"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/cohort":[{"type":"uri","value":"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/YC"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/country":[{"type":"uri","value":"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/round":[{"type":"uri","value":"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/roundThree"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/sampleSize":[{"type":"uri","value":"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/1930"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/MothersEducation":[{"type":"uri","value":"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Mother%20has%20no%20educationßß;'%20f"}]}});
-
-
 	dimensionString = $.toJSON(triples);
-	
-	
 
         var url = window.location.href + '/results';
         $.get(url, function(data){
