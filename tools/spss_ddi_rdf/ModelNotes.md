@@ -5,6 +5,8 @@ At present an RDF rendering of Data Documentation Initiative is not currently av
 Given the pilot-nature of this project, we are initially adopting a conversion of variables to our own simplified ontology. Our goal is to be able to:
 
 * Express the code, label, description (where available), and definition or notes relating to a variable; [Done]
+** NOTE: At the moment we use DataCube 'Measure Property' to identify these. In future we should probably use something from DDI. 
+** Alternatively we could use some YoungLives specific properties which can be later mapped to DDI.
 * Relate variables to their code lists; [Done]
 * Identify the original file a variable is taken from; [Done]
 * Identify the country and round in which a variable was present; [Done]
@@ -21,3 +23,4 @@ We would also like to be able to:
 * Cater for where a variable has had an earlier version
 ** I.e. Our import routine should check if: a variable already exists; and has a different name; and should put the earlier round variable as Round1Title or some other such predicate (?);
 *** ToDo: Check if there is a way from DDI to handle this. 
+

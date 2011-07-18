@@ -12,7 +12,7 @@
 
 yls:Round a rdfs:Class;
 	rdfs:label "Study Round"@en;
-	rdfs:description "The Young Lives Study is a longitudinal study carried out over a series of rounds."@en.
+	rdfs:comment "The Young Lives Study is a longitudinal study carried out over a series of rounds."@en.
 	
 yls:RoundOne a yls:Round;
 	rdfs:label "Study Round 1"@en.
@@ -36,16 +36,16 @@ yls:inRound a rdf:Property;
 # Young Lives Cohorts
 yls:Cohort a rdfs:Class;
 	rdfs:label "Cohort"@en;
-	rdfs:description "The Young Lives study follows two cohorts of young people, divided based on their age in Round 1 of the study"@en.
+	rdfs:comment "The Young Lives study follows two cohorts of young people, divided based on their age in Round 1 of the study"@en.
 	
 yls:YoungCohort a yls:Cohort;
 	rdfs:label "Younger Cohort"@en;
-	rdfs:description "The Younger Cohort were aged one-years-old in round one of the study"@en;
+	rdfs:comment "The Younger Cohort were aged one-years-old in round one of the study"@en;
 	rdfs:subPropertyOf yls:AllCohorts.
 
 yls:OlderCohort a yls:Cohort;
 	rdfs:label "Older Cohort"@en;
-	rdfs:description "The Older Cohort were aged eight-years-old in round one of the study"@en;
+	rdfs:comment "The Older Cohort were aged eight-years-old in round one of the study"@en;
 	rdfs:subPropertyOf yls:AllCohorts.
 
 yls:AllCohorts a yls:Cohort.
@@ -54,35 +54,76 @@ yls:inCohort a rdfs:Property;
 	rdfs:label "Describes the study cohort that this applies to"@en;
 	rdfs:range yls:Cohort.
 
-
 # Young Lives Countries
 # We can same-as these to other identifiers for these countries in future. 
 
 yls:askedInCountry a rdfs:Property;
 	rdfs:label "Asked in Country"@en;
-	rdfs:description "The question was asked in the given country"@en.
+	rdfs:comment "The question was asked in the given country"@en.
 	
 yls:Country a rdfs:Class;
 	rdfs:label "Young Lives Country"@en.
 	
 yls:Ethiopia a yls:Country;
 	rdfs:label "Ethiopia"@en;
-	rdfs:description "Young Lives research is based in 20 communities in the states of Amhara, Oromia, the Southern Nations, Nationalities and Peoples Region (SNNP) and Tigray, as well as in the capital, Addis Ababa. Together, these five areas cover different geographical regions, levels of development, urban/rural locations and population characteristics."@en.
+	rdfs:comment "Young Lives research is based in 20 communities in the states of Amhara, Oromia, the Southern Nations, Nationalities and Peoples Region (SNNP) and Tigray, as well as in the capital, Addis Ababa. Together, these five areas cover different geographical regions, levels of development, urban/rural locations and population characteristics."@en.
 
 yls:India a yls:Country;
 	rdfs:label "India (Andhra Pradesh)"@en;
-	rdfs:description "Young Lives research is based in Hyderabad plus 6 districts of Andhra Pradesh: Skrikakulam and West Godavari in the Coastal region; Anantapur and Cuddapah in Rayalaseema; and Mahboobnager and Karimnaga in Telangana. Together, these areas cover different geographical regions, levels of development, urban/rural locations and population characteristics."@en.
+	rdfs:comment "Young Lives research is based in Hyderabad plus 6 districts of Andhra Pradesh: Skrikakulam and West Godavari in the Coastal region; Anantapur and Cuddapah in Rayalaseema; and Mahboobnager and Karimnaga in Telangana. Together, these areas cover different geographical regions, levels of development, urban/rural locations and population characteristics."@en.
 	
 yls:Peru a yls:Country;
 	rdfs:label "Peru"@en;
-	rdfs:description "Young Lives has study sites in many areas of Peru including (in alphabetical order): Amazonas, Ancash, Apurimac, Arequipa, Ayacucho, Cajamarca, Huánuco, Junín, La Libertad, Lima, Piura, Puno, San Martin and Tumbes. Together, these areas cover different geographical regions, levels of development, urban/rural location and population characteristics."@en.
+	rdfs:comment "Young Lives has study sites in many areas of Peru including (in alphabetical order): Amazonas, Ancash, Apurimac, Arequipa, Ayacucho, Cajamarca, Huánuco, Junín, La Libertad, Lima, Piura, Puno, San Martin and Tumbes. Together, these areas cover different geographical regions, levels of development, urban/rural location and population characteristics."@en.
 	
 yls:Vietnam a yls:Country;
 	rdfs:label "Vietnam"@en;
-	rdfs:description "Young Lives research is based in 20 communities in the communes of Lao Cai in the north-west, Hung Yen province in the Red River Delta, the city of Danang on the coast, Phu Yen province from the South Central Coast and Ben Tre province on the Mekong River Delta. Together, these five areas cover different geographical regions, levels of development, urban/rural locations and population characteristics. For a map showing the sample sites, a full description of the sample sites and key findings so far, follow the links. "@en.
+	rdfs:comment "Young Lives research is based in 20 communities in the communes of Lao Cai in the north-west, Hung Yen province in the Red River Delta, the city of Danang on the coast, Phu Yen province from the South Central Coast and Ben Tre province on the Mekong River Delta. Together, these five areas cover different geographical regions, levels of development, urban/rural locations and population characteristics. For a map showing the sample sites, a full description of the sample sites and key findings so far, follow the links. "@en.
 	
 
+#Questions and Variables
+yls:Variable a rdfs:Class;
+	rdfs:label "Variable";
+	rdfs:comment "Variables are at the core of the Young Lives dataset. The names and details of all the variables that exist in Young Lives data files are recorded in the linked data Young Lives dataset, along with details of the files you will find them in.";
+	rdfs:comment "Actual values of variables are not currently available in the dataset.".
+
+yls:Question a rdfs:Class;
+	rdfs:subClassOf yls:Variable;
+	rdfs:label "Question";
+	rdfs:comment "Many of the variables in the Young Lives dataset were created as a result of questions being asked during field work and surveys. You can explore the questions that have been asked and their related variables.".
 	
+yls:relatedVariable a rdfs:Property;
+	rdfs:label "Related Variable".
+
+yls:relatedQuestion a rdfs:Property;
+	rdfs:label "Related Question".
+	rdfs:subProperyOf yls:relatedVariable.
+
+yls:VariableGroup a rdfs:Class;
+	rdfs:label "Variable Group".
+	
+yls:QuestionGroup a rdfs:Class;
+	rdfs:label "Question Group";
+	rdfs:subClassOf yls:VariableGroup.
+
+yls:variableGroup a rdfs:Property;
+	owl:inverseOf yls:hasVariables;
+	rdfs:label "belongs to variable group".
+
+yls:questionGroup a rdfs:Property;
+	owl:inverseOf yls:hasQuestions;
+	rdfs:label "belongs to question group";
+	rdfs:subPropertyOf yls:VariableGroup.
+
+yls:hasVariables a rdfs:Property;
+	owl:inverseOf yls:variableGroup;
+	rdfs:label "has variables".
+
+yls:hasQuestions a rdfs:Property;
+	owl:inverseOf yls:questionGroup;
+	rdfs:label "has questions";
+	rdfs:subPropertyOf rdfs:hasVariables.
+
 #Provenance
 
 yls:provenaceExtractedFromFile a rdfs:property;
