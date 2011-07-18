@@ -1,0 +1,98 @@
+
+<!-- Processed by Id: cwm.py,v 1.197 2007/12/13 15:38:39 syosi Exp -->
+<!--     using base file:///Users/timdavies/Documents/Business/Projects/Young Lives/Phase 2/code/IKMLinkedResearch/test-data/general/younglives.n3-->
+
+
+<rdf:RDF xmlns="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:yls="http://data.younglives.org.uk/data/younglivesStudyStructure/">
+
+    <yls:Cohort rdf:about="http://data.younglives.org.uk/data/younglivesStudyStructure/AllCohorts">
+    </yls:Cohort>
+
+    <Class rdf:about="http://data.younglives.org.uk/data/younglivesStudyStructure/Cohort">
+        <description xml:lang="en">The Young Lives study follows two cohorts of young people, divided based on their age in Round 1 of the study</description>
+        <label xml:lang="en">Cohort</label>
+    </Class>
+
+    <Class rdf:about="http://data.younglives.org.uk/data/younglivesStudyStructure/Country">
+        <label xml:lang="en">Young Lives Country</label>
+    </Class>
+
+    <yls:Country rdf:about="http://data.younglives.org.uk/data/younglivesStudyStructure/Ethiopia">
+        <description xml:lang="en">Young Lives research is based in 20 communities in the states of Amhara, Oromia, the Southern Nations, Nationalities and Peoples Region (SNNP) and Tigray, as well as in the capital, Addis Ababa. Together, these five areas cover different geographical regions, levels of development, urban/rural locations and population characteristics.</description>
+        <label xml:lang="en">Ethiopia</label>
+    </yls:Country>
+
+    <yls:Country rdf:about="http://data.younglives.org.uk/data/younglivesStudyStructure/India">
+        <description xml:lang="en">Young Lives research is based in Hyderabad plus 6 districts of Andhra Pradesh: Skrikakulam and West Godavari in the Coastal region; Anantapur and Cuddapah in Rayalaseema; and Mahboobnager and Karimnaga in Telangana. Together, these areas cover different geographical regions, levels of development, urban/rural locations and population characteristics.</description>
+        <label xml:lang="en">India (Andhra Pradesh)</label>
+    </yls:Country>
+
+    <yls:Cohort rdf:about="http://data.younglives.org.uk/data/younglivesStudyStructure/OlderCohort">
+        <description xml:lang="en">The Older Cohort were aged eight-years-old in round one of the study</description>
+        <label xml:lang="en">Older Cohort</label>
+        <subPropertyOf rdf:resource="http://data.younglives.org.uk/data/younglivesStudyStructure/AllCohorts"/>
+    </yls:Cohort>
+
+    <yls:Country rdf:about="http://data.younglives.org.uk/data/younglivesStudyStructure/Peru">
+        <description xml:lang="en">Young Lives has study sites in many areas of Peru including (in alphabetical order): Amazonas, Ancash, Apurimac, Arequipa, Ayacucho, Cajamarca, Huánuco, Junín, La Libertad, Lima, Piura, Puno, San Martin and Tumbes. Together, these areas cover different geographical regions, levels of development, urban/rural location and population characteristics.</description>
+        <label xml:lang="en">Peru</label>
+    </yls:Country>
+
+    <Class rdf:about="http://data.younglives.org.uk/data/younglivesStudyStructure/Round">
+        <description xml:lang="en">The Young Lives Study is a longitudinal study carried out over a series of rounds.</description>
+        <label xml:lang="en">Study Round</label>
+    </Class>
+
+    <yls:Round rdf:about="http://data.younglives.org.uk/data/younglivesStudyStructure/RoundFive">
+        <label xml:lang="en">Study Round 5</label>
+    </yls:Round>
+
+    <yls:Round rdf:about="http://data.younglives.org.uk/data/younglivesStudyStructure/RoundFour">
+        <label xml:lang="en">Study Round 4</label>
+    </yls:Round>
+
+    <yls:Round rdf:about="http://data.younglives.org.uk/data/younglivesStudyStructure/RoundOne">
+        <label xml:lang="en">Study Round 1</label>
+    </yls:Round>
+
+    <yls:Round rdf:about="http://data.younglives.org.uk/data/younglivesStudyStructure/RoundThree">
+        <label xml:lang="en">Study Round 3</label>
+    </yls:Round>
+
+    <yls:Round rdf:about="http://data.younglives.org.uk/data/younglivesStudyStructure/RoundTwo">
+        <label xml:lang="en">Study Round 2</label>
+    </yls:Round>
+
+    <yls:Country rdf:about="http://data.younglives.org.uk/data/younglivesStudyStructure/Vietnam">
+        <description xml:lang="en">Young Lives research is based in 20 communities in the communes of Lao Cai in the north-west, Hung Yen province in the Red River Delta, the city of Danang on the coast, Phu Yen province from the South Central Coast and Ben Tre province on the Mekong River Delta. Together, these five areas cover different geographical regions, levels of development, urban/rural locations and population characteristics. For a map showing the sample sites, a full description of the sample sites and key findings so far, follow the links. </description>
+        <label xml:lang="en">Vietnam</label>
+    </yls:Country>
+
+    <yls:Cohort rdf:about="http://data.younglives.org.uk/data/younglivesStudyStructure/YoungCohort">
+        <description xml:lang="en">The Younger Cohort were aged one-years-old in round one of the study</description>
+        <label xml:lang="en">Younger Cohort</label>
+        <subPropertyOf rdf:resource="http://data.younglives.org.uk/data/younglivesStudyStructure/AllCohorts"/>
+    </yls:Cohort>
+
+    <Property rdf:about="http://data.younglives.org.uk/data/younglivesStudyStructure/askedInCountry">
+        <description xml:lang="en">The question was asked in the given country</description>
+        <label xml:lang="en">Asked in Country</label>
+    </Property>
+
+    <Property rdf:about="http://data.younglives.org.uk/data/younglivesStudyStructure/inCohort">
+        <label xml:lang="en">Describes the study cohort that this applies to</label>
+        <range rdf:resource="http://data.younglives.org.uk/data/younglivesStudyStructure/Cohort"/>
+    </Property>
+
+    <rdf:Property rdf:about="http://data.younglives.org.uk/data/younglivesStudyStructure/inRound">
+        <label xml:lang="en">Describes the study round which this applies to</label>
+        <range rdf:resource="http://data.younglives.org.uk/data/younglivesStudyStructure/Round"/>
+    </rdf:Property>
+
+    <property rdf:about="http://data.younglives.org.uk/data/younglivesStudyStructure/provenaceExtractedFromFile">
+        <label xml:lang="en">This data was found in the related survey file</label>
+    </property>
+</rdf:RDF>
