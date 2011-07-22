@@ -769,7 +769,7 @@ ok now the fun bit, lets parse the dimensions_raw object
 				bnodes["_:" + dim][qb + "dimension"] = [make_rdf_object(dimensions_raw[dim].dimension_uri)];
 			} 
 			dimensions[ylcs + "structure" + input_measure_name + dim.capitalize()] = {};
-			dimensions[ylcs + "structure" + input_measure_name + dim.capitalize()][rdfs + "subClassOf"] = [make_rdf_object(input_measure_name, ylcs];
+			dimensions[ylcs + "structure" + input_measure_name + dim.capitalize()][rdfs + "subClassOf"] = [make_rdf_object(input_measure_name, ylcs)];
 			dimensions[ylcs + "structure" = input_measure_name + dim.capitalize()][qb + "component"] =  [{"type": "bnode", "value" : "_:" + dim}];
 			dimensions[ylcs + dataset_name + dim.capitalize()] = { };
 			//dimensions[ylcs + "datasetProportionOfSample" + dim.capitalize()] = {"http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [make_rdf_object("DataSet", qb)]};
