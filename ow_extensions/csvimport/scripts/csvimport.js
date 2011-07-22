@@ -827,9 +827,9 @@ now we need to add the observations
 			obs_value = '0.51';
 			observation = {}; //clear this var
 			//loc_str = 'c' + observation_points[obs_point].col.toString() + '_r' + observation_points[obs_point].row.toString();
-			observation[yld + datacube_uuid] = {};
-			observation[yld + datacube_uuid]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] = [make_rdf_object("Observation", qb)];
-			observation[yld + datacube_uuid][yls + measure_name] = [make_rdf_Observation_object(obs_value)];
+			observation[yld + uuid] = {};
+			observation[yld + uuid]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] = [make_rdf_object("Observation", qb)];
+			observation[yld + uuid][yls + measure_name] = [make_rdf_Observation_object(obs_value)];
 			//now we need to find which dimension this point is in.
 			for (dim in dimensions_raw) { //for each dimension
 				if (dimensions_raw.hasOwnProperty(dim)) {
@@ -841,7 +841,7 @@ now we need to add the observations
 										if (dimensions_raw[dim]['values'][dim_value][key].hasOwnProperty(dim_point)) {
 											if (compare_points(observation_points[obs_point], dimensions_raw[dim]['values'][dim_value][key][dim_point])) {
 												//ok our point is in this dimension, easy and very readable uh.
-												observation[yld + datacube_uuid][yls + dim] = [make_rdf_object(key, yls)];
+												observation[yld + uuid][yls + dim] = [make_rdf_object(key, yls)];
 												//stop loop now
 												break;
 											}
@@ -854,7 +854,7 @@ now we need to add the observations
 				}
 			}
 			//ok at this point we should have an observation
-			observations[yld + datacube_uuid] = observation[yld + datacube_uuid];
+			observations[yld + uuid] = observation[yld + uuid];
 		}
 	}
 	
