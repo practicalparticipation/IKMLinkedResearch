@@ -841,7 +841,7 @@ now we need to add the observations
 										if (dimensions_raw[dim]['values'][dim_value][key].hasOwnProperty(dim_point)) {
 											if (compare_points(observation_points[obs_point], dimensions_raw[dim]['values'][dim_value][key][dim_point])) {
 												//ok our point is in this dimension, easy and very readable uh.
-												observation[yld + datacube_uuid][yls + dim] = [make_rdf_object((key, yls)];
+												observation[yld + datacube_uuid][yls + dim] = [make_rdf_object(key, yls)];
 												//stop loop now
 												break;
 											}
