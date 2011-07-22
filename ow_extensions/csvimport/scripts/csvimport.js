@@ -811,7 +811,8 @@ now we need to add the observations
 	}
 //TODO I am here
 //TODO add to observation a new namespace to contain the sheet row col id etc.
-//TODO test		
+//TODO test	
+//TODO make a new uuid for each observation.	
 	//remove duplicate points
 	observation_points = observation_points.getUniquePoints();
 	var observations = {};
