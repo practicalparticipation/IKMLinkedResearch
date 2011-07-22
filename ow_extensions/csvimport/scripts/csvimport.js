@@ -643,7 +643,7 @@ and for making a point
 		/*checks that the object can be a point
 		*/
 		if (typeof point !== 'undefined') {
-			if ((parseInt(col, 10) !== parseInt('number', 10)) && (parseInt(row, 10) !== parseInt('number', 10))) {
+			if ((parseInt(point.col, 10) !== parseInt('number', 10)) && (parseInt(point.row, 10) !== parseInt('number', 10))) {
 				return true;
 			} else {
 				return false;
