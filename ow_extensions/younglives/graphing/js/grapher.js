@@ -6,6 +6,7 @@
 
 var Grapher = {  // Config object and api
                             'target': $('#grapher'), // Target dom element
+                            'useFixtures':true, //Use static data from the fixtures folder
                             'sparql_endpoint': 'http://localhost/IKMLinkedResearch/build/service/sparql', // Sparql Endpoint
                             'visType': 'columnchart', // Set default visualization
                             'availableVisTypes': [ // Available Visualization types
@@ -23,16 +24,23 @@ var Grapher = {  // Config object and api
      * Request graphable data
      */
    Grapher.getData = function(measure, dimension){
-        $.sparql(Grapher.sparql_endpoint)
-            .prefix('ylss', 'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/')
-            .prefix('qb', 'http://purl.org/linked-data/cube#')
-            .select(['?cohort', '?country', '?round', '?value', '?dimension'])
-                .where('?obs', 'ylss:' + measure, '?value')
-                    .where('ylss:' + dimension, '?dimension')
-                    .where('ylss:Cohort', '?cohort')
-                    .where('ylss:Round', '?round')
-                    .where('ylss:Country', '?country')
-            .execute(Grapher.updateData);
+        if (Grapher.useFixtures) { 
+            $.ajax({url:'./fixtures/obs_data.json', 
+                        dataType:'json',
+                        success:function(data){Grapher.updateData(data.results.bindings);}
+                      });
+        } else {
+            $.sparql(Grapher.sparql_endpoint)
+                .prefix('ylss', 'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/')
+                .prefix('qb', 'http://purl.org/linked-data/cube#')
+                .select(['?cohort', '?country', '?round', '?value', '?dimension'])
+                    .where('?obs', 'ylss:' + measure, '?value')
+                        .where('ylss:' + dimension, '?dimension')
+                        .where('ylss:Cohort', '?cohort')
+                        .where('ylss:Round', '?round')
+                        .where('ylss:Country', '?country')
+                .execute(Grapher.updateData);
+        }
    };
    
    /**
