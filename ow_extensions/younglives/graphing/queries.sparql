@@ -1,0 +1,11 @@
+
+        
+prefix ylss: <http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/>
+prefix qb: <http://purl.org/linked-data/cube#>
+SELECT ?cohort ?country ?round ?value ?dimension
+WHERE { ?obs ylss:measure-ProportionOfSample ?value .
+        ?obs ylss:UrbanOrRural ?dimension .
+        ?obs ylss:Cohort ?cohort .
+        ?obs ylss:Country ?country .
+        ?obs ylss:Round ?round .
+      }  
