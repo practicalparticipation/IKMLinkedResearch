@@ -516,28 +516,20 @@ for (item in dimensions[_getURI($('table.csvimport').attr('id'))]['elements'][el
 	};
 
 	
-	var make_rdf_Observation_object = function (val_str) {
+	var make_rdf_Observation_object = function (val) {
 		//this takes  very like make_rdf_object, but will always return a literal, of integer decimal boolean, or lang en
-		if (val_str) {
-			//val_str's cannot contain spaces ?ontowiki limitation, they are replaced here with underscroes
-			val_str = val_str.replace(/ /g, '_');
-			//check if the str_val contains a . if so check for parseFloat, else check for parseInt
-			if (val_str.indexOf('.') > 0) {
-				if (parseFloat(val_str, 10) === parseInt('number', 10)) {
-					return {"type": "literal", "value": val_str, "datatype" : "http://www.w3.org/2001/XMLSchema#decimal" };
-				}
-			} else {
-				if (parseInt(val_str, 10) === parseInt('number', 10)) {
-					return {"type": "literal", "value": val_str, "datatype" : "http://www.w3.org/2001/XMLSchema#integer" };
-				} 
-			}
-			if (val_str.toLowerCase() === 'false' || val_str.toLowerCase() === 'true'){
-				return {"type": "literal", "value": val_str.toLowerCase(), "datatype" : "http://www.w3.org/2001/XMLSchema#boolean" };
-			} else 	{
-				return {"type": "literal", "value": val_str, "lang" : "en"  };
-			}
+		if (parseFloat(val)) {
+		    var type = (parseFloat(val) % 1 == 0)?'integer':'decimal';
+		    return {"type": "literal", 
+		                  "value": parseFloat(val), 
+		                  "datatype" : "http://www.w3.org/2001/XMLSchema#" + type };
+		}	else if (val.toLowerCase() === 'false' || val.toLowerCase() === 'true'){
+			return {"type": "literal", 
+				              "value": val.toLowerCase(), 
+				              "datatype" : "http://www.w3.org/2001/XMLSchema#boolean" };
+	    } else {
+		    return {"type": "literal", "value": val, "lang" : "en"  };
 		}
-
 	};
 
 
@@ -830,7 +822,7 @@ now we need to add the observations
 		    var obid = yld + uuid() + 'observation';
 			//begin constructing the observation
 			//TODO set obsvalue from sheet here
-			obs_value = '0.51';
+			obs_value = Math.round(Math.random()*100)/100;
 			observation = {}; //clear this var
 			//loc_str = 'c' + observation_points[obs_point].col.toString() + '_r' + observation_points[obs_point].row.toString();
 			observation[obid] = {};
