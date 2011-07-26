@@ -77,17 +77,17 @@
     };
     
     var _preproc = function(data) {
-      var results = data.results.bindings;
-      var cleaned_results = [];
-      for(var r in results) {
-        var result = results[r];
-        var cleaned_obj = {};
-        for(var k in result) {
-          cleaned_obj[k] = _clean(result[k]);
-        }
-        cleaned_results.push(cleaned_obj);
-      }
-      callback(cleaned_results);
+      //var results = data.results.bindings;
+      //var cleaned_results = [];
+      //for(var r in results) {
+      //  var result = results[r];
+      //  var cleaned_obj = {};
+      //  for(var k in result) {
+      //    cleaned_obj[k] = _clean(result[k]);
+      //  }
+      //  cleaned_results.push(cleaned_obj);
+      //}
+      callback(data.results.bindings);
     };
     
     if (queryString == "") queryString = this.serialiseQuery();
