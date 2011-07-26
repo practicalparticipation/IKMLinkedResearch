@@ -740,7 +740,7 @@ so we will start with making a data struct that reflects the user input then we 
 						{'Female' : get_coords(top_left, bottom_right, make_point('0','4'))}]};
 	dimensions_raw['UrbanOrRural'] = {'dimension_uri' : 'http://data.younglives.org.uk/data/summary/UrbanOrRural',
 				'values' : [{'Urban' : get_coords(top_left, bottom_right, make_point('0','5'))}, 
-						{'rural' : get_coords(top_left, bottom_right, make_point('0','6'))}]};
+						{'Rural' : get_coords(top_left, bottom_right, make_point('0','6'))}]};
 	dimensions_raw['MothersEducation'] = {'dimension_uri' : 'http://data.younglives.org.uk/data/summary/MothersEducation',
 				'values' : [{'Mother_has_no_education' : get_coords(top_left, bottom_right, make_point('0','7'))}, 
 						{'Mother_has_primary_educ_or_below' : get_coords(top_left, bottom_right, make_point('0','8'))},
