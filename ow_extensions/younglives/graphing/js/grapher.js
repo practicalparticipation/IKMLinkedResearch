@@ -7,7 +7,7 @@
 var Grapher = {  // Config object and api
                             'target': $('#grapher'), // Target dom element
                             'useFixtures':true, //Use static data from the fixtures folder
-                            'sparql_endpoint': 'http://localhost/IKMLinkedResearch/build/service/sparql', // Sparql Endpoint
+                            'sparql_endpoint': 'http://localhost/yl/IKMLinkedResearch/build/service/sparql', // Sparql Endpoint
                             'visType': 'columnchart', // Set default visualization
                             'availableVisTypes': [ // Available Visualization types
                                     {id:'columnchart',
@@ -19,6 +19,46 @@ var Grapher = {  // Config object and api
 (function(){ // Self-executing closure
     // Hook up to the dom
     Grapher.target.data('Grapher', Grapher);
+    
+    /**
+     * Fetch a DataStructureDefinition
+     *      
+     * Gets the dsd from the endpoint
+     */
+    Grapher.getDSD = function(uri) {
+        // Stubbed for now pending having a dsd in the store
+        var data = {};
+        Grapher.updateDSD(data);
+    };
+    
+    /**
+     * Process and store a dsd
+     */
+    Grapher.updateDSD = function(data){
+        //Building a structure by hand for now
+        var dsd = {
+            label: 'A Structure for Summary Statistics from Young Lives',
+            dimensions: [
+                {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/UrbanOrRural',
+                 label:'Urban or Rural living location'},
+                {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Cohort',
+                 label:'The Young Lives study Cohort'},
+                {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Country',
+                 label:'The Country'},
+                {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Round',
+                 label:'The Young Lives study round'},
+                 
+            ],
+            measures: [
+                {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/measure-ProportionOfSample',
+                label: 'The proportion of the sample in the categories noted'
+                 }
+            ],
+        };
+        
+        Grapher.dsd = dsd;
+        Grapher.target.trigger('grapherDSDUpdated');
+    };
     
     /**
      * Request graphable data
@@ -141,6 +181,11 @@ var Grapher = {  // Config object and api
    Grapher.initBindings = function(){
         this.target.bind('grapherDataUpdated', this.drawVis);
         this.target.bind('grapherVisTypeChanged', this.drawVis);
+        
+        this.target.find('#grapher-vis-type-switch').bind('change', function(evt, el){
+            Grapher.visType = $(this).val();
+            Grapher.target.trigger('grapherVisTypeChanged');
+        });
    };
    
    /**
@@ -148,20 +193,14 @@ var Grapher = {  // Config object and api
     * 
     * Build html in target element
     */
-   Grapher.init = function(){
+   Grapher.init = function(){  
+        // Build our main layout
+        var markup = $($.View('templates/init.ejs', Grapher));
         
-        var typeSwitch = $('<select id="grapher-vis-type-switch"></select>');
-        $.each(Grapher.availableVisTypes, function(i,v){
-            typeSwitch.append('<option value="' + v.id + '">' + v.title + '</option>');
-        });
-        typeSwitch.bind('change', function(evt, el){
-            Grapher.visType = $(this).val();
-            Grapher.target.trigger('grapherVisTypeChanged');
-        });
-        Grapher.target.append(typeSwitch);
+        markup.tabs();
         
-        Grapher.target.append('<div id="grapher-vis"></div>');
-        Grapher.vis = Grapher.target.find('#grapher-vis')[0];
+        Grapher.vis = markup.find('#grapher-vis')[0];
+        Grapher.target.append(markup);
         
         Grapher.initBindings();
         
