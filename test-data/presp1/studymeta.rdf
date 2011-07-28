@@ -1,0 +1,21 @@
+
+<!-- Processed by Id: cwm.py,v 1.197 2007/12/13 15:38:39 syosi Exp -->
+<!--     using base file:///Users/timdavies/Documents/Business/Projects/Young Lives/Phase 2/code/IKMLinkedResearch/test-data/general/studymeta.n3-->
+
+
+<rdf:RDF xmlns="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:studymeta="http://data.younglives.org.uk/data/incubator/studyMetaData/">
+
+    <rdf:Property rdf:about="http://data.younglives.org.uk/data/incubator/studyMetaData/ddirel">
+        <comment>The conversion of certain elements of Young Lives data to Linked Data is taking place as a pilot project. At present no agreed ontologies for representing study meta-data are widely available/used, although efforts are taking place to develop an RDF version of the Data Documentation Initiative (DDI) standard. As a result we are annotating some of our properties where relevant with possible DDI mappings, to aid future conversion or integration between our pilot data and future stable Linked Data and DDI approaches to sharing study meta-data.</comment>
+        <label>Short notes on possible relationships of Young Lives study meta-data and DDI</label>
+    </rdf:Property>
+
+    <rdf:Property rdf:about="http://data.younglives.org.uk/data/incubator/studyMetaData/fromFile">
+        <studymeta:ddirel>file</studymeta:ddirel>
+        <comment>This property identifies the files in which this variable may be found</comment>
+        <label>Variable found in file</label>
+    </rdf:Property>
+</rdf:RDF>
