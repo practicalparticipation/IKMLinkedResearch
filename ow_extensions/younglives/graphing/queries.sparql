@@ -9,3 +9,15 @@ WHERE { ?obs ylss:measure-ProportionOfSample ?value .
         ?obs ylss:Country ?country .
         ?obs ylss:Round ?round .
       }  
+      
+      
+PREFIX ylss <http://data.younglives.org.uk/data/vocab/younglivesStudyStructure>
+PREFIX qb <http://purl.org/linked/data#cube>
+SELECT ?cohort ?country ?round ?measure-proportionofsample ?urbanorrural
+WHERE {
+ ?obs <http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/measure-ProportionOfSample> ?measure-proportionofsample.
+ ?obs <http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/UrbanOrRural> ?urbanorrural.
+ ?obs ylss:Cohort ?cohort.
+ ?obs ylss:Round ?round.
+ ?obs ylss:Country ?country.
+ }
