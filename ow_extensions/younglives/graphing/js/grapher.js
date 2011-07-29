@@ -20,11 +20,12 @@ var Grapher = {  // Config object and api
                                       title:'Data Table'}
                             ],
                             'dimensions': { 'ignore':[ // Dimensions to omit from the UI
-                                                        'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Round'
+                                                        //'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Round'
                                                     ],
                                                     'standard':[ // Dimensions to render as standard options
                                                         'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Cohort',
-                                                        'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Country'
+                                                        'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Country',
+                                                        'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Round'
                                                     ] 
                                                   },
                              'measures': { 'ignore':[] // Measures to ignore from the ui
@@ -55,6 +56,11 @@ var Grapher = {  // Config object and api
     };
     
     /**
+     * Observation Class
+     */
+    Grapher.Observation = Class.$extend({ __init__ : function() { console.log('called'); }});
+    
+    /**
      * Process and store a dsd
      */
     Grapher.updateDSD = function(data){
@@ -68,6 +74,8 @@ var Grapher = {  // Config object and api
                  label:"Mother's level of education"},
                 {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Region',
                  label:"Region in Country"},
+                {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Gender',
+                 label:"Gender of respondant"},
                 {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Cohort',
                  label:'The Young Lives study Cohort'},
                 {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Country',
@@ -158,7 +166,7 @@ var Grapher = {  // Config object and api
                         ?this[key + '_label']:val.value.slice(val.value.lastIndexOf('/')+1);
                 }
             });
-            items.push(v);
+            items.push(Grapher.Observation.$withData(v));
         
         });
         
@@ -222,8 +230,6 @@ var Grapher = {  // Config object and api
                     }))]);
                 });
                 
-                var rowspec = [];
-                
                 // Draw a column for the grouping dimension
                 table.addColumn('string', Grapher.dsd.get_dimension(Grapher.groupbyDimension).label);
                 
@@ -233,15 +239,13 @@ var Grapher = {  // Config object and api
                         $.each(includeDimensionsValues, function(i, id){
                             $.each(id[1], function(i, idv){
                                 table.addColumn('number', sdv + ' /  ' + idv);
-                                rowspec.push([sdv, idv]);
                             });
                         });
                     } else {
                         table.addColumn('number', sdv);
-                        rowspec.push([sdv]);
                     }
                 });
-                
+
                 // Prepare a data structure by agressive use of _.groupBy
                 var bucket_stack = [Grapher.tokenizeURI(Grapher.groupbyDimension),
                                                 Grapher.tokenizeURI(Grapher.selectedDimension)];
@@ -253,6 +257,8 @@ var Grapher = {  // Config object and api
                 // 1. a recusive function which takes a list of observations, a list of dimension
                 // tokens, and the current position in that list.
                 //  It'll convert the supplied list into a bucketed object, then recurse into each bucket
+                
+                var paths = [];
                 var bucketeer = function(observations, keys, key_index) {
                     if (key_index < (keys.length)) {
                             observations = _.groupBy(observations, function(obs)  { return obs[keys[key_index]].label; });
@@ -264,21 +270,36 @@ var Grapher = {  // Config object and api
                 };
                 var tree_data = bucketeer(Grapher.data.slice(0), bucket_stack, 0);          
                 
+                var rowspec = [];
+                var traverse = function(obj, path, paths, addpath) {
+                    var mypath = path.slice(0);
+                    if (addpath) {
+                        mypath.push(addpath);
+                    }
+                    if (obj instanceof Grapher.Observation) {
+                        paths.push(mypath);
+                    } else {
+                        $.each(obj, function(i,v){
+                            traverse(v, mypath, paths, i);
+                        });
+                    }
+                };
+                traverse(tree_data, [], rowspec, null);
+                
                 $.each(tree_data, function(i,v){
-                    // For this data table each top level key in tree_data will biuld a row
+                    // For this data table each top level key in tree_data will build a row
                     var row = [i];
                     $.each(rowspec, function(rsi, rsv){
                         var val = 0;
                         var cur = v;
-                        $.each(rsv, function(i, key) {
+                        $.each(rsv.slice(1), function(i, key) { //slice the rowspec to omit the first key which
+                                                                                   // is handled by our outer iterator
                             cur = cur[key];
                         });
                         row.push(cur[0][Grapher.tokenizeURI(Grapher.selectedMeasure)].value);
                     });
                     table.addRow(row);
-                    
                 });
-
                 break;
         }  
         // Draw the chart
