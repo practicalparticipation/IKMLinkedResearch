@@ -66,6 +66,8 @@ var Grapher = {  // Config object and api
                  label:'Urban or Rural living location'},
                 {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/MothersEducation',
                  label:"Mother's level of education"},
+                {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Region',
+                 label:"Region in Country"},
                 {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Cohort',
                  label:'The Young Lives study Cohort'},
                 {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Country',
@@ -168,7 +170,7 @@ var Grapher = {  // Config object and api
         var vis_el = Grapher.vis[0]
         var options = {'title': 'The Title',
                                 'height': 400,
-                                'width': 400};
+                                'width': 600};
         var chart = null;
         var table = null;
         
@@ -206,11 +208,12 @@ var Grapher = {  // Config object and api
                 table = new google.visualization.DataTable();
                 
                 // We need unique values for our selectedDimension groupbyDimension and the includeDimensions
-                var selectedDimensionValues = _.uniq(_.map(Grapher.data, function(obs){ 
-                    return obs[Grapher.tokenizeURI(Grapher.selectedDimension)].label;
-                }));
+                
                 var groupbyDimensionValues = _.uniq(_.map(Grapher.data, function(obs){ 
                     return obs[Grapher.tokenizeURI(Grapher.groupbyDimension)].label;
+                }));
+                var selectedDimensionValues = _.uniq(_.map(Grapher.data, function(obs){ 
+                    return obs[Grapher.tokenizeURI(Grapher.selectedDimension)].label;
                 }));
                 var includeDimensionsValues = [];
                 $.each(Grapher.includeDimensions, function(i, dimuri){
@@ -219,56 +222,63 @@ var Grapher = {  // Config object and api
                     }))]);
                 });
                 
-                // Draw a column for the grouping dimension
-                table.addColumn('string', Grapher.dsd.get_dimension(Grapher.groupbyDimension));
+                var rowspec = [];
                 
-               
+                // Draw a column for the grouping dimension
+                table.addColumn('string', Grapher.dsd.get_dimension(Grapher.groupbyDimension).label);
+                
+                // Now add a column for each combination of selectedDimension and includedDimensions
+                $.each(selectedDimensionValues, function(i, sdv){
+                    if (includeDimensionsValues.length > 0) {
+                        $.each(includeDimensionsValues, function(i, id){
+                            $.each(id[1], function(i, idv){
+                                table.addColumn('number', sdv + ' /  ' + idv);
+                                rowspec.push([sdv, idv]);
+                            });
+                        });
+                    } else {
+                        table.addColumn('number', sdv);
+                        rowspec.push([sdv]);
+                    }
+                });
                 
                 // Prepare a data structure by agressive use of _.groupBy
-                var bucket_stack = [Grapher.tokenizeURI(Grapher.groupbyDimension)].label,
-                                                Grapher.tokenizeURI(Grapher.selectedDimension)].label];
+                var bucket_stack = [Grapher.tokenizeURI(Grapher.groupbyDimension),
+                                                Grapher.tokenizeURI(Grapher.selectedDimension)];
                 $.each(Grapher.includeDimensions, function(i, dim){
                     bucket_stack.push(Grapher.tokenizeURI(dim));
                 });
                 
                 // We'd like a tree which has as many levels as there are items in bucket_stack
-                
-                $.each(bucket_stack, function(dim_token){
-                    var token = dim_token;
-                    if (!tree_data) {
-                        tree_data = _.groupBy(Grapher.data, function(obs){ return obs[token].label });
-                    } else {
-                        $.each(tree_data,
-                    }
-                });                 
-                
-                
-                
-             
-                
-                table.addColumn('string', 'Country');
-                table.addColumn('number', 'YC / Urban');
-                table.addColumn('number', 'OC / Urban');
-                table.addColumn('number', 'YC / Rural');
-                table.addColumn('number', 'OC / Rural');
-                
-                var getVal = function(filters){
-                    var item = _.detect(Grapher.data, function(item){
-                        var pass = true;
-                        _.each(filters, function(val, key){
-                            if(item[key].label != val) { pass = false };
-                        });
-                        return pass;
-                    });
-                    return item ? item.value.value : 0;
+                // 1. a recusive function which takes a list of observations, a list of dimension
+                // tokens, and the current position in that list.
+                //  It'll convert the supplied list into a bucketed object, then recurse into each bucket
+                var bucketeer = function(observations, keys, key_index) {
+                    if (key_index < (keys.length)) {
+                            observations = _.groupBy(observations, function(obs)  { return obs[keys[key_index]].label; });
+                            $.each(observations, function(i, v) {
+                                observations[i] = bucketeer(v, keys, key_index +1);
+                            });
+                    } 
+                    return observations;
                 };
+                var tree_data = bucketeer(Grapher.data.slice(0), bucket_stack, 0);          
                 
-                table.addRow(['India', 
-                                        getVal({cohort:'YC', dimension:'Urban'}),
-                                        getVal({cohort:'OC',dimension:'Urban'}),
-                                        getVal({cohort:'OC',dimension:'Rural'}),
-                                        getVal({cohort:'YC',dimension:'Rural'})
-                                       ]);
+                $.each(tree_data, function(i,v){
+                    // For this data table each top level key in tree_data will biuld a row
+                    var row = [i];
+                    $.each(rowspec, function(rsi, rsv){
+                        var val = 0;
+                        var cur = v;
+                        $.each(rsv, function(i, key) {
+                            cur = cur[key];
+                        });
+                        row.push(cur[0][Grapher.tokenizeURI(Grapher.selectedMeasure)].value);
+                    });
+                    table.addRow(row);
+                    
+                });
+
                 break;
         }  
         // Draw the chart
@@ -288,6 +298,7 @@ var Grapher = {  // Config object and api
             .bind('click', function(evt){
                 Grapher.selectedDimension = $('.dimensionchooser', Grapher.configui).val();
                 Grapher.groupbyDimension = $('input[name=groupby]:checked', Grapher.configui).attr('value');
+                Grapher.includeDimensions = _.map($('input[name=include]:checked'), function(el){ return $(el).attr('value');});
                 Grapher.getData(Grapher.selectedMeasure, Grapher.selectedDimension);
             });
         

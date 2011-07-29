@@ -6,7 +6,22 @@
             <option value="<%= v.uri %>"><%= v.label %></option>
         <% }) %>
     </select>
-    <br/>
+</div>
+
+<div class="includechoice options">
+    Combined with:
+    <% $.each(standard_dimensions, function(i,v){ %>
+        <input type="checkbox" 
+                    id="<%= 'include_' + i.toString() %>" 
+                    name="include" 
+                    value="<%= v.uri %>"/>
+        <label for="<%= 'include_' + i.toString() %>">
+            <%= v.label %>
+        </label>
+    <% }) %>
+</div>
+
+<div class="measurechoice">
     As:
     <select class="measurechooser" name="measure">
         <% $.each(chooseable_measures, function(i,v){ %>
@@ -28,18 +43,7 @@
     <% }) %>
 </div>
 
-<div class="splits options">
-    Split by:
-    <% $.each(standard_dimensions, function(i,v){ %>
-        <input type="checkbox" 
-                    id="<%= 'split_' + i.toString() %>" 
-                    name="splitby" 
-                    value="<%= v.uri %>"/>
-        <label for="<%= 'split_' + i.toString() %>">
-            <%= v.label %>
-        </label>
-    <% }) %>
-</div>
+
 
 <div class="configui_controls">
     <a class="rechart button"href="#">Apply</a>
