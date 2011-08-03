@@ -452,11 +452,16 @@ for (item in dimensions[_getURI($('table.csvimport').attr('id'))]['elements'][el
 	var xsd = 'http://www.w3.org/2001/XMLSchema#';
         
 	//hardcode dimensionstring here. workout how to create it later.
-	//generate a random (type 4) uuid code for stackoverflow
-	var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-		var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-		return v.toString(16);
-	});
+	/**
+	 * generate a random (type 4) uuid
+	 *
+	 */
+	function  uuid() {
+	    return  'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+		    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+		    return v.toString(16);
+	    });
+	};
 	//our datacube uuid on it's own doesn't look like it plays nice with ontowiki which is hoping for it's own hashed patyh element, so we will add it back in.
 	table_import_id = _getURI($('table.csvimport').attr('id'));
 
@@ -511,28 +516,20 @@ for (item in dimensions[_getURI($('table.csvimport').attr('id'))]['elements'][el
 	};
 
 	
-	var make_rdf_Observation_object = function (val_str) {
+	var make_rdf_Observation_object = function (val) {
 		//this takes  very like make_rdf_object, but will always return a literal, of integer decimal boolean, or lang en
-		if (val_str) {
-			//val_str's cannot contain spaces ?ontowiki limitation, they are replaced here with underscroes
-			val_str = val_str.replace(/ /g, '_');
-			//check if the str_val contains a . if so check for parseFloat, else check for parseInt
-			if (val_str.indexOf('.') > 0) {
-				if (parseFloat(val_str, 10) === parseInt('number', 10)) {
-					return {"type": "literal", "value": val_str, "datatype" : "http://www.w3.org/2001/XMLSchema#decimal" };
-				}
-			} else {
-				if (parseInt(val_str, 10) === parseInt('number', 10)) {
-					return {"type": "literal", "value": val_str, "datatype" : "http://www.w3.org/2001/XMLSchema#integer" };
-				} 
-			}
-			if (val_str.toLowerCase() === 'false' || val_str.toLowerCase() === 'true'){
-				return {"type": "literal", "value": val_str.toLowerCase(), "datatype" : "http://www.w3.org/2001/XMLSchema#boolean" };
-			} else 	{
-				return {"type": "literal", "value": val_str, "lang" : "en"  };
-			}
+		if (parseFloat(val)) {
+		    var type = (parseFloat(val) % 1 == 0)?'integer':'decimal';
+		    return {"type": "literal", 
+		                  "value": parseFloat(val), 
+		                  "datatype" : "http://www.w3.org/2001/XMLSchema#" + type };
+		}	else if (val.toLowerCase() === 'false' || val.toLowerCase() === 'true'){
+			return {"type": "literal", 
+				              "value": val.toLowerCase(), 
+				              "datatype" : "http://www.w3.org/2001/XMLSchema#boolean" };
+	    } else {
+		    return {"type": "literal", "value": val, "lang" : "en"  };
 		}
-
 	};
 
 
@@ -729,7 +726,7 @@ so we will start with making a data struct that reflects the user input then we 
 	dimensions_raw['Cohort'] = {'values' : [{'YC' : get_coords(make_point('1','3'), make_point('1','20'))}, 
 					{'OC' : get_coords(make_point('2','3'), make_point('2','20'))}]};
 	dimensions_raw['Country'] = {'values' : [{'India' : get_coords(make_point('1','3'), make_point('2','20'))}]};
-	dimensions_raw['Rround'] = {'values' : [{'roundThree' : get_coords(make_point('1','3'), make_point('2','20'))}]};
+	dimensions_raw['Round'] = {'values' : [{'roundThree' : get_coords(make_point('1','3'), make_point('2','20'))}]};
 	dimensions_raw['SampleSize'] = {'values' : [{'1930' : get_coords(make_point('1','3'), make_point('1','20'))}, 
 					{'976' : get_coords(make_point('2','3'), make_point('2','20'))}]}; 
 	//TODO work out how to handle number strings, do we do this with user input or just set them if they parseInt? (this is bad for year dates eg 2011, but easy)
@@ -743,7 +740,7 @@ so we will start with making a data struct that reflects the user input then we 
 						{'Female' : get_coords(top_left, bottom_right, make_point('0','4'))}]};
 	dimensions_raw['UrbanOrRural'] = {'dimension_uri' : 'http://data.younglives.org.uk/data/summary/UrbanOrRural',
 				'values' : [{'Urban' : get_coords(top_left, bottom_right, make_point('0','5'))}, 
-						{'rural' : get_coords(top_left, bottom_right, make_point('0','6'))}]};
+						{'Rural' : get_coords(top_left, bottom_right, make_point('0','6'))}]};
 	dimensions_raw['MothersEducation'] = {'dimension_uri' : 'http://data.younglives.org.uk/data/summary/MothersEducation',
 				'values' : [{'Mother_has_no_education' : get_coords(top_left, bottom_right, make_point('0','7'))}, 
 						{'Mother_has_primary_educ_or_below' : get_coords(top_left, bottom_right, make_point('0','8'))},
@@ -812,7 +809,6 @@ now we need to add the observations
 //TODO I am here
 //TODO add to observation a new namespace to contain the sheet row col id etc.
 //TODO test	
-//TODO make a new uuid for each observation.	
 	//remove duplicate points
 	observation_points = observation_points.getUniquePoints();
 	var observations = {};
@@ -823,14 +819,17 @@ now we need to add the observations
 	//loop through all these points looking for which dimensions are usd
 	for (obs_point in observation_points) {
 		if(observation_points.hasOwnProperty(obs_point)){
+		    var obid = yld + uuid() + 'observation';
 			//begin constructing the observation
 			//TODO set obsvalue from sheet here
-			obs_value = '0.51';
+			obs_value = Math.round(Math.random()*100)/100;
 			observation = {}; //clear this var
 			//loc_str = 'c' + observation_points[obs_point].col.toString() + '_r' + observation_points[obs_point].row.toString();
-			observation[yld + uuid] = {};
-			observation[yld + uuid]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] = [make_rdf_object("Observation", qb)];
-			observation[yld + uuid][yls + measure_name] = [make_rdf_Observation_object(obs_value)];
+			observation[obid] = {};
+			observation[obid]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] = [make_rdf_object("Observation", qb)];
+			// Attatch the observation to the appropriate dataset
+			observation[obid][qb + 'dataSet'] = [make_rdf_object(dataset_name, yls)];
+			observation[obid][yls + measure_name] = [make_rdf_Observation_object(obs_value)];
 			//now we need to find which dimension this point is in.
 			for (dim in dimensions_raw) { //for each dimension
 				if (dimensions_raw.hasOwnProperty(dim)) {
@@ -842,7 +841,7 @@ now we need to add the observations
 										if (dimensions_raw[dim]['values'][dim_value][key].hasOwnProperty(dim_point)) {
 											if (compare_points(observation_points[obs_point], dimensions_raw[dim]['values'][dim_value][key][dim_point])) {
 												//ok our point is in this dimension, easy and very readable uh.
-												observation[yld + uuid][yls + dim] = [make_rdf_object(key, yls)];
+												observation[obid][yls + dim] = [make_rdf_object(key, yls)];
 												//stop loop now
 												break;
 											}
@@ -855,7 +854,7 @@ now we need to add the observations
 				}
 			}
 			//ok at this point we should have an observation
-			observations[yld + uuid] = observation[yld + uuid];
+			observations[obid] = observation[obid];
 		}
 	}
 	

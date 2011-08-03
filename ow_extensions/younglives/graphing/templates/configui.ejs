@@ -1,0 +1,52 @@
+<div class="configui">
+<div class="dimensionchoice">
+    Show me: 
+    <select class="dimensionchooser" name="dimension">
+        <% $.each(chooseable_dimensions, function(i,v){ %>
+            <option value="<%= v.uri %>"><%= v.label %></option>
+        <% }) %>
+    </select>
+</div>
+
+<div class="includechoice options">
+    Combined with:
+    <% $.each(standard_dimensions, function(i,v){ %>
+        <input type="checkbox" 
+                    id="<%= 'include_' + i.toString() %>" 
+                    name="include" 
+                    value="<%= v.uri %>"/>
+        <label for="<%= 'include_' + i.toString() %>">
+            <%= v.label %>
+        </label>
+    <% }) %>
+</div>
+
+<div class="measurechoice">
+    As:
+    <select class="measurechooser" name="measure">
+        <% $.each(chooseable_measures, function(i,v){ %>
+            <option value="<%= v.uri %>"><%= v.label %></option>
+        <% }) %>
+    </select>
+</div>
+
+<div class="grouping options">
+    Group by:
+    <% $.each(standard_dimensions, function(i,v){ %>
+        <input type="radio" 
+                    id="<%= 'group_' + i.toString() %>" 
+                    name="groupby" 
+                    value="<%= v.uri %>"/>
+        <label for="<%= 'group_' + i.toString() %>">
+            <%= v.label %>
+        </label>
+    <% }) %>
+</div>
+
+
+
+<div class="configui_controls">
+    <a class="rechart button"href="#">Apply</a>
+</div>
+
+</div>
