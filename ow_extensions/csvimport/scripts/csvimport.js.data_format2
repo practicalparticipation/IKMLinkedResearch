@@ -424,13 +424,25 @@ $(document).ready(function () {
             
             dimensions.uribase = [uribase];
         }
-*/
 
+//this does a good job of sorting the dimensions data for 2d data, it should be able to do more
+//this next code adds the third dimension of Sample size directly
+var element_uri = _getURI($('table.csvimport').attr('id')) + 'r' + datarange.start.row + '-c' + datarange.end.col;
+dimensions[_getURI($('table.csvimport').attr('id'))] = {};
+dimensions[_getURI($('table.csvimport').attr('id'))]['elements'] = {};
+dimensions[_getURI($('table.csvimport').attr('id'))]['elements'][element_uri] = {};
+dimensions[_getURI($('table.csvimport').attr('id'))]['elements'][element_uri]['items'] = datarange;
+dimensions[_getURI($('table.csvimport').attr('id'))].label = 'Sample Size';
+dimensions[_getURI($('table.csvimport').attr('id'))].subproperty = 'test_sdmx-sample-size';
+dimensions[_getURI($('table.csvimport').attr('id'))].concept = 'test_sdmx_sample_size';
+for (item in dimensions[_getURI($('table.csvimport').attr('id'))]['elements'][element_uri]['items']) {
+	dimensions[_getURI($('table.csvimport').attr('id'))]['elements'][element_uri]['items'][item].label = "1930";
+}
+	dimensionString = $.toJSON(dimensions);*/
 	//some namespaces:
 	var yld =  'http://data.younglives.org.uk/data/';
 	var ylcs =  'http://data.younglives.org.uk/data/summary/';
 	var yls = 'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/';
-	var ylcomp =  'http://data.younglives.org.uk/component#';
 	var qb = 'http://purl.org/linked-data/cube#';
 	var rdf = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
 	var rdfs = 'http://www.w3.org/2000/01/rdf-schema#';
@@ -439,6 +451,7 @@ $(document).ready(function () {
 	var sdmx_code = 'http://purl.org/linked-data/sdmx/2009/code#';
 	var xsd = 'http://www.w3.org/2001/XMLSchema#';
         
+	//hardcode dimensionstring here. workout how to create it later.
 	/**
 	 * generate a random (type 4) uuid
 	 *
@@ -449,7 +462,9 @@ $(document).ready(function () {
 		    return v.toString(16);
 	    });
 	};
-	
+	//our datacube uuid on it's own doesn't look like it plays nice with ontowiki which is hoping for it's own hashed patyh element, so we will add it back in.
+	table_import_id = _getURI($('table.csvimport').attr('id'));
+
 	//helpful functionality
 	String.prototype.capitalize = function() {
 		return this.charAt(0).toUpperCase() + this.slice(1);
@@ -499,13 +514,7 @@ $(document).ready(function () {
 		}
 
 	};
-	
-	var make_rdf_label = function (string) {
-		//this takes a string and returns an object representing an rdf label literal in english
-		if (string) {
-			return [{"type": "literal", "value": string, "lang" : "en"}];
-		}
-	};
+
 	
 	var make_rdf_Observation_object = function (val) {
 		//this takes  very like make_rdf_object, but will always return a literal, of integer decimal boolean, or lang en
@@ -526,51 +535,51 @@ $(document).ready(function () {
 
 	// make an overall object to send, we will build it up peice by piece.
 
-	var labels = {};
+	var bnodes = {};
 	var dsd = {};
-	//each dsd is unique, some may not be stored, if one already exists see comment below
-	dsd_name = 'SumaryStatistics-' + uuid() ;
-
-	//in the new wold order we will create a new dsd per import. we will not submit it if one with exactly the same components exists, in this case we will just add an additional label, if the label does not exist already. this requires that we do away with optional and ordered components
+	dsd_name = 'SumaryStatistics';
+	dsd_custom = false;
+	// define a list of dimensions
+	var components =       [['Cohort', [qb + 'order', '1']],
+				['Country', [qb + 'order', '2']],
+				['Round', [qb + 'order', '3']],
+				['SampleSize', [qb + 'componentRequired', 'false']],
+				['measureType']]; 
 	
-	// define a list of dimensions, these are core and may well not be in the imported sheet itself, 
-	//TODO prompt for label elements, or use fixed as below
-	
-	var components =       [['Cohort', 'label for Cohort dimension'],
-				['Country', 'label for Country dimension'],
-				['Round', 'label for Round dimension']]; 
-
 
 	//alwways need this
 	dsd[ylcs + dsd_name] = {"http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [{"type": "uri", "value": qb + "DataStructureDefinition" }]};
-	//loop to add. we can only add one extra item from the array above, so can't have order and optional. limit of our code
-	var dsd_components = [];
+	//loop to add we can only add one extra item from the array above, so can't have order and optionsal. limit of our code
+	dsd_components = [];
 	var comp;
-
-	//ok try this without using blank nodes 
 	for (comp in components) {
 		if  ( components.hasOwnProperty(comp) ) {
-			dsd_components.push(make_rdf_object(components[comp][0], ylcomp));
+			dsd_components.push({"type": "bnode", "value" : "_:" + components[comp][0]});
+			bnodes["_:" + components[comp][0] ] = {};
+			bnodes["_:" + components[comp][0] ][qb + "dimension"] = [make_rdf_object(components[comp][0], yls)]
 			if (components[comp][1]){
-				//add a label to this component
-				labels[ylcomp + components[comp][0]] = {};
-				labels[ylcomp + components[comp][0]][rdfs + 'label'] = make_rdf_label(components[comp][1]);	
-			}
+				//add one extra item eg order or optional
+				bnodes["_:" + components[comp][0] ][qb + "dimension"].push(make_rdf_object(components[comp][1][1], components[comp][1][0]));
+			} 
+										 ;
 		}
 	}
-	
+
 	//add the component triple
 	dsd[ylcs + dsd_name][qb + "component"] = dsd_components;
 
+	/*
+	our new plan is to use one dataset for each country_round combination with one dsd.
 
+	we will need to prompt the user for country and round 
+	*/
 	//TODO PROMPT USER FOR THESE VALUES
 	var yl_country = ['Ethiopia', 'India', 'Peru', 'Vietnam'][1];
 	var yl_round = ['RoundOne', 'RoundTwo', 'RoundThree', 'RoundFour', 'RoundFive'][2];
 	
 	//now we can make a dataset name
-	//var dataset_name = yl_country + '_' + yl_round;
-	//new plan
-	var dataset_name = 'dataset-' + uuid();
+	var dataset_name = yl_country + '_' + yl_round;
+
 
 
 /*
@@ -600,15 +609,21 @@ this code provides a fixed uneditable measure*/
 
 	var measure = {};
 	measure[yls + measure_name] = { };
-	labels[yls + measure_name] = {};
-	labels[yls + measure_name][rdfs + 'label'] =  make_rdf_label(measure_label);
+	measure[yls + measure_name][rdfs + "label"] = [{ "type": "literal", 
+				"value" : measure_label, 
+				"lang" : "en"}];
 	measure[yls + measure_name][rdfs + "subPropertyOf"] = [make_rdf_object("obsValue", sdmx_measure)];
 	measure[yls + measure_name][rdfs + "range"] =  [make_rdf_object(measure_type)]; 
 	measure[yls + measure_name][rdf + "Property"] = [make_rdf_object("MeasureProperty", qb)];
 
-	//add the measure triple to the dsd 
-	dsd[ylcs + dsd_name][qb + "component"].push(make_rdf_object(measure_name, yls));
-	
+	//add the measure triple to the dsd
+	dsd[ylcs + dsd_name][qb + "component"].push({"type": "bnode", "value" : "_:" + measure_name});
+	bnodes["_:" + measure_name] = {};
+	bnodes["_:" + measure_name][qb + "measure"] = [make_rdf_object(measure_name, yls), 
+						make_rdf_object("false", qb + "componentRequired")];
+
+
+
 /*
 first we will provide a helper function to return a list of coordinates based on a rectangular range or an range and a potential row or column cordinate,
 and for making a point
@@ -644,7 +659,7 @@ and for making a point
 	var get_coords = function (top_left, bottom_right, limit_point) {
 		/*
 		top_left, bottom_right,limit_point are expected to be like this {'row': row, 'col':col}
-		top_left, bottom_right are 
+		top_left, bottom_right are required
 		if limit point is included only points inside the rectangle top_left to bottom right which are on
 		the same row or col are returned
 		*/
@@ -720,23 +735,19 @@ so we will start with making a data struct that reflects the user input then we 
 	//all values from the speadsheet that are going to become uri's must have all spaces removed and replaced with something safe
 	//my current best suggestion is to replace all spaces with underscores, utf-8 chars like ħħ ß work just fine, and ;' too
 	//neil thinks this is a limitaion of ontowiki, he has tried to send spaces and %20 both of which fail
-	dimensions_raw['Gender'] = {'dimension_uri' : 'Gender',
-				'dim_label' : 'gender label',
+	dimensions_raw['Gender'] = {'dimension_uri' : 'http://data.younglives.org.uk/data/summary/Gender',
 				'values' : [{'Male' : get_coords(top_left, bottom_right, make_point('0','3'))}, 
 						{'Female' : get_coords(top_left, bottom_right, make_point('0','4'))}]};
-	dimensions_raw['UrbanOrRural'] = {'dimension_uri' : 'UrbanOrRural',
-				'dim_label' : 'urbanorrural label',
+	dimensions_raw['UrbanOrRural'] = {'dimension_uri' : 'http://data.younglives.org.uk/data/summary/UrbanOrRural',
 				'values' : [{'Urban' : get_coords(top_left, bottom_right, make_point('0','5'))}, 
 						{'Rural' : get_coords(top_left, bottom_right, make_point('0','6'))}]};
-	dimensions_raw['MothersEducation'] = {'dimension_uri' : 'MothersEducation',
-				'dim_label' : 'mother education label',
+	dimensions_raw['MothersEducation'] = {'dimension_uri' : 'http://data.younglives.org.uk/data/summary/MothersEducation',
 				'values' : [{'Mother_has_no_education' : get_coords(top_left, bottom_right, make_point('0','7'))}, 
 						{'Mother_has_primary_educ_or_below' : get_coords(top_left, bottom_right, make_point('0','8'))},
 						//not !!! {'Mother has primary educ or below' : get_coords(top_left, bottom_right, make_point('0','8'))},
 						{'Mother_has_secondary_educ_or_below' : get_coords(top_left, bottom_right, make_point('0','9'))}, 
 						{'Mother_has_above_secondary_educ' : get_coords(top_left, bottom_right, make_point('0','10'))}]};
-	dimensions_raw['Region'] = {'dimension_uri' : 'Region',
-				'dim_label' : 'region label',
+	dimensions_raw['Region'] = {'dimension_uri' : 'http://data.younglives.org.uk/data/summary/Region',
 				'values' : [{'Coastal_andhra' : get_coords(top_left, bottom_right, make_point('0','11'))}, 
 						{'Rayalseema' : get_coords(top_left, bottom_right, make_point('0','12'))},
 						{'Telangana' : get_coords(top_left, bottom_right, make_point('0','13'))}]};
@@ -747,26 +758,20 @@ ok now the fun bit, lets parse the dimensions_raw object
 	var dimensions = {};
 	
 	var dim = '';
-
-	//new way
 	for (dim in dimensions_raw) {
 		if (dimensions_raw.hasOwnProperty(dim)) {
 			//check to see if we have a new dimension or one defined in the dsd, we can tell by looking for the 'dimension_uri' key
 			if (dimensions_raw[dim].hasOwnProperty('dimension_uri')) {
-				//add dimension to dsd these will need to be optional!
-				var dim_object = [make_rdf_object(dimensions_raw[dim]['dimension_uri'], ylcomp)];
-				//ok now add the extra key to make this optional
-				dim_object.push(make_rdf_object("false", qb + 'componentRequired'));
-				dsd[ylcs + dsd_name][qb + "component"].push(dim_object);
+				bnodes["_:" + dim] = {};
+				bnodes["_:" + dim][qb + "dimension"] = [make_rdf_object(dimensions_raw[dim].dimension_uri)];
 			} 
-			//add dimension defintion code , like for a measure
-			dimensions[ylcomp + dim.capitalize()] = {};
-			dimensions[ylcomp + dim.capitalize()]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] = [make_rdf_object('dimension', qb)];
-			if (dimensions_raw[dim].hasOwnProperty('dim_label')) {
-				//add a label for the dimension
-				labels[ylcomp + dim.capitalize()] = {};
-				labels[ylcomp + dim.capitalize()][rdfs + 'label'] =  make_rdf_label(dimensions_raw[dim]['dim_label']);
-			}
+			dimensions[ylcs + "structure" + input_measure_name + dim.capitalize()] = {};
+			dimensions[ylcs + "structure" + input_measure_name + dim.capitalize()][rdfs + "subClassOf"] = [make_rdf_object(input_measure_name, ylcs)];
+			dimensions[ylcs + "structure" + input_measure_name + dim.capitalize()][qb + "component"] =  [{"type": "bnode", "value" : "_:" + dim}];
+			dimensions[ylcs + dataset_name + dim.capitalize()] = { };
+			//dimensions[ylcs + "datasetProportionOfSample" + dim.capitalize()] = {"http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [make_rdf_object("DataSet", qb)]};
+			dimensions[ylcs + dataset_name + dim.capitalize()][qb + "structure"] = [make_rdf_object("structure" + input_measure_name + dim.capitalize(), ylcs)];
+			
 		}
 	}
 
@@ -775,7 +780,7 @@ ok now the fun bit, lets parse the dimensions_raw object
 	var dataset = {};
 	dataset[yls + dataset_name] = {};
 	dataset[yls + dataset_name] = {"http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [make_rdf_object("DataSet", qb)]};
-	dataset[yls + dataset_name][qb + "structure"] = [make_rdf_object(dsd_name , ylcs)];
+	dataset[yls + dataset_name][qb + "structure"] = [make_rdf_object("SumaryStatistics" , yls)];
 
 
 /*
@@ -856,26 +861,12 @@ now we need to add the observations
 
  
 	
-	//TODO check on the dsd, add code here
-
-	//TODO 
-	dsd_label = 'dsd  label';
-	labels[ylcs + dsd_name] = {};
-	labels[ylcs + dsd_name][rdfs + 'label'] = make_rdf_label(dsd_label);
-
-	var have_dsd = false;
-	if (have_dsd) {//use jquery to merge objects together.
-		jQuery.extend(true, triples, labels, measure, dimensions, dataset, observations)
-	} else {
-		jQuery.extend(true, triples, labels, dsd, measure, dimensions, dataset, observations);
-	}
-
-
 	
-	//dimensionString = $.toJSON(jQuery.extend(true, labels, dsd, measure, dimensions));
+	//use jquery to merge objects together.
+	jQuery.extend(triples, dsd, bnodes, measure, dimensions, dataset, observations);
 
 	//dimensionString = $.toJSON(observations);
-	dimensionString = $.toJSON(triples);
+
 
 
 
@@ -883,7 +874,7 @@ now we need to add the observations
 	//dimensionString = $.toJSON( {"http://data.younglives.org.uk//7829f2eacb60b5f76a60316eae8573d9/74d71e57-8e62-4845-81e2-506b67006c94c1_r79":{"http://www.w3.org/1999/02/22-rdf-syntax-ns#type":[{"type":"uri","value":"http://purl.org/linked-data/cube#Observation"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/measure-ProportionOfSample":[{"type":"literal","value":"0.51","datatype":"http://www.w3.org/2001/XMLSchema#decimal"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/cohort":[{"type":"uri","value":"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/YC"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/country":[{"type":"uri","value":"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/round":[{"type":"uri","value":"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/roundThree"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/sampleSize":[{"type":"uri","value":"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/1930"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/MothersEducation":[{"type":"uri","value":"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Mother%20has%20no%20educationßß;'%20f"}]}});
 
 
-	
+	dimensionString = $.toJSON(triples);
 	
 	
 
