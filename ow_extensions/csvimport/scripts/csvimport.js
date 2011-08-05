@@ -393,6 +393,7 @@ $(document).ready(function () {
     });
 
     
+
     /*
      * EXTRACT BTN
      */
@@ -424,6 +425,19 @@ $(document).ready(function () {
             
             dimensions.uribase = [uribase];
         }
+*/
+
+/*IMPORTANT
+new code for importing younglives summary data.
+
+add these lines 
+ <script type="text/javascript" src="<?php echo $this->staticUrlBase;?>extensions/younglives/graphing/js/urlEncode.js"></script>
+ <script type="text/javascript" src="<?php echo $this->staticUrlBase;?>extensions/younglives/graphing/js/jquery.sparql.js"></script>
+to application/views/templates/layouts/layout.phtml 
+and add  a symbolic link from  /ow_extensions/younglives to build/extensions/younglives
+TODO
+ad this change to the buildout somenow
+
 */
 
 	//some namespaces:
@@ -489,7 +503,7 @@ $(document).ready(function () {
 		if (val_str) {
 			//val_str's cannot contain spaces ?ontowiki limitation, they are replaced here with underscroes
 			val_str = val_str.replace(/ /g, '_');
-			if (parseInt(val_str, 10) === parseInt('number', 10)) {
+			if (!isNaN(parseInt(val_str, 10))) { //not this a good test as '1fish' tests true.. but it will have to do
 				return {"type": "literal", "value": val_str, "datatype" : "http://www.w3.org/2001/XMLSchema#decimal" };
 			} else if (val_str.toLowerCase() === 'false' || val_str.toLowerCase() === 'true'){
 				return {"type": "literal", "value": val_str.toLowerCase(), "datatype" : "http://www.w3.org/2001/XMLSchema#boolean" };
@@ -514,11 +528,11 @@ $(document).ready(function () {
 		    return {"type": "literal", 
 		                  "value": parseFloat(val), 
 		                  "datatype" : "http://www.w3.org/2001/XMLSchema#" + type };
-		}	else if (val.toLowerCase() === 'false' || val.toLowerCase() === 'true'){
+		} else if (val.toLowerCase() === 'false' || val.toLowerCase() === 'true'){
 			return {"type": "literal", 
 				              "value": val.toLowerCase(), 
 				              "datatype" : "http://www.w3.org/2001/XMLSchema#boolean" };
-	    } else {
+		} else {
 		    return {"type": "literal", "value": val, "lang" : "en"  };
 		}
 	};
@@ -529,7 +543,7 @@ $(document).ready(function () {
 	var labels = {};
 	var dsd = {};
 	//each dsd is unique, some may not be stored, if one already exists see comment below
-	dsd_name = 'SumaryStatistics-' + uuid() ;
+	var dsd_name = 'SumaryStatistics-' + uuid() ;
 
 	//in the new wold order we will create a new dsd per import. we will not submit it if one with exactly the same components exists, in this case we will just add an additional label, if the label does not exist already. this requires that we do away with optional and ordered components
 	
@@ -539,22 +553,27 @@ $(document).ready(function () {
 	var components =       [['Cohort', 'label for Cohort dimension'],
 				['Country', 'label for Country dimension'],
 				['Round', 'label for Round dimension']]; 
-
+	//NOTE sample size is nolonger considered core
 
 	//alwways need this
 	dsd[ylcs + dsd_name] = {"http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [{"type": "uri", "value": qb + "DataStructureDefinition" }]};
 	//loop to add. we can only add one extra item from the array above, so can't have order and optional. limit of our code
 	var dsd_components = [];
 	var comp;
-
+	var dimensions = {};
 	//ok try this without using blank nodes 
 	for (comp in components) {
 		if  ( components.hasOwnProperty(comp) ) {
 			dsd_components.push(make_rdf_object(components[comp][0], ylcomp));
 			if (components[comp][1]){
-				//add a label to this component
 				labels[ylcomp + components[comp][0]] = {};
-				labels[ylcomp + components[comp][0]][rdfs + 'label'] = make_rdf_label(components[comp][1]);	
+				//add a label to this component
+				labels[ylcomp + components[comp][0]][rdfs + 'label'] = make_rdf_label(components[comp][1]);
+				//add dimension difinitions	#
+				dimensions[ylcomp + components[comp][0]] = {};
+				dimensions[ylcomp + components[comp][0]]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] = [make_rdf_object('dimension', qb), make_rdf_object('component', qb)];
+				dimensions[ylcomp + components[comp][0]][qb + 'order'] = [make_rdf_object('1')];
+				dimensions[ylcomp + components[comp][0]][qb + 'componentRequired'] = [make_rdf_object("true")];
 			}
 		}
 	}
@@ -605,7 +624,7 @@ this code provides a fixed uneditable measure*/
 	measure[yls + measure_name][rdfs + "subPropertyOf"] = [make_rdf_object("obsValue", sdmx_measure)];
 	measure[yls + measure_name][rdfs + "range"] =  [make_rdf_object(measure_type)]; 
 	measure[yls + measure_name][rdf + "Property"] = [make_rdf_object("MeasureProperty", qb)];
-
+	measure[yls + measure_name]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] = [make_rdf_object('measure', qb), make_rdf_object('component', qb)];
 	//add the measure triple to the dsd 
 	dsd[ylcs + dsd_name][qb + "component"].push(make_rdf_object(measure_name, yls));
 	
@@ -712,14 +731,16 @@ so we will start with making a data struct that reflects the user input then we 
 					{'OC' : get_coords(make_point('2','3'), make_point('2','20'))}]};
 	dimensions_raw['Country'] = {'values' : [{'India' : get_coords(make_point('1','3'), make_point('2','20'))}]};
 	dimensions_raw['Round'] = {'values' : [{'roundThree' : get_coords(make_point('1','3'), make_point('2','20'))}]};
-	dimensions_raw['SampleSize'] = {'values' : [{'1930' : get_coords(make_point('1','3'), make_point('1','20'))}, 
-					{'976' : get_coords(make_point('2','3'), make_point('2','20'))}]}; 
 	//TODO work out how to handle number strings, do we do this with user input or just set them if they parseInt? (this is bad for year dates eg 2011, but easy)
 	//TODO current plan uses the make_rdf_object() function which return a uri object for strings, boolean literal for true/false strings or interger for integer strings, it cannot handle dates. 
 	//TODO and IMPORTANT
 	//all values from the speadsheet that are going to become uri's must have all spaces removed and replaced with something safe
 	//my current best suggestion is to replace all spaces with underscores, utf-8 chars like ħħ ß work just fine, and ;' too
 	//neil thinks this is a limitaion of ontowiki, he has tried to send spaces and %20 both of which fail
+	dimensions_raw['SampleSize'] = {'dimension_uri' : 'SampleSize',
+					'dim_label' : 'sample size label',
+					'values' : [{'1930' : get_coords(make_point('1','3'), make_point('1','20'))}, 
+					{'976' : get_coords(make_point('2','3'), make_point('2','20'))}]}; 
 	dimensions_raw['Gender'] = {'dimension_uri' : 'Gender',
 				'dim_label' : 'gender label',
 				'values' : [{'Male' : get_coords(top_left, bottom_right, make_point('0','3'))}, 
@@ -744,7 +765,7 @@ so we will start with making a data struct that reflects the user input then we 
 /*
 ok now the fun bit, lets parse the dimensions_raw object
 */
-	var dimensions = {};
+	
 	
 	var dim = '';
 
@@ -753,15 +774,16 @@ ok now the fun bit, lets parse the dimensions_raw object
 		if (dimensions_raw.hasOwnProperty(dim)) {
 			//check to see if we have a new dimension or one defined in the dsd, we can tell by looking for the 'dimension_uri' key
 			if (dimensions_raw[dim].hasOwnProperty('dimension_uri')) {
+				dimensions[ylcomp + dim.capitalize()] = {};
 				//add dimension to dsd these will need to be optional!
-				var dim_object = [make_rdf_object(dimensions_raw[dim]['dimension_uri'], ylcomp)];
-				//ok now add the extra key to make this optional
-				dim_object.push(make_rdf_object("false", qb + 'componentRequired'));
+				var dim_object = make_rdf_object(dimensions_raw[dim]['dimension_uri'], ylcomp);
 				dsd[ylcs + dsd_name][qb + "component"].push(dim_object);
+				//ok now add the extra key to make this optional
+				dimensions[ylcomp + dim.capitalize()][qb + 'componentRequired'] = [make_rdf_object("false")];
+				dimensions[ylcomp + dim.capitalize()][qb + 'order'] = [make_rdf_object('2')];
+				//add dimension defintion code , like for a measure
+				dimensions[ylcomp + dim.capitalize()]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] = [make_rdf_object('dimension', qb), make_rdf_object('component', qb)];
 			} 
-			//add dimension defintion code , like for a measure
-			dimensions[ylcomp + dim.capitalize()] = {};
-			dimensions[ylcomp + dim.capitalize()]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] = [make_rdf_object('dimension', qb)];
 			if (dimensions_raw[dim].hasOwnProperty('dim_label')) {
 				//add a label for the dimension
 				labels[ylcomp + dim.capitalize()] = {};
@@ -857,49 +879,80 @@ now we need to add the observations
  
 	
 	//TODO check on the dsd, add code here
-
-	//TODO 
-	dsd_label = 'dsd  label';
-	labels[ylcs + dsd_name] = {};
-	labels[ylcs + dsd_name][rdfs + 'label'] = make_rdf_label(dsd_label);
-
-	var have_dsd = false;
-	if (have_dsd) {//use jquery to merge objects together.
-		jQuery.extend(true, triples, labels, measure, dimensions, dataset, observations)
-	} else {
-		jQuery.extend(true, triples, labels, dsd, measure, dimensions, dataset, observations);
+	//var sparql_endpoint = 'http://neil/~neil/IKMLinkedResearch/build/service/sparql';
+	var sparql_endpoint = 'service/sparql';
+	
+	//build sparql to return the dsd's and thier labels that match the dimensions we use
+//TODO
+//DOING
+	var sparql_q = $.sparql(sparql_endpoint)
+                .prefix('ylcomp', ylcomp)
+                .prefix('qb', qb)
+		.prefix('rdfs', rdfs)
+		.prefix('yls', yls)
+                .select(['?dsd', '?label'])
+			.where('?dsd', 'a', 'qb:DataStructureDefinition')
+			.where('?dsd', 'rdfs:label', '?label')
+                        .where('?dsd', 'qb:component', 'ylcomp:Cohort' )
+                        .where('?dsd', 'qb:component', 'ylcomp:Round' )
+                        .where('?dsd', 'qb:component', 'ylcomp:Country');
+	//now add our measure 
+	sparql_q = sparql_q.where('?dsd', 'qb:component', 'yls:' + measure_name )
+	//now loop over our dimensions
+	for (dim in dimensions_raw) {
+		if (dimensions_raw.hasOwnProperty(dim)) {
+			if (dimensions_raw[dim].hasOwnProperty('dimension_uri')) {
+				sparql_q = sparql_q.where('?dsd', 'qb:component', 'ylcomp:' + dimensions_raw[dim]['dimension_uri'] )
+			}
+		}	
 	}
-
-
+	sparql_q.execute(dsd_sparql_result);
+	//all the rest of the code for importing data happens in here as we _MUST_ have a response or we cannot know what to do with the dsd
+	function dsd_sparql_result(data) {
+		//
+		dsd_label = 'dsd  label';
+		labels[ylcs + dsd_name] = {};
+		labels[ylcs + dsd_name][rdfs + 'label'] = make_rdf_label(dsd_label);
 	
-	//dimensionString = $.toJSON(jQuery.extend(true, labels, dsd, measure, dimensions));
-
-	//dimensionString = $.toJSON(observations);
-	dimensionString = $.toJSON(triples);
-
-
-
-//IMPORTANT!!!!! we cannot pass a space in a uri value, nor a %20. ie this will not work!!!! ie this will fail, but will work if the first 3 %20 are removed, the last appears to work, I do not know why. 
-	//dimensionString = $.toJSON( {"http://data.younglives.org.uk//7829f2eacb60b5f76a60316eae8573d9/74d71e57-8e62-4845-81e2-506b67006c94c1_r79":{"http://www.w3.org/1999/02/22-rdf-syntax-ns#type":[{"type":"uri","value":"http://purl.org/linked-data/cube#Observation"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/measure-ProportionOfSample":[{"type":"literal","value":"0.51","datatype":"http://www.w3.org/2001/XMLSchema#decimal"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/cohort":[{"type":"uri","value":"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/YC"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/country":[{"type":"uri","value":"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/round":[{"type":"uri","value":"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/roundThree"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/sampleSize":[{"type":"uri","value":"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/1930"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/MothersEducation":[{"type":"uri","value":"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Mother%20has%20no%20educationßß;'%20f"}]}});
-
-
+		var have_dsd = false;
+		if (have_dsd) {//use jquery to merge objects together.
+			jQuery.extend(true, triples, labels, measure, dimensions, dataset, observations)
+		} else {
+			jQuery.extend(true, triples, labels, dsd, measure, dimensions, dataset, observations);
+		}
+	
+	
+		
+		//dimensionString = $.toJSON(jQuery.extend(true, labels, dsd, measure, dimensions));
+	
+		//dimensionString = $.toJSON(observations);
+		dimensionString = $.toJSON(triples);
 	
 	
 	
-
-        var url = window.location.href + '/results';
-        $.get(url, function(data){
-            var div_str = '<div id="import-options" \
-            style="width:400px;height:150px;padding:5px;align:center;\
-            background:white;position:absolute;left:40%;top:30%;\
-            border: 1px solid #900; overflow: auto;">'+
-                data + '</div>';
-            $('body').append( $(div_str) );
-        });
-    });
-
-    theight = $(window).height() - $("#csvimport-dimensions").height() - $("#messagebox").height() - 150;
-    $("#table-holder").css("height", theight);
+		//IMPORTANT!!!!! we cannot pass a space in a uri value, nor a %20. ie this will not work!!!! ie this will fail, but will work if the first 3 %20 are removed, the last appears to work, I do not know why. 
+		//dimensionString = $.toJSON( {"http://data.younglives.org.uk//7829f2eacb60b5f76a60316eae8573d9/74d71e57-8e62-4845-81e2-506b67006c94c1_r79":{"http://www.w3.org/1999/02/22-rdf-syntax-ns#type":[{"type":"uri","value":"http://purl.org/linked-data/cube#Observation"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/measure-ProportionOfSample":[{"type":"literal","value":"0.51","datatype":"http://www.w3.org/2001/XMLSchema#decimal"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/cohort":[{"type":"uri","value":"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/YC"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/country":[{"type":"uri","value":"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/round":[{"type":"uri","value":"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/roundThree"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/sampleSize":[{"type":"uri","value":"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/1930"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/MothersEducation":[{"type":"uri","value":"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Mother%20has%20no%20educationßß;'%20f"}]}});
+	
+	
+		
+		
+		
+	
+		var url = window.location.href + '/results';
+		$.get(url, function(data){
+			var div_str = '<div id="import-options" \
+			style="width:400px;height:150px;padding:5px;align:center;\
+			background:white;position:absolute;left:40%;top:30%;\
+			border: 1px solid #900; overflow: auto;">'+
+				data + '</div>';
+			$('body').append( $(div_str) );
+		});
+	
+		
+	}
+	});
+	theight = $(window).height() - $("#csvimport-dimensions").height() - $("#messagebox").height() - 150;
+	$("#table-holder").css("height", theight);
 });
 
 function useCSVConfiguration(config) {
