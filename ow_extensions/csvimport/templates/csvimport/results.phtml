@@ -30,17 +30,25 @@
                     window.clearInterval(updater);
                 };
             }, 5000);
-            $.post(actionURL, {dimensions: dimensionString}, function () {
-                //alert('Success');
-                done = true;
-            });
+
+	    //check all is well first
+	    if (check_before_post()) {
+		$.post(actionURL, {dimensions: dimensionString}, function () {
+			//alert('Success');
+			done = true;
+		});
+	    }
         })
     })
 </script>
-<div align="center" style="height: 100%; vertical-align: middle; overflow: auto;">
+<div align="center" style="vertical-align: middle; overflow: auto;">
     <b>Import options.</b><br/>
     <input type="text" id="template_name" value="Template Name" /><br/>
     <input type="button" id="save_template_btn" value="Save Template" onclick="" /><br/>
-    <input type="button" id="extract_triples_btn" value="Extract triples" onclick="" /><br/>
+    
     <div style="width:100%; text-align: right;"><a href="#" onclick="return false;" id="close-results">[x]</a></div>
+</div>
+<div id="dsd_stuff">
+	<label for="dsd_label">Enter label text for dsd:</label><input type="Text" name="dsd_label"/><br/>
+	<input type="button" id="extract_triples_btn" value="Extract triples" onclick="" />
 </div>

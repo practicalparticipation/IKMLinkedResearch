@@ -22,7 +22,8 @@ class CsvimportController extends OntoWiki_Controller_Component
     {
         // init component
         parent::init();
-
+	$this->view->headScript()->appendFile($this->_componentUrlBase . '../younglives/graphing/js/urlEncode.js');
+	$this->view->headScript()->appendFile($this->_componentUrlBase . '../younglives/graphing/js/jquery.sparql.js');
         $this->view->headScript()->appendFile($this->_componentUrlBase . 'scripts/csvimport.js');
         $this->view->headScript()->appendFile($this->_componentUrlBase . 'scripts/rdfa.object.js');
     }

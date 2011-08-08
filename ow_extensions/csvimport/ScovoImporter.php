@@ -55,7 +55,8 @@ class ScovoImporter extends Importer
 
             $toolbar = $ontowiki->toolbar;
             $toolbar->appendButton(OntoWiki_Toolbar::ADD, array('name' => 'Add Dimension', 'id' => 'btn-add-dimension'))
-                ->appendButton(OntoWiki_Toolbar::ADD, array('name' => 'Add Attribute', 'id' => 'btn-attribute', 'class'=>''))
+                //not needed by us
+		//->appendButton(OntoWiki_Toolbar::ADD, array('name' => 'Add Attribute', 'id' => 'btn-attribute', 'class'=>''))
                 ->appendButton(OntoWiki_Toolbar::EDIT, array('name' => 'Select Data Range', 'id' => 'btn-datarange', 'class'=>''))
                 ->appendButton(OntoWiki_Toolbar::SEPARATOR)
                 ->appendButton(OntoWiki_Toolbar::SUBMIT, array('name' => 'Extract Triples', 'id' => 'extract'))

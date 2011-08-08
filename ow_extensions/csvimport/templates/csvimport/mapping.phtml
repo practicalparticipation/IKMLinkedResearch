@@ -11,14 +11,41 @@
     }?>
 </script>
 <?php if( isset($this->scovo) ): ?>
-<div><?php echo $this->_('Base URI:') ?><input type="text" id="uribase" value="initme" style="width:80%;"></div>
+<!--<div><?php echo $this->_('Base URI:') ?><input type="text" id="uribase" value="initme" style="width:80%;"></div>-->
 <div><?php echo $this->_('Data Range:') ?><span id="csvimportDatarange"></span></div>
-<div><?php echo $this->_('Attributes:') ?>
+<!--<div><?php echo $this->_('Attributes:') ?>-->
+
+<!-- added by neontribe for young lives project, these represent the three core dimensions that must have values -->
+<label for="select_country">Select country:</label>
+<select id="select_country" name="select_country" >
+	<option value="Ethiopia">Ethiopia</option>
+	<option value="India" selected="selected">India</option>
+	<option value="Peru">Peru</option>
+	<option value="Vietnam">Vietnam</option>
+</select> <br/>
+<label for="select_round">Select round:</label>
+<select id="select_round" name="select_round" >
+	<option value="roundOne">round one</option>
+	<option value="roundTwo">round two</option>
+	<option value="roundThree" selected="selected">round three</option>
+	<option value="roundFour">round four</option>
+	<option value="roundFive">round five</option>
+</select><br/>
+<fieldset>
+	<legend>Choose fixed cohort or dynamic cohort values from spread sheet</legend>
+	<input id="chort_choice-a" type="radio" name="chort_choice" value="fixed"/>
+		<label for="chort_choice-a">use fixed value</label>
+	<input id="chort_choice-b" type="radio" name="chort_choice" value="fixed" checked="checked"/>
+		<label for="chort_choice-b">use spreadsheet values</label>
+</fieldset>
+
+<!--
 <table id="csvimport-attributes">
     <tr>
         <th><?php echo $this->_('Attribute Name') ?></th>
     </tr>
 </table>
+-->
 </div>
 <div><?php echo $this->_('Dimensions:') ?>
 
