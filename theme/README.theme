@@ -1,0 +1,2 @@
+put layouts.phtml in application/views/templates/layouts
+replace extensions/themes/silverblue with this one

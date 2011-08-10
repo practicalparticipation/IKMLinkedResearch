@@ -1,0 +1,312 @@
+<?php
+
+/**
+ * OntoWiki layout template
+ *
+ * @author  Norman Heino <norman.heino@gmail.com>
+ * @author  Michael Haschke
+ * @version $Id: layout.phtml 4308 2009-10-14 15:13:51Z jonas.brekle@gmail.com $
+ */
+
+?>
+<?php echo $this->doctype('XHTML1_STRICT') ?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head xmlns:update="http://ns.aksw.org/update/">
+    <?php echo $this->headTitle() ?>
+    <?php echo $this->headMeta() ?>
+    <?php echo $this->headLink() ?>
+    
+    <?php echo $this->partial('partials/meta.phtml') ?>
+    
+    <link rel="shortcut icon" type="image/x-icon" href="<?php echo $this->themeUrlBase;?>images/young/favicon.ico" />
+    
+    <?php if ($this->has('jsonVars')): ?>
+        <script type="text/javascript">
+            <?php echo $this->jsonVars ?>
+        </script>
+    <?php endif; ?>
+
+    <?php if ($this->has('metaDescription')){ ?>
+        <meta name="Description" content="<?php echo $this->metaDescription ?>" />
+    <?php }  ?>
+    <?php if ($this->has('metaKeywords')){ ?>
+        <meta name="Keywords" content="<?php echo $this->metaKeywords ?>" />
+    <?php }  ?>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <!-- ontowiki stylesheets -->
+    <link rel="stylesheet" href="<?php echo $this->themeUrlBase ?>styles/default.css" type="text/css" media="screen" />
+    <!-- link rel="stylesheet" href="<?php echo $this->themeUrlBase ?>styles/legacy.css" type="text/css" media="screen" / -->
+    <link rel="stylesheet" href="<?php echo $this->themeUrlBase ?>styles/clickmenu.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="<?php echo $this->themeUrlBase ?>styles/jquery-ui.css" type="text/css" media="screen" />
+
+    <?php if (defined('_OWDEBUG')): ?>
+    <!-- developer styles, e.g. for deprecated and legacy gui elements -->
+    <link rel="stylesheet" href="<?php echo $this->themeUrlBase ?>styles/default.dev.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="<?php echo $this->themeUrlBase ?>styles/deprecated.dev.css" type="text/css" media="screen" />
+    <!-- link rel="stylesheet" href="<?php echo $this->themeUrlBase ?>styles/legacy.dev.css" type="text/css" media="screen" / -->
+    <?php endif; ?>
+    
+    <!-- IE conditional stylesheets -->
+    <!--[if IE 7]><link rel="stylesheet" media="screen" href="<?php echo $this->themeUrlBase ?>styles/default.ie7.css" /><![endif]-->
+    
+    <!-- dynamic styles -->
+    <?php echo $this->headStyle() ?>
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="<?php echo $this->themeUrlBase ?>scripts/libraries/jquery.js"></script>
+    <script type="text/javascript" src="<?php echo $this->themeUrlBase ?>scripts/libraries/jquery-ui.js"></script>
+    
+    <!-- included js libraries -->
+    <script type="text/javascript" src="<?php echo $this->themeUrlBase ?>scripts/libraries/jquery.json.js"></script>
+    <script type="text/javascript" src="<?php echo $this->themeUrlBase ?>scripts/libraries/jquery.livequery.js"></script>
+    <script type="text/javascript" src="<?php echo $this->themeUrlBase ?>scripts/libraries/jquery.clickmenu.js"></script>
+    <script type="text/javascript" src="<?php echo $this->themeUrlBase ?>scripts/libraries/jquery.simplemodal.js"></script>
+    <script type="text/javascript" src="<?php echo $this->themeUrlBase ?>scripts/libraries/jquery.tablesorter.js"></script>
+
+    <!-- RDFa widgets -->
+    <!--script type="text/javascript" id="RDFauthorScript" src="<?php echo $this->libraryUrlBase ?>RDFauthor/src/rdfauthor.js"></script-->
+    
+    <!-- ontowiki js -->
+    <script type="text/javascript" src="<?php echo $this->themeUrlBase ?>scripts/main.js"></script>
+    <script type="text/javascript" src="<?php echo $this->themeUrlBase ?>scripts/support.js"></script>
+    <script type="text/javascript" src="<?php echo $this->themeUrlBase ?>scripts/jquery.ontowiki.js"></script>
+    
+    <!-- dynamic js -->
+    <?php echo $this->headScript() ?>
+    
+</head>
+
+<body class="javascript-off" xmlns:update="http://ns.aksw.org/update/">
+    
+    <script type="text/javascript">
+        // get body element
+        var body = document.body;
+        var bodyClass = body.className;
+        // set javascript = on
+        bodyClass = bodyClass.replace(/javascript-off/g, "javascript-on");
+        // set application in processing state
+        bodyClass = bodyClass + " is-processing";
+        // process changes
+        body.setAttribute("class", bodyClass, 0);
+    </script>
+    
+    <?php echo $this->inlineScript() ?>
+    
+    <div id="young-header">
+    	<div class="center">
+        
+    		<h1>
+            	<span>Young Lives</span>
+                <a href="http://www.younglives.org.uk" title="">
+                	<img src="<?php echo $this->themeUrlBase ?>images/young/logo.png" alt="" />
+                </a>
+            </h1>
+            <div id="young-header-right">
+                <ul id="nav">
+                    <li><a href="http://www.younglives.org.uk/who-we-are">Who we are</a></li>
+                    <li><a href="http://www.younglives.org.uk/what-we-do">What we do</a></li>
+                    <li><a href="http://www.younglives.org.uk/where-we-work">Where we work</a></li>
+                    <li><a href="http://www.younglives.org.uk/our-themes">Our themes</a></li>
+                    <li><a href="http://www.younglives.org.uk/our-publications">Our publications</a></li>
+                </ul>
+            </div>
+         	<div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    
+    <div id="young-content">
+    
+		<div class="center">
+            <div class="section-mainwindows <?php echo $this->placeholder('main.window.additionalclasses') ?>">
+                <div class="window<?php echo (OntoWiki_Navigation::isDisabled() ? '' : ' tabbed') ?>">
+                    <?php
+                        /**
+                         * @trigger onDisplayMainWindowTitle
+                         */
+                        require_once 'Erfurt/Event.php';
+                        $event = new Erfurt_Event('onDisplayMainWindowTitle');
+                        $event->setDefault($this->placeholder('main.window.title'));
+                        $title = $event->trigger();
+                    ?>
+                    <h1 class="title"><?php echo $title ?></h1>
+                    <div class="slidehelper">
+                        <?php if (isset($this->preTabsContent)): ?>
+                            <div id="pre_tabs_content">
+                                <?php echo $this->preTabsContent; ?>
+                            </div>
+                        <?php endif; ?>
+                        <?php echo $this->partial('partials/navigation.phtml', array('navigation' => OntoWiki_Navigation::toArray())) ?>
+                        
+                        <?php if ($this->has('main.window.innerwindows')): ?>
+                            <div class="content has-innerwindows">
+                                <?php if ($this->has('formActionUrl') and $this->has('formMethod')): ?>
+                                    <form action="<?php echo $this->formActionUrl ?>" 
+                                          method="<?php echo $this->formMethod ?>" 
+                                          <?php if ($this->has('formName')) echo 'name="' . $this->formName . '"' ?> 
+                                          <?php if ($this->has('formId')) echo 'id="' . $this->formId . '"' ?> 
+                                          <?php if ($this->has('formEncoding')) echo 'enctype="' . $this->formEncoding . '"' ?> 
+                                          <?php if ($this->has('formClass')) echo 'class="' . $this->formClass . '"' ?>>
+                                          <?php if ($this->has('redirectUrl')): ?>
+                                              <input type="hidden" name="redirect" value="<?php echo $this->redirectUrl ?>"/>
+                                          <?php endif; ?>
+                                <?php endif;?>
+                                
+                                <?php if ($this->has('main.window.toolbar')): ?>
+                                    <div class="messagebox"><?php echo $this->placeholder('main.window.toolbar') ?></div>
+                                <?php endif; ?>
+        
+                                <div class="innercontent">                                
+                                    <?php foreach (OntoWiki::getInstance()->drawMessages() as $message): ?>
+                                        <?php echo $this->partial('partials/message.phtml', array('message' => $message)) ?>
+                                    <?php endforeach; ?>
+                                        
+                                    <?php echo $this->layout()->content ?>
+                                </div><!-- .innercontent -->
+        
+                                <div class="innerwindows">
+                                    <?php echo $this->placeholder('main.window.innerwindows') ?>
+                                </div><!-- .innerwindows -->
+        
+                                <?php if ($this->has('formActionUrl')): ?>
+                                    </form>
+                                <?php endif;?>
+                            </div><!-- .content .has-innerwindows -->
+                        <?php else: ?>
+                            <div class="content">
+                                <?php if ($this->has('formActionUrl') and $this->has('formMethod')): ?>
+                                    <form action="<?php echo $this->formActionUrl ?>" 
+                                          method="<?php echo $this->formMethod ?>" 
+                                          <?php if ($this->has('formName')) echo 'name="' . $this->formName . '"' ?>
+                                          <?php if ($this->has('formEncoding')) echo 'enctype="' . $this->formEncoding . '"' ?> 
+                                          <?php if ($this->has('formClass')) echo 'class="' . $this->formClass . '"' ?>>
+                                <?php endif;?>
+                                
+                                <?php if ($this->has('main.window.toolbar')): ?>
+                                    <div class="messagebox"><?php echo $this->placeholder('main.window.toolbar') ?></div>
+                                <?php endif; ?>
+        
+                                <?php foreach (OntoWiki::getInstance()->drawMessages() as $message): ?>
+                                    <?php echo $this->partial('partials/message.phtml', array('message' => $message)) ?>
+                                <?php endforeach; ?>
+                                    
+                                <?php echo $this->layout()->content ?>
+                                <?php if ($this->has('formActionUrl')): ?>
+                                    </form>
+                                <?php endif;?>
+                            </div><!-- .content -->
+                        <?php endif; ?>
+                        
+                        <?php if ($this->has('main.window.menu')): ?>
+                            <ul class="menu">
+                                <?php echo $this->partial('partials/menu.phtml', array('menu' => $this->placeholder('main.window.menu')->getValue())) ?>
+                            </ul>
+                        <?php endif; ?>
+                        
+                        <?php echo $this->partial('partials/statusbar.phtml', array('statusbar' => $this->placeholder('main.window.statusbar'))) ?>
+                    </div><!-- .slidehelper -->
+                </div><!-- .window -->
+            </div><!-- .section-mainwindows -->
+        
+            <div class="section-sidewindows">
+                <?php echo $this->placeholder('main.sidewindows') ?>
+            </div><!-- .section-sidewindows -->
+            <?php if (defined('REQUEST_START')) {
+                $queryCount = OntoWiki::getInstance()->erfurt->getStore()->getQueryCount();
+                $time       = (microtime(true) - REQUEST_START) * 1000;
+            ?><!-- <?php echo sprintf($this->_('Rendered in %1$d ms using %2$d SPARQL queries.'), $time, $queryCount) ?> --><?php } ?>
+            </div>  
+            <div class="clear"></div>      
+		</div>
+    
+    <!-- Footer -->
+    
+    <blockquote>
+    	<p class="center"><span>&#8220;</span>We need to end child poverty in order to break the cycle of poverty.<span>&#8221;</span></p>
+    </blockquote>
+    
+    <div id="young-footer">
+    	<div class="center">
+        
+            <div class="block">
+            	<div class="block-inner">
+                    <h3>What we do</h3>
+                    <p><img src="http://www.younglives.org.uk/young-lives/box1Image" alt="Young Lives" title="Young Lives" height="87" width="222" /></p> 
+                    <p>Discover more about the unique multidisciplinary nature of the Young Lives project and its work&#13;</p>
+                    
+                    <ul class="arrow-list">
+                        <li><a href="http://www.younglives.org.uk/what-we-do/our-policy-work" title="Our policy work">Our policy work</a></li>
+                        <li><a href="http://www.younglives.org.uk/what-we-do/research-methods" title="Research methods">Research methods</a></li>
+                        <li><a href="http://www.younglives.org.uk/what-we-do/access-our-data" title="Access our data">Access our data</a></li>
+                        <li class="last"><a href="http://www.younglives.org.uk/what-we-do/childrens-voices" title="Children's voices">Children's voices</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="block">
+            	<div class="block-inner">
+                    <h3>Where we work</h3>
+                    <p><img src="http://www.younglives.org.uk/young-lives/box2Image" alt="Young Lives" title="Young Lives" height="87" width="222" /></p> 
+                    <p>Find out more about our 4 diverse cultural, geographic, economic and political study contexts </p>
+    
+                    <ul class="arrow-list">
+                        <li><a href="http://www.younglives.org.uk/where-we-work/ethiopia" title="Ethiopia">Ethiopia</a></li>
+                        <li><a href="http://www.younglives.org.uk/where-we-work/india" title="India (Andhra Pradesh)">India (Andhra Pradesh)</a></li>
+                        <li><a href="http://www.younglives.org.uk/where-we-work/peru" title="Peru">Peru</a></li>
+                        <li class="last"><a href="http://www.younglives.org.uk/where-we-work/vietnam" title="Vietnam">Vietnam</a></li>
+                    </ul>
+            	</div>
+            </div>
+            
+            <div class="block">
+            	<div class="block-inner">
+                    <h3>Our themes</h3>
+    
+                    <p><img src="http://www.younglives.org.uk/young-lives/box3Image" alt="Young Lives" title="Young Lives" height="87" width="222" /></p> 
+                    <p>Explore our work by themes that are central to children and young people&#8217;s lives in the modern world</p>
+                    <ul class="arrow-list">
+                        <li><a href="http://www.younglives.org.uk/our-themes/dynamics-of-childhood-poverty" title="Dynamics of childhood poverty">Dynamics of childhood poverty</a></li>
+                        <li><a href="http://www.younglives.org.uk/our-themes/childrens-experiences-of-poverty" title="Children's experiences of poverty">Children's experiences of poverty</a></li>
+                        <li><a href="http://www.younglives.org.uk/our-themes/school-work-time-use" title="Schooling, time-use and life transitions">Schooling, time-use and life transitions</a></li>
+                        <li class="last"><a href="http://www.younglives.org.uk/our-themes/cross-cutting-analysis" title="Cross-cutting analysis">Cross-cutting analysis</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="block last">
+            	<div class="block-inner">
+                <h3>Find out more</h3>
+                    <ul id="young-tools">
+                         <li id="more-news">
+                            <a href="http://www.younglives.org.uk/what-we-do/news-and-events" title="News &amp; Events">
+                                News &amp; Events
+                            </a>
+                        </li> 
+                        <li id="more-newsletter">
+                            <a href="http://www.younglives.org.uk/who-we-are/find-out-more" title="E-newsletter / e-alerts">
+                                E-newsletter / e-alerts
+                            </a>
+        
+                        </li> 
+                        <li id="more-podcasts">
+                            <a href="http://www.younglives.org.uk/who-we-are/find-out-more" title="iTunes U podcasts">
+                                iTunes U podcasts
+                            </a>
+                        </li> 
+                        <li id="more-contact">
+                            <a href="http://www.younglives.org.uk/who-we-are/contact-details" title="Contact us" accesskey="6">
+                                Contact us
+                            </a>
+                        </li> 
+                    </ul>
+                </div>
+            </div>
+            <div class="clear"></div>
+            
+        </div>
+    </div>
+    
+</body>
+</html>

@@ -6,9 +6,27 @@ var attributeModel = "http://localhost/ontowiki/sdmx-attribute";
 var conceptModel   = "http://localhost/ontowiki/sdmx-concept";
 var dimensionModel = "http://localhost/ontowiki/sdmx-dimension";
 
+//some namespaces:
+var yld =  'http://data.younglives.org.uk/data/';
+var ylcs =  'http://data.younglives.org.uk/data/summary/';
+var yls = 'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/';
+var ylcomp =  'http://data.younglives.org.uk/component#';
+var qb = 'http://purl.org/linked-data/cube#';
+var rdf = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
+var rdfs = 'http://www.w3.org/2000/01/rdf-schema#';
+var sdmx_measure = 'http://purl.org/linked-data/sdmx/2009/measures#';
+var sdmx_dimension = 'http://purl.org/linked-data/sdmx/2009/dimension#'; 
+var sdmx_code = 'http://purl.org/linked-data/sdmx/2009/code#';
+var xsd = 'http://www.w3.org/2001/XMLSchema#';
+
+//ontowikis sparql endpoint url
+var sparql_endpoint = 'service/sparql';
+
+var measure = {};
+
 $(document).ready(function () {
     if(typeof isTabular !== "undefined" && isTabular === true ) {return;}
-    
+
     // load RDFa
     var rdf_script = document.createElement( 'script' );
     rdf_script.type = 'text/javascript';
@@ -96,7 +114,7 @@ $(document).ready(function () {
     };
 
     /* vars */
-    var currentColor;
+    var currentColour;
     var currentDimension;
     var selectionMode = 'dimension';
     var datarange = {};
@@ -129,7 +147,7 @@ $(document).ready(function () {
 
             if (!$(this).hasClass('csv-highlighted')) {
                 $(this).data('dimension', null);
-                $(this).css('background-color', currentColor);
+                $(this).css('background-color', currentColour);
                 $(this).addClass('csv-highlighted');
 
                 dimensions[currentDimension]['elements'][URI] = {
@@ -170,7 +188,7 @@ $(document).ready(function () {
                     }
                     
                     $(this).data('dimension', null);
-                    $(this).css('background-color', currentColor);
+                    $(this).css('background-color', currentColour);
                     $(this).addClass('csv-highlighted');
                     $(this).attr("about", currentDimension);
 
@@ -191,7 +209,7 @@ $(document).ready(function () {
                 // dimensions stuff here
                 if (!$(this).hasClass('csv-highlighted')) {
                     $(this).data('dimension', null);
-                    $(this).css('background-color', currentColor);
+                    $(this).css('background-color', currentColour);
                     $(this).addClass('csv-highlighted');
 
                     dimensions[currentDimension]['elements'][URI] = {
@@ -229,12 +247,101 @@ $(document).ready(function () {
 	$('body').append(extract_dialog);
 	$('#import-options').hide();
 
-	//
+	//type of cohort choosing code
+	$('#fixed_cohort').hide();
+	$('#sheet_cohort').hide();
+	$("input[name='cohort_choice']").change( function () {
+		if ($("input[name='cohort_choice']:checked").val() === 'fixed') {
+			$('#fixed_cohort').show(1500);
+			$('#sheet_cohort').hide(1500);
+		} else {
+			$('#fixed_cohort').hide(1500);
+			$('#sheet_cohort').show(1500);
+		}
+	});
+	//cohort from sheet button
+	//TODO
+
+	//load all measures and dimensions
+	var existing_dimensions = [];
+	var existing_measures = [];
+	sparql_q = $.sparql(sparql_endpoint)
+			.prefix('qb', qb)
+			.prefix('rdfs', rdfs)
+			.select(['?measure', '?label'])
+				.where('?measure', 'a', 'qb:MeasureProperty')
+				.where('?measure', 'rdfs:label', '?label');
+	sparql_q.execute(set_measures);
+	function set_measures (measures_data)  {
+		if (measures_data) {
+			existing_measures = measures_data;
+			//add the measures to the exisiting measures select
+			for (var a_measure in existing_measures) {
+				if (existing_measures.hasOwnProperty(a_measure)) {
+					$('#existing_measure_select').append('<option value="' + existing_measures[a_measure]['measure']['value'] + '">' + existing_measures[a_measure]['label']['value'] + '</option>')
+				}
+			}
+		}
+	} 
+	
+	var sparql_q = $.sparql(sparql_endpoint)
+			.prefix('qb', qb)
+			.prefix('rdfs', rdfs)
+			.select(['?dim', '?label'])
+				.where('?dim', 'a', 'qb:DimensionProperty')
+				.where('?dim', 'rdfs:label', '?label');
+	sparql_q.execute(set_dims);
+	function set_dims (dims_data)  {
+		if (dims_data) {
+			existing_dimensions = dims_data;
+		}
+	} 
+	$('#measure_container').hide();
+	$('#existing_measure').hide();
+	$('#new_measure').hide();
+	/*
+	Add Measure button
+	*/
+	$('#btn-add-measure').click(function () {
+		$('#measure_container').show(1500);
+	});
+	$("input[name='measure_choice_neon']").change( function () {
+		if ($("input[name='measure_choice_neon']:checked").val() === 'existing') {
+			$('#existing_measure').show(1500);
+			$('#new_measure').hide(1500);
+		} else {
+			$('#existing_measure').hide(1500);
+			$('#new_measure').show(1500);
+		}
+	});
+
+
+	/*new dimension stuff
+
+	*/
+	$('#btn_dim_cohort').click(function () {
+		
+		//thing needed to make existing code work for us
+		currentColour = _getColor();
+		$('#sheet_cohort').css('background-color', currentColour);
+		selectionMode == 'dimension';
+		var dimensionInfo = {
+			color:currentColour,
+			label: 'cohort',
+			elements: {}
+       		};
+		currentDimension = 'cohort';
+		dimensions['cohort'] = dimensionInfo;
+	});
+
+	$('#btn-add-dimension').click(function () {
+
+	});
 
 
     /*
      *  DIMENSIONS STUFF
-     */
+     
     $('#btn-add-dimension').click(function () {
         var name = prompt('Dimension name:');
         if ( typeof name === 'undefined' || name.length < 1) {return;}
@@ -248,8 +355,8 @@ $(document).ready(function () {
         var dimensionURI = _getURI(name);
         dimensions[dimensionURI] = dimensionInfo;
         currentDimension = dimensionURI;
-        currentColor = dimensionInfo.color;
-        var htmlText = '<tr style="background-color:' + currentColor + '"><td name="'+name+'">' + name; 
+        currentColour = dimensionInfo.color;
+        var htmlText = '<tr style="background-color:' + currentColour + '"><td name="'+name+'">' + name; 
         htmlText += '<br/><sub>subPropertyOf:</sub><span id="dim_'+eid+'_0"></span>'+
                     '<sub>concept:</sub><span id="dim_'+eid+'_1"></span>';
         htmlText += '</td></tr>';
@@ -285,7 +392,7 @@ $(document).ready(function () {
         _propertySelector = new ObjectSelector(conceptModel, _subjectURI, "http://purl.org/linked-data/cube#concept", selectorOptions);
         _propertySelector.presentInContainer();
         
-    });
+    });*/
     
     $('#csvimport-dimensions tr').live('click', function () {
         var name = $(this).children('td').eq(0).attr("name");
@@ -297,7 +404,7 @@ $(document).ready(function () {
 
         var dimInfo = dimensions[URI];        
         currentDimension = URI;        
-        currentColor = dimInfo.color;        
+        currentColour = dimInfo.color;        
     });
 
     $('#csvimport-dimensions tr').live('dblclick', function () {
@@ -345,8 +452,8 @@ $(document).ready(function () {
         var attributeURI = _getURI(name);
         dimensions[attributeURI] = attributeInfo;
         currentDimension = attributeURI;
-        currentColor = attributeInfo.color;
-        var htmlText = '<tr style="background-color:' + currentColor + '"><td name="'+name+'">' + name; 
+        currentColour = attributeInfo.color;
+        var htmlText = '<tr style="background-color:' + currentColour + '"><td name="'+name+'">' + name; 
         htmlText += '<br/><sub>attribute:</sub><span id="attr_'+eid+'_0"></span>';
         htmlText += '</td></tr>';
         var tr = $(htmlText).data('attribute', name);
@@ -381,7 +488,7 @@ $(document).ready(function () {
 
         var dimInfo = dimensions[URI];        
         currentDimension = URI;        
-        currentColor = dimInfo.color;        
+        currentColour = dimInfo.color;        
     });
 
     $('#csvimport-attributes tr').live('dblclick', function () {
@@ -448,19 +555,8 @@ $(document).ready(function () {
 	ad this change to the buildout somenow
 	
 	*/
-	
-		//some namespaces:
-		var yld =  'http://data.younglives.org.uk/data/';
-		var ylcs =  'http://data.younglives.org.uk/data/summary/';
-		var yls = 'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/';
-		var ylcomp =  'http://data.younglives.org.uk/component#';
-		var qb = 'http://purl.org/linked-data/cube#';
-		var rdf = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
-		var rdfs = 'http://www.w3.org/2000/01/rdf-schema#';
-		var sdmx_measure = 'http://purl.org/linked-data/sdmx/2009/measures#';
-		var sdmx_dimension = 'http://purl.org/linked-data/sdmx/2009/dimension#'; 
-		var sdmx_code = 'http://purl.org/linked-data/sdmx/2009/code#';
-		var xsd = 'http://www.w3.org/2001/XMLSchema#';
+
+		
 		
 		/**
 		* generate a random (type 4) uuid
@@ -596,12 +692,14 @@ $(document).ready(function () {
 		dsd[ylcs + dsd_name][qb + "ComponentProperty"] = dsd_components;
 	
 	
-		//TODO PROMPT USER FOR THESE VALUES
-		var yl_country = ['Ethiopia', 'India', 'Peru', 'Vietnam'][1];
-		var yl_round = ['RoundOne', 'RoundTwo', 'RoundThree', 'RoundFour', 'RoundFive'][2];
-		
-		//now we can make a dataset name
-		//var dataset_name = yl_country + '_' + yl_round;
+		//PROMPT USER FOR THESE VALUES
+		//var yl_country = ['Ethiopia', 'India', 'Peru', 'Vietnam'][1];
+		var yl_country = $('#select_country').val().uncapitalize();
+
+		//var yl_round = ['RoundOne', 'RoundTwo', 'RoundThree', 'RoundFour', 'RoundFive'][2];
+		var yl_round = $('#select_round').val().uncapitalize();		
+
+
 		//new plan
 		var dataset_name = 'dataset-' + uuid();
 	
@@ -737,14 +835,35 @@ $(document).ready(function () {
 	so we will start with making a data struct that reflects the user input then we will parse it to make our triples
 	*/
 		var dimensions_raw = {};
-		
 		//all to be set fron ui
-		top_left = make_point('1','3');
-		bottom_right = make_point('2','20');
+		top_left = make_point(datarange['start']['col'],datarange['start']['row']);
+		bottom_right = make_point(datarange['end']['col'],datarange['end']['row']);
+
+		//if fixed cohort is being used set it's value
+		if ($("input[name='cohort_choice']:checked").val() === 'fixed') {
+			dimensions_raw['Cohort'] = {};
+			var cohort_dim_object = {};
+			cohort_dim_object[$("input[name='which_cohort']:checked").val()] =  get_coords(top_left, bottom_right);
+			dimensions_raw['Cohort']['values'] = [cohort_dim_object];	
+		}
+		//add values for country and round in a similar fashion
+		dimensions_raw['Country'] = {};
+		var country_dim_object = {};
+		country_dim_object[$('#select_country').val()] =  get_coords(top_left, bottom_right);
+		dimensions_raw['Country']['values'] = [country_dim_object];
+		dimensions_raw['Round'] = {};
+		var round_dim_object = {};
+		round_dim_object[$('#select_round').val()] =  get_coords(top_left, bottom_right);
+		dimensions_raw['Round']['values'] = [round_dim_object];
+		
+		/*this should make something like this
 		dimensions_raw['Cohort'] = {'values' : [{'YC' : get_coords(make_point('1','3'), make_point('1','20'))}, 
 						{'OC' : get_coords(make_point('2','3'), make_point('2','20'))}]};
 		dimensions_raw['Country'] = {'values' : [{'India' : get_coords(make_point('1','3'), make_point('2','20'))}]};
 		dimensions_raw['Round'] = {'values' : [{'roundThree' : get_coords(make_point('1','3'), make_point('2','20'))}]};
+		*/
+
+
 		//TODO work out how to handle number strings, do we do this with user input or just set them if they parseInt? (this is bad for year dates eg 2011, but easy)
 		//TODO current plan uses the make_rdf_object() function which return a uri object for strings, boolean literal for true/false strings or interger for integer strings, it cannot handle dates. 
 		//TODO and IMPORTANT
@@ -892,13 +1011,11 @@ $(document).ready(function () {
 	
 	
 		
-		//TODO check on the dsd, add code here
 		//var sparql_endpoint = 'http://neil/~neil/IKMLinkedResearch/build/service/sparql';
 		var sparql_endpoint = 'service/sparql';
 		
 		//build sparql to return the dsd's and thier labels that match the dimensions we use
-	//TODO
-	//DOING
+	
 		var sparql_q = $.sparql(sparql_endpoint)
 			.prefix('ylcomp', ylcomp)
 			.prefix('qb', qb)
