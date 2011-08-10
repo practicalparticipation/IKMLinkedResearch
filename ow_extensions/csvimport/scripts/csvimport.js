@@ -1,4 +1,4 @@
-var dimensions = {};
+var dimensions_sheet = {};
 var uribase = '';
 
 // RDFa
@@ -23,6 +23,16 @@ var xsd = 'http://www.w3.org/2001/XMLSchema#';
 var sparql_endpoint = 'service/sparql';
 
 var measure = {};
+var dimcount = 0;
+
+//helpful functionality
+String.prototype.capitalize = function() {
+	return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
+String.prototype.uncapitalize = function() {
+	return this.charAt(0).toLowerCase() + this.slice(1);
+};
 
 $(document).ready(function () {
     if(typeof isTabular !== "undefined" && isTabular === true ) {return;}
@@ -150,7 +160,7 @@ $(document).ready(function () {
                 $(this).css('background-color', currentColour);
                 $(this).addClass('csv-highlighted');
 
-                dimensions[currentDimension]['elements'][URI] = {
+                dimensions_sheet[currentDimension]['elements'][URI] = {
                     'row': row,
                     'col': col,
                     'label': $.trim($(this).text())
@@ -161,7 +171,7 @@ $(document).ready(function () {
                 $(this).removeClass('csv-highlighted');
 
                 // undefine
-                delete dimensions[currentDimension]['elements'][URI];
+                delete dimensions_sheet[currentDimension]['elements'][URI];
             }
         });
     });
@@ -175,16 +185,16 @@ $(document).ready(function () {
 
         if (selectionMode === 'dimension') {
             
-            if ( dimensions[currentDimension].attribute ){
+            if ( dimensions_sheet[currentDimension].attribute ){
                 // attributes stuff here
                 if (!$(this).hasClass('csv-highlighted')) {
-                    if(dimensions[currentDimension].selected){
+                    if(dimensions_sheet[currentDimension].selected){
                         // clear old stuff
                         $('td[about='+currentDimension+']').data('dimension', currentDimension);
                         $('td[about='+currentDimension+']').css('background-color', 'transparent');
                         $('td[about='+currentDimension+']').removeClass('csv-highlighted');
-                        dimensions[currentDimension].value = '';
-                        dimensions[currentDimension].selected = false;
+                        dimensions_sheet[currentDimension].value = '';
+                        dimensions_sheet[currentDimension].selected = false;
                     }
                     
                     $(this).data('dimension', null);
@@ -192,18 +202,18 @@ $(document).ready(function () {
                     $(this).addClass('csv-highlighted');
                     $(this).attr("about", currentDimension);
 
-                    dimensions[currentDimension].row = row;
-                    dimensions[currentDimension].col = col;
-                    dimensions[currentDimension].value = $.trim($(this).text());
-                    dimensions[currentDimension].selected = true;
+                    dimensions_sheet[currentDimension].row = row;
+                    dimensions_sheet[currentDimension].col = col;
+                    dimensions_sheet[currentDimension].value = $.trim($(this).text());
+                    dimensions_sheet[currentDimension].selected = true;
                 } else {
                     $(this).data('dimension', currentDimension);
                     $(this).css('background-color', 'transparent');
                     $(this).removeClass('csv-highlighted');
 
                     // undefine
-                    dimensions[currentDimension].value = '';
-                    dimensions[currentDimension].selected = false;
+                    dimensions_sheet[currentDimension].value = '';
+                    dimensions_sheet[currentDimension].selected = false;
                 }
             } else { 
                 // dimensions stuff here
@@ -212,7 +222,7 @@ $(document).ready(function () {
                     $(this).css('background-color', currentColour);
                     $(this).addClass('csv-highlighted');
 
-                    dimensions[currentDimension]['elements'][URI] = {
+                    dimensions_sheet[currentDimension]['elements'][URI] = {
                         'row': row,
                         'col': col,
                         'label': $.trim($(this).text())
@@ -223,7 +233,7 @@ $(document).ready(function () {
                     $(this).removeClass('csv-highlighted');
 
                     // undefine
-                    delete dimensions[currentDimension]['elements'][URI];
+                    delete dimensions_sheet[currentDimension]['elements'][URI];
                 }
             }
         } else {
@@ -242,7 +252,7 @@ $(document).ready(function () {
         }
     });
 	//add the extract triples dialog to the page and hide
-	var extract_dialog = '<div id="import-options" style="width:400px;height:350px;padding:5px;align:center;background:white;position:absolute;left:40%;top:30%;border: 1px solid #900; overflow: auto;"><div style="width:100%; text-align: right;"><a href="#" onclick="return false;" id="close-results">[x]</a></div><div id="extract_dialog" style="vertical-align: middle; overflow: auto;"><b>Import options.</b><br/><input type="text" id="template_name" value="Template Name" /><br/><input type="button" id="save_template_btn" value="Save Template" onclick="" /><br/></div><div id="dsd_stuff"><label for="dsd_label">Enter label text for dsd:</label><input id="dsd_label_input" type="Text" name="dsd_label"/><br/>	<input type="button" id="extract_triples_btn" value="Extract triples" onclick="" /></div></div>';
+	var extract_dialog = '<div id="import-options" style="width:400px;height:350px;padding:5px;align:center;background:white;position:absolute;left:40%;top:30%;border: 1px solid #900; overflow: auto;"><div style="width:100%; text-align: right;"><a href="#" onclick="return false;" id="close-results">[x]</a></div><div id="extract_dialog" style="vertical-align: middle; overflow: auto;"><b>Import options.</b><br/><input type="text" id="template_name" value="Template Name" /><br/><input type="button" id="save_template_btn" value="Save Template" onclick="" /><br/></div><div id="dsd_stuff"><label for="dsd_label">Enter label text for dsd:</label><input id="dsd_label_input" type="Text" name="dsd_label"/><br/><input type="button" id="extract_triples_btn" value="Extract triples" onclick="" /></div></div>';
 	
 	$('body').append(extract_dialog);
 	$('#import-options').hide();
@@ -331,11 +341,39 @@ $(document).ready(function () {
 			elements: {}
        		};
 		currentDimension = 'cohort';
-		dimensions['cohort'] = dimensionInfo;
+		dimensions_sheet['cohort'] = dimensionInfo;
 	});
 
 	$('#btn-add-dimension').click(function () {
-
+		//add html for a new dimension to page
+		//get container sheet_dimensions into which new dimensions will go.
+		dimcount += 1;
+		var dimension_html = '<div id="sheet_dim_' + dimcount +
+		  '"><fieldset class="dimension"><span class="uri">http://data.younglives.org.uk/component#</span><input type="text" value="" name="sheet_dimension_input_' + dimcount +
+		  '" /><br /><label for="sheet_dimension_label_' + dimcount +
+		  '">Dimension label:</label><input type="text" name="sheet_dimension_label_' + dimcount +
+		  '" id="sheet_dimension_label_' + dimcount +
+		  '" value=""/><a class="button" id="btn_sheet_dimension_select_' + dimcount +	
+		  '"><img src="extensions/themes/silverblue/images/icon-add.png"/><span>&nbsp;Select Sheet Values</span></a></span></fieldset></div>';
+		$('#sheet_dimensions').append(dimension_html);
+		//attach dimcount to the element
+		$('#btn_sheet_dimension_select_' + dimcount).data('dimcount', dimcount);
+		//add the click handler
+		$('#btn_sheet_dimension_select_' + dimcount).click(function () {	
+			//thing needed to make existing code work for us
+			var this_dim_is = $(this).data()['dimcount'];
+			currentColour = _getColor();
+			$('#sheet_dim_' + this_dim_is).css('background-color', currentColour);
+			selectionMode == 'dimension';
+			var dimensionInfo = {
+				color:currentColour,
+				label: $("input[name='sheet_dimension_label_" + this_dim_is + "']").val(),
+				elements: {}
+			};
+			currentDimension = $("input[name='sheet_dimension_input_" + this_dim_is + "']").val().uncapitalize();
+			dimensions_sheet[currentDimension] = dimensionInfo;
+		});
+		
 	});
 
 
@@ -402,7 +440,7 @@ $(document).ready(function () {
             URI = _getURI(name);
         }
 
-        var dimInfo = dimensions[URI];        
+        var dimInfo = dimensions_sheet[URI];        
         currentDimension = URI;        
         currentColour = dimInfo.color;        
     });
@@ -414,10 +452,10 @@ $(document).ready(function () {
         if ( typeof newName === 'undefined' || newName.length < 1) {return;}
         var newURI = _getURI(newName);
 
-        var dimInfo = dimensions[URI];
+        var dimInfo = dimensions_sheet[URI];
         dimInfo.label = $.trim(newName);
-        dimensions[newURI] = dimInfo;
-        delete dimensions[URI];
+        dimensions_sheet[newURI] = dimInfo;
+        delete dimensions_sheet[URI];
         $(this).children('td').eq(0).html( $(this).children('td').eq(0).html().replace(name,newName) );
         $(this).children('td').eq(0).attr("name",newName);
     });
@@ -433,7 +471,7 @@ $(document).ready(function () {
     
     /*
      * ATTRIBUTES STUFF 
-     */
+     
     $('#btn-attribute').live('click', function () {        
         var name = prompt('Attribute name:');
         if ( typeof name === 'undefined' || name.length < 1) {return;}
@@ -450,7 +488,7 @@ $(document).ready(function () {
             uri: ''
         };
         var attributeURI = _getURI(name);
-        dimensions[attributeURI] = attributeInfo;
+        dimensions_sheet[attributeURI] = attributeInfo;
         currentDimension = attributeURI;
         currentColour = attributeInfo.color;
         var htmlText = '<tr style="background-color:' + currentColour + '"><td name="'+name+'">' + name; 
@@ -468,7 +506,7 @@ $(document).ready(function () {
             filterDomain: false,
             selectionCallback: function (uri, label) {
                 $("input", input0).val(uri);
-                dimensions[attributeURI].uri = uri;
+                dimensions_sheet[attributeURI].uri = uri;
             }
         };
         // FIXME: title hack        
@@ -476,7 +514,7 @@ $(document).ready(function () {
         _propertySelector.presentInContainer();
         
         
-    });
+    });*/
     
     $('#csvimport-attributes tr').live('click', function () {
         var name = $(this).children('td').eq(0).attr("name");
@@ -486,7 +524,7 @@ $(document).ready(function () {
             URI = _getURI(name);
         }
 
-        var dimInfo = dimensions[URI];        
+        var dimInfo = dimensions_sheet[URI];        
         currentDimension = URI;        
         currentColour = dimInfo.color;        
     });
@@ -498,10 +536,10 @@ $(document).ready(function () {
         if ( typeof newName === 'undefined' || newName.length < 1) {return;}
         var newURI = _getURI(newName);
 
-        var dimInfo = dimensions[URI];
+        var dimInfo = dimensions_sheet[URI];
         dimInfo.label = $.trim(newName);
-        dimensions[newURI] = dimInfo;
-        delete dimensions[URI];
+        dimensions_sheet[newURI] = dimInfo;
+        delete dimensions_sheet[URI];
         $(this).children('td').eq(0).html( $(this).children('td').eq(0).html().replace(name,newName) );
         $(this).children('td').eq(0).attr("name",newName);
     });
@@ -569,14 +607,7 @@ $(document).ready(function () {
 		});
 		};
 		
-		//helpful functionality
-		String.prototype.capitalize = function() {
-			return this.charAt(0).toUpperCase() + this.slice(1);
-		};
-	
-		String.prototype.uncapitalize = function() {
-			return this.charAt(0).toLowerCase() + this.slice(1);
-		};
+		
 	
 		Array.prototype.getUniquePoints = function () {
 			var a = [];
@@ -835,17 +866,37 @@ $(document).ready(function () {
 	so we will start with making a data struct that reflects the user input then we will parse it to make our triples
 	*/
 		var dimensions_raw = {};
+		
 		//all to be set fron ui
+		if (!datarange['start']) {
+				alert('set data range, then try again.');
+				return;
+			}
 		top_left = make_point(datarange['start']['col'],datarange['start']['row']);
 		bottom_right = make_point(datarange['end']['col'],datarange['end']['row']);
-
+		var cohort_dim_object = {};
+		dimensions_raw['Cohort'] = {};
 		//if fixed cohort is being used set it's value
 		if ($("input[name='cohort_choice']:checked").val() === 'fixed') {
-			dimensions_raw['Cohort'] = {};
-			var cohort_dim_object = {};
 			cohort_dim_object[$("input[name='which_cohort']:checked").val()] =  get_coords(top_left, bottom_right);
-			dimensions_raw['Cohort']['values'] = [cohort_dim_object];	
+		} else {
+			
+			//collect values from the dimensions object where they should be
+			if (!dimensions_sheet['cohort']) {
+				alert('set cohort values, then try again.');
+				return;
+			}
+			for (var cohort_ele in dimensions_sheet['cohort']['elements']) {
+				if (dimensions_sheet['cohort']['elements'].hasOwnProperty(cohort_ele)) {
+					if (!cohort_dim_object[dimensions_sheet['cohort']['elements'][cohort_ele]['label']]) {
+						cohort_dim_object[dimensions_sheet['cohort']['elements'][cohort_ele]['label']] = [make_point(dimensions_sheet['cohort']['elements'][cohort_ele]['col'], dimensions_sheet['cohort']['elements'][cohort_ele]['row'])];
+					} else {
+						cohort_dim_object[dimensions_sheet['cohort']['elements'][cohort_ele]['label']].push(make_point(dimensions_sheet['cohort']['elements'][cohort_ele]['col'], dimensions_sheet['cohort']['elements'][cohort_ele]['row']));
+					}
+				}
+			}
 		}
+		dimensions_raw['Cohort']['values'] = [cohort_dim_object];	
 		//add values for country and round in a similar fashion
 		dimensions_raw['Country'] = {};
 		var country_dim_object = {};
@@ -870,10 +921,34 @@ $(document).ready(function () {
 		//all values from the speadsheet that are going to become uri's must have all spaces removed and replaced with something safe
 		//my current best suggestion is to replace all spaces with underscores, utf-8 chars like ħħ ß work just fine, and ;' too
 		//neil thinks this is a limitaion of ontowiki, he has tried to send spaces and %20 both of which fail
+
+		//ok we begin by looking at the dimensions_sheet and basicalyy doing the same as we did for the cohort above
+
+		for (var sheet_dim in dimensions_sheet) {
+			if (dimensions_sheet.hasOwnProperty(sheet_dim) && sheet_dim !== 'cohort')  {
+				for (var dim_ele in dimensions_sheet[sheet_dim]['elements']) {
+					if (dimensions_sheet[sheet_dim]['elements'].hasOwnProperty(dim_ele)) {
+						var _dim_object = {};
+						 _dim_object['values'] = [];
+						if (!_dim_object[dimensions_sheet[sheet_dim]['elements'][dim_ele]['label']]) {
+							_dim_object[dimensions_sheet[sheet_dim]['elements'][dim_ele]['label']] = {};
+							_dim_object[dimensions_sheet[sheet_dim]['elements'][dim_ele]['label']]['values'] = [make_point(dimensions_sheet[sheet_dim]['elements'][dim_ele]['col'], dimensions_sheet[sheet_dim]['elements'][dim_ele]['row'])];
+						} else {
+							_dim_object[dimensions_sheet[sheet_dim]['elements'][dim_ele]['label']]['values'].push(make_point(dimensions_sheet[sheet_dim]['elements'][dim_ele]['col'], dimensions_sheet[sheet_dim]['elements'][dim_ele]['row']));
+						}
+						_dim_object[dimensions_sheet[sheet_dim]['elements'][dim_ele]['label']]['dimension_uri']  = dimensions_sheet[sheet_dim]['elements'][dim_ele]['label'];
+						_dim_object[dimensions_sheet[sheet_dim]['elements'][dim_ele]['label']]['dim_label'] = dimensions_sheet[sheet_dim]['label'];
+					}
+					dimensions_raw[sheet_dim] = _dim_object;
+				}
+			}
+		}
+
+		/*
 		dimensions_raw['SampleSize'] = {'dimension_uri' : 'SampleSize',
 						'dim_label' : 'sample size label',
 						'values' : [{'1930' : get_coords(make_point('1','3'), make_point('1','20'))}, 
-						{'976' : get_coords(make_point('2','3'), make_point('2','20'))}]}; 
+							    {'976' : get_coords(make_point('2','3'), make_point('2','20'))}]}; 
 		dimensions_raw['Gender'] = {'dimension_uri' : 'Gender',
 					'dim_label' : 'gender label',
 					'values' : [{'Male' : get_coords(top_left, bottom_right, make_point('0','3'))}, 
@@ -894,6 +969,7 @@ $(document).ready(function () {
 					'values' : [{'Coastal_andhra' : get_coords(top_left, bottom_right, make_point('0','11'))}, 
 							{'Rayalseema' : get_coords(top_left, bottom_right, make_point('0','12'))},
 							{'Telangana' : get_coords(top_left, bottom_right, make_point('0','13'))}]};
+		*/
 	//end set from ui
 	/*
 	ok now the fun bit, lets parse the dimensions_raw object
@@ -1163,23 +1239,23 @@ function useCSVConfiguration(config) {
     dimensions = $.evalJSON(config);
     
     uribase = '0';
-    if( typeof dimensions["uribase"] === "undefined" || dimensions["uribase"].length < 1 ){ 
+    if( typeof dimensions_sheet["uribase"] === "undefined" || dimensions_sheet["uribase"].length < 1 ){ 
         uribase = RDFAUTHOR_DEFAULT_GRAPH + '/' + salt + '/';
     }else{
-        uribase = dimensions["uribase"];
+        uribase = dimensions_sheet["uribase"];
     }
     $("#uribase").val(uribase);
     var dimA;
-    for (dimA in dimensions) {
-	if (dimensions.hasOwnProperty(dimA)) {
+    for (dimA in dimensions_sheet) {
+	if (dimensions_sheet.hasOwnProperty(dimA)) {
 		if(dimA !== 'uribase'){
-			if( typeof dimensions[dimA].attribute !== 'undefined' && dimensions[dimA].attribute === true ){
-				//console.log(dimensions[dim]);
-				appendAttribute(dimA, dimensions[dimA].label, dimensions[dimA].color, dimensions[dimA].uri);
-				drawAttribute(dimensions[dimA].row, dimensions[dimA].col, dimensions[dimA].color);
+			if( typeof dimensions_sheet[dimA].attribute !== 'undefined' && dimensions_sheet[dimA].attribute === true ){
+				//console.log(dimensions_sheet[dim]);
+				appendAttribute(dimA, dimensions_sheet[dimA].label, dimensions_sheet[dimA].color, dimensions_sheet[dimA].uri);
+				drawAttribute(dimensions_sheet[dimA].row, dimensions_sheet[dimA].col, dimensions_sheet[dimA].color);
 			}else{
-				appendDimension(dimA, dimensions[dimA].label, dimensions[dimA].color, dimensions[dimA].subproperty, dimensions[dimA].concept);
-				drawElements(dimensions[dimA].elements, dimensions[dimA].color);
+				appendDimension(dimA, dimensions_sheet[dimA].label, dimensions_sheet[dimA].color, dimensions_sheet[dimA].subproperty, dimensions_sheet[dimA].concept);
+				drawElements(dimensions_sheet[dimA].elements, dimensions_sheet[dimA].color);
 			}
 		}
 	}
@@ -1206,7 +1282,7 @@ function appendDimension(dim, label, color, subproperty, concept){
         filterDomain: false,
         selectionCallback: function (uri, label) {
             $("input", input0).val(uri);
-            dimensions[dimensionURI].subproperty = uri;
+            dimensions_sheet[dimensionURI].subproperty = uri;
         }
     };
     // FIXME: title hack        
@@ -1222,7 +1298,7 @@ function appendDimension(dim, label, color, subproperty, concept){
         filterDomain: false,
         selectionCallback: function (uri, label) {
             $("input", input1).val(uri);
-            dimensions[dimensionURI].concept = uri;
+            dimensions_sheet[dimensionURI].concept = uri;
         }
     };
     _propertySelector = new ObjectSelector(conceptModel, _subjectURI, "http://purl.org/linked-data/cube#concept", selectorOptions);
@@ -1249,7 +1325,7 @@ function appendAttribute(dim, label, color, uri){
         filterDomain: false,
         selectionCallback: function (uri, label) {
             $("input", input0).val(uri);
-            dimensions[attributeURI].uri = uri;
+            dimensions_sheet[attributeURI].uri = uri;
         }
     };
     // FIXME: title hack
