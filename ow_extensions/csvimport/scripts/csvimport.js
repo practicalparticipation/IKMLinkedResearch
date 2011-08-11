@@ -24,6 +24,7 @@ var sparql_endpoint = 'service/sparql';
 
 var measure = {};
 var dimcount = 0;
+var existing_dimensions = {};
 
 //helpful functionality
 String.prototype.capitalize = function() {
@@ -273,7 +274,6 @@ $(document).ready(function () {
 	//TODO
 
 	//load all measures and dimensions
-	var existing_dimensions = [];
 	var existing_measures = [];
 	sparql_q = $.sparql(sparql_endpoint)
 			.prefix('qb', qb)
@@ -349,16 +349,77 @@ $(document).ready(function () {
 		//get container sheet_dimensions into which new dimensions will go.
 		dimcount += 1;
 		var dimension_html = '<div id="sheet_dim_' + dimcount +
-		  '"><fieldset class="dimension"><span class="uri">http://data.younglives.org.uk/component#</span><input type="text" value="" name="sheet_dimension_input_' + dimcount +
+		  '"><fieldset class="dimension">  <div id="sheet_dim_reuse_' + dimcount +
+		  '"><fieldset><legend>Reuse existing dimension?</legend><input id="resuse_input_dimension_yes_' + dimcount +
+		  '" type="radio" value="Yes" name="resuse_input_dimension_' + dimcount +
+		  '" /><label for="resuse_input_dimension_yes_' + dimcount +
+		  '">Yes</label><input id="resuse_input_dimension_no_' + dimcount +
+  		  '" type="radio" value="No" name="resuse_input_dimension_' + dimcount +
+		  '"/><label for="resuse_input_dimension_no_' + dimcount +
+		  '">No</label></fieldset></div>' +
+		  '<div style="display:none" id="sheet_dim_new_' + dimcount +
+		  '" ><span class="uri">http://data.younglives.org.uk/component#</span><input type="text" value="" name="sheet_dimension_input_' + dimcount +
 		  '" /><br /><label for="sheet_dimension_label_' + dimcount +
 		  '">Dimension label:</label><input type="text" name="sheet_dimension_label_' + dimcount +
 		  '" id="sheet_dimension_label_' + dimcount +
 		  '" value=""/><a class="button" id="btn_sheet_dimension_select_' + dimcount +	
-		  '"><img src="extensions/themes/silverblue/images/icon-add.png"/><span>&nbsp;Select Sheet Values</span></a></span></fieldset></div>';
+		  '"><img src="extensions/themes/silverblue/images/icon-add.png"/><span>&nbsp;Select Sheet Values</span></a></span></div></fieldset>' +
+		  '<div style="display:none" id="sheet_dim_existing_' + dimcount +
+		  '"><fieldset>Dimension uri: <select style="width:470px;max-width:100%" id="ylscomp_components_' + dimcount +
+		  '"></select><br />' +
+		  'Dimension label: <select style="width:350px;max-width:100%" id="ylscomp_labels_' + dimcount +
+		  '"></select>' +
+		  '<a class="button" id="btn_sheet_dimension_select_' + dimcount +	
+		  '"><img src="extensions/themes/silverblue/images/icon-add.png"/><span>&nbsp;Select Sheet Values</span></a></span>' +
+		  '</fieldset></div>' +
+		  '</div>';
+		
 		$('#sheet_dimensions').append(dimension_html);
+		//$('#sheet_dim_new_' + dimcount).hide();
 		//attach dimcount to the element
 		$('#btn_sheet_dimension_select_' + dimcount).data('dimcount', dimcount);
-		//add the click handler
+		$('input[name="resuse_input_dimension_' + dimcount +'"]').data('dimcount', dimcount);
+		//add the click handlers
+		$('input[name="resuse_input_dimension_' + dimcount +'"]').change(function () {
+			if ($('input[name="resuse_input_dimension_' + dimcount +'"]:checked').val() === 'No') {
+				$('#sheet_dim_existing_' + $(this).data()['dimcount']).hide();
+				$('#sheet_dim_new_' + $(this).data()['dimcount']).show();
+			} else {
+				$('#sheet_dim_new_' + $(this).data()['dimcount']).hide();
+				//reuse stuff
+				//populate select boxes
+				for (var a_dimension in existing_dimensions) {
+					if (existing_dimensions.hasOwnProperty(a_dimension)) {
+						//populate url box
+						$('#ylscomp_components_' +  $(this).data()['dimcount']).append('<option value="' + existing_dimensions[a_dimension]['dim']['value'] + '">' + existing_dimensions[a_dimension]['dim']['value'] + '</option>');
+						//add data comp of label
+						$('#ylscomp_components_' +  $(this).data()['dimcount'] +' option:last').data('label', existing_dimensions[a_dimension]['label']['value']);
+						//populate labels box
+						$('#ylscomp_labels_' +  $(this).data()['dimcount']).append('<option value="' + existing_dimensions[a_dimension]['label']['value'] + '">' + existing_dimensions[a_dimension]['label']['value'] + '</option>');
+						//add data comp of dim
+						$('#ylscomp_labels_' +  $(this).data()['dimcount'] +' option:last').data('uri', existing_dimensions[a_dimension]['dim']['value']);
+
+					}
+				}
+				//add two handles for setting the values when either select is changed
+				$('#ylscomp_components_' +  $(this).data()['dimcount']).change(function(){
+					//set the label value on uri change
+					var selected_dim_label_value = $('#' + this.id + ' option:selected').data('label');
+					var dimension_number = this.id.split('_').pop();
+					//get the element and set it selected
+					$('#ylscomp_labels_' + dimension_number + ' option[value="' + selected_dim_label_value + '"]').attr("selected","selected");	
+				});
+				$('#ylscomp_labels_' +  $(this).data()['dimcount']).change(function(){
+					//set the dim value on label change
+					var selected_dim_uri_value = $('#' + this.id + ' option:selected').data('uri');
+					var dimension_number = this.id.split('_').pop();
+					//get the element and set it selected
+					$('#ylscomp_components_' + dimension_number + ' option[value="' + selected_dim_uri_value + '"]').attr("selected","selected");	
+				});
+				//show forms
+				$('#sheet_dim_existing_' + $(this).data()['dimcount']).show();
+			}
+		});
 		$('#btn_sheet_dimension_select_' + dimcount).click(function () {	
 			//thing needed to make existing code work for us
 			var this_dim_is = $(this).data()['dimcount'];
@@ -373,6 +434,7 @@ $(document).ready(function () {
 			currentDimension = $("input[name='sheet_dimension_input_" + this_dim_is + "']").val().uncapitalize();
 			dimensions_sheet[currentDimension] = dimensionInfo;
 		});
+
 		
 	});
 

@@ -16,7 +16,7 @@
 <!--<div><?php echo $this->_('Attributes:') ?>-->
 
 <!-- added by neontribe for young lives project, these represent the three core dimensions that must have values -->
-<div id="measure_container">
+<div style="display:none" id="measure_container">
 	<fieldset>
 		<legend>Choose an existing measure or add a new one</legend>
 		<input id="measure_choice-a" type="radio" name="measure_choice_neon" value="existing"/>
@@ -24,14 +24,14 @@
 		<input id="measure_choice-b" type="radio" name="measure_choice_neon" value="new"/>
 			<label for="chort_choice-b">make a new measure</label>
 	</fieldset>
-	<div id="existing_measure">
+	<div style="display:none" id="existing_measure">
 		<label for="existing_measure_select">Select measure:</label>
 		<select id="existing_measure_select" name="existing_measure_select">
 			<option value="use_existing_measure"> </option>
 			<!-- options to be added by script after being retrieved from ontowiki -->
 		</select>
 	</div>
-	<div id="new_measure">
+	<div style="display:none" id="new_measure">
 		<label for="new_measure_type">Measure Type:  </label>
 			http://www.w3.org/2001/XMLSchema#<input type="text" name="new_measure_type" id="new_measure_type" value="decimal"/><br />
 		<label for="new_measure_label">Measure Label:  </label>
@@ -69,7 +69,7 @@
 		<input id="chort_choice-b" type="radio" name="cohort_choice" value="sheet"/>
 			<label for="chort_choice-b">use spreadsheet values</label>
 	</fieldset>
-	<div id="fixed_cohort">
+	<div style="display:none" id="fixed_cohort">
 		<fieldset>
 			<legend>Choose a cohort</legend>
 			<input id="chort_choice-young" type="radio" name="which_cohort" value="YC"/>
@@ -78,7 +78,7 @@
 				<label for="chort_choice-old">Old Cohort</label>
 		</fieldset>
 	</div>
-	<div id="sheet_cohort">
+	<div style="display:none" id="sheet_cohort">
 		<span class="uri">http://data.younglives.org.uk/component#</span><input type="text" readonly="true" value="cohort" name="dimension_cohort" /><a class="button" id="btn_dim_cohort" ><img src="<?php $this->_componentUrlBase ?>extensions/themes/silverblue/images/icon-add.png"/><span>&nbsp;Select Sheet Values</span></a></span>
 	</div>
 </div>
@@ -102,14 +102,15 @@ TODO remove later if not needed
 </table>
 -->
 </div>
-<div><?php echo $this->_('Dimensions:') ?>
+<!--<div><?php echo $this->_('Dimensions:') ?>
 
 <table id="csvimport-dimensions">
     <tr>
         <th><?php echo $this->_('Dimension Name') ?></th>
     </tr>
 </table>
-</div>
+
+</div>-->
 <?php endif; ?>
 <div style="position: relative; overflow: auto; width: 100%; height: 100%;" id="table-holder">
 <?php echo $this->table ?>
