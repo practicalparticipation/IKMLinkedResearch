@@ -1,6 +1,6 @@
 Young lives csv importer HOWTO
 
-
+Open ontowiki using firefox version 5.0, log into ontowiki. 
 choose a knowledgebase and click on the onotowiki symbol to the right of the uri.
 select 'Import CSV Data' from the list
 check 'Statistical data (uses DataCube mapping)'
@@ -48,10 +48,33 @@ Using Spreadsheet values:
 	
 If you later change your mind it is safe to change between existing/new dimensions and fixed/sheet values as often as you like for any particular dimension, only those visilbe when the 'Extract Triples' button is pressed will be used.
 
+The Extract Triples button.
+
+When all dimensions, the measures and the datarange are defined, then to import data into ontowiki, click the 'Extract Triples' button. If no warnings were recived then a popout dialog box should now be showing titled 'Import options'. Ignore the save template input box and button as this is for testing and will soon be depricated. Next is a list of possible DataStructureDefinitions, these have been choosen from those that exist within ontowiki that could be used for your import. You must either choose one by copying and pasting the text into the dsd label box (be careful not to copy extra spaces at the beginning) or type a new label for the DataStructureDefinition of your data. Now click the 'Extract triples' button. You should see a success dialog box, which when cleared will take you back to the Import young Lives CSV Data page, where you may modify values and make more imports if needed. 
+Each successful import action does several things. It creates any new dimensions and measures in the youglives knowledge base, it adds a new dsd if needed, and it creates a unique dataset which is realated to all of the observations just imported. If you have made an error, at this point you must use ontowiki's editing tools to find and change the error/s.
 
 
+Bugs and Features
 
+something is writing '* Configurations' into the bottom of the page, when found it will be removed. -- Ignore cosmetic only
+Give me Help, well it doesn't.
+add fixed dimension value not yet implemented, next on the list.
+Only tested in ff 5.0, may well not work in other browsers, don't use them.
+could use some extra styling.
+remove
 
+Example 1.
+
+export from google docs the 1st sheet of 'India - Country Report Data Table' called 'R3 Sample Characteristics' as csv. Import this into the Young lives csv importer.
+
+overview:
+this sheet contains two tables of similar data one for November 2010 and one for January 2011. To import this data we will have to make two separate export triples actions.
+
+1. Select Measure. choose 'make a new measure' then type 'The Proportion of the total sample that belong in all the categories noted' in the Measure Label box. now type 'ProportionOfSample' in the Name for Measure box.
+2. Check 'India' is the country and 'round three' is the round.
+3. Click the 'use spreadsheet values' button under 'Choose fixed cohort or dynamic cohort values from spread sheet'.
+4. Click the 'Select Sheet Values' button and click on YC and OC in cells (1,2) (2,2) (above 0.53 and 0.49 respectively)
+5. Add data range. Choose 'Select Data Range'. Click 'OK', Click on cell(1,3) with the value 0.53, then cell(2,20) with the value 0.19 just above the value 976.
 
 
 

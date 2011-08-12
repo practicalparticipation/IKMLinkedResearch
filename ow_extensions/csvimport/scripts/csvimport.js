@@ -245,10 +245,10 @@ $(document).ready(function () {
                 datarange['end'] = {'row': row, 'col': col};
                 selectionMode = 'dimension';
                 $('#csvimportDatarange').html(' (' +
-                    datarange['start'].row + ',' +
-                    datarange['start'].col + ') to (' +
-                    datarange['end'].row + ',' +
-                    datarange['end'].col + ')');
+                    datarange['start'].col + ',' +
+                    datarange['start'].row + ') to (' +
+                    datarange['end'].col + ',' +
+                    datarange['end'].row + ')');
             }
         }
     });
