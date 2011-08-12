@@ -46,7 +46,7 @@ class ScovoImporter extends Importer
 
         $this->view->scovo = true;
 
-        $this->view->placeholder('main.window.title')->append('Import CSV Data');
+        $this->view->placeholder('main.window.title')->append('Import Young Lives CSV Data');
         $this->view->actionUrl = $urlBase . 'csvimport/mapping';
         $this->view->salt = hash("md5", serialize($this->parsedFile));
         OntoWiki_Navigation::disableNavigation();
@@ -55,13 +55,14 @@ class ScovoImporter extends Importer
 
             $toolbar = $ontowiki->toolbar;
 	    $toolbar->appendButton(OntoWiki_Toolbar::ADD, array('name' => 'Select Measure', 'id' => 'btn-add-measure'))
-            	->appendButton(OntoWiki_Toolbar::ADD, array('name' => 'Add Dimension', 'id' => 'btn-add-dimension'))
                 //not needed by us
 		//->appendButton(OntoWiki_Toolbar::ADD, array('name' => 'Add Attribute', 'id' => 'btn-attribute', 'class'=>''))
                 ->appendButton(OntoWiki_Toolbar::EDIT, array('name' => 'Select Data Range', 'id' => 'btn-datarange', 'class'=>''))
+		->appendButton(OntoWiki_Toolbar::ADD, array('name' => 'Add Dimension', 'id' => 'btn-add-dimension'))
                 ->appendButton(OntoWiki_Toolbar::SEPARATOR)
-                ->appendButton(OntoWiki_Toolbar::SUBMIT, array('name' => 'Extract Triples', 'id' => 'extract'))
-                ->appendButton(OntoWiki_Toolbar::RESET, array('name' => 'Cancel'));
+                ->appendButton(OntoWiki_Toolbar::SUBMIT, array('name' => 'Extract Triples', 'id' => 'extract'));
+                //not needed by us
+		//->appendButton(OntoWiki_Toolbar::RESET, array('name' => 'Cancel'));
             $this->view->placeholder('main.window.toolbar')->set($toolbar);
 
 

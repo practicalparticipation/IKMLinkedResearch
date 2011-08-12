@@ -263,11 +263,11 @@ $(document).ready(function () {
 	$('#sheet_cohort').hide();
 	$("input[name='cohort_choice']").change( function () {
 		if ($("input[name='cohort_choice']:checked").val() === 'fixed') {
-			$('#fixed_cohort').show(1500);
-			$('#sheet_cohort').hide(1500);
+			$('#fixed_cohort').show(800);
+			$('#sheet_cohort').hide(800);
 		} else {
-			$('#fixed_cohort').hide(1500);
-			$('#sheet_cohort').show(1500);
+			$('#fixed_cohort').hide(800);
+			$('#sheet_cohort').show(800);
 		}
 	});
 	//cohort from sheet button
@@ -348,38 +348,61 @@ $(document).ready(function () {
 		//add html for a new dimension to page
 		//get container sheet_dimensions into which new dimensions will go.
 		dimcount += 1;
-		var dimension_html = '<div id="sheet_dim_' + dimcount +
-		  '"><fieldset class="dimension">  <div id="sheet_dim_reuse_' + dimcount +
-		  '"><fieldset><legend>Reuse existing dimension?</legend><input id="resuse_input_dimension_yes_' + dimcount +
-		  '" type="radio" value="Yes" name="resuse_input_dimension_' + dimcount +
-		  '" /><label for="resuse_input_dimension_yes_' + dimcount +
-		  '">Yes</label><input id="resuse_input_dimension_no_' + dimcount +
-  		  '" type="radio" value="No" name="resuse_input_dimension_' + dimcount +
-		  '"/><label for="resuse_input_dimension_no_' + dimcount +
-		  '">No</label></fieldset></div>' +
-		  '<div style="display:none" id="sheet_dim_new_' + dimcount +
-		  '" ><span class="uri">http://data.younglives.org.uk/component#</span><input type="text" value="" name="sheet_dimension_input_' + dimcount +
-		  '" /><br /><label for="sheet_dimension_label_' + dimcount +
-		  '">Dimension label:</label><input type="text" name="sheet_dimension_label_' + dimcount +
-		  '" id="sheet_dimension_label_' + dimcount +
-		  '" value=""/><a class="button" id="btn_sheet_dimension_select_' + dimcount +	
-		  '"><img src="extensions/themes/silverblue/images/icon-add.png"/><span>&nbsp;Select Sheet Values</span></a></span></div></fieldset>' +
-		  '<div style="display:none" id="sheet_dim_existing_' + dimcount +
-		  '"><fieldset>Dimension uri: <select style="width:470px;max-width:100%" id="ylscomp_components_' + dimcount +
-		  '"></select><br />' +
-		  'Dimension label: <select style="width:350px;max-width:100%" id="ylscomp_labels_' + dimcount +
-		  '"></select>' +
-		  '<a class="button" id="btn_sheet_dimension_select_' + dimcount +	
-		  '"><img src="extensions/themes/silverblue/images/icon-add.png"/><span>&nbsp;Select Sheet Values</span></a></span>' +
+		var dimension_html = '<div id="sheet_dim_' + dimcount + '">' +
+		  '<fieldset class="dimension">  <div id="sheet_dim_reuse_' + dimcount +'">'+
+		  '<fieldset><legend>Reuse existing dimension?</legend><input id="resuse_input_dimension_yes_' + dimcount + '" type="radio" value="Yes" name="resuse_input_dimension_' + dimcount + '" />' +
+		  '<label for="resuse_input_dimension_yes_' + dimcount + '">Yes</label>' +
+		  '<input id="resuse_input_dimension_no_' + dimcount + '" type="radio" value="No" name="resuse_input_dimension_' + dimcount + '"/>' +
+  		  '<label for="resuse_input_dimension_no_' + dimcount + '">No</label></fieldset></div>' +
+		  '<div style="display:none" id="sheet_dim_new_' + dimcount + '" >' +
+		  '<span class="uri">http://data.younglives.org.uk/component#</span><input type="text" value="" name="sheet_dimension_input_' + dimcount + '" />' +
+		  '<br /><label for="sheet_dimension_label_' + dimcount + '">Dimension label:</label>' +
+		  '<input type="text" name="sheet_dimension_label_' + dimcount + '" id="sheet_dimension_label_' + dimcount + '" value=""/>' +
+		  '</div></fieldset>' +
+		  '<div style="display:none" id="sheet_dim_existing_' + dimcount + '">' +
+		  '<fieldset>Dimension uri: <select style="width:470px;max-width:100%" id="ylscomp_components_' + dimcount + '">' +
+		  '</select><br />' +
+		  'Dimension label: <select style="width:350px;max-width:100%" id="ylscomp_labels_' + dimcount + '"></select>' +
 		  '</fieldset></div>' +
+		  '<input id="dim_type_chooser_fixed_' + dimcount + '" name="dim_type_chooser_' + dimcount + '" value="fixed" type="radio">' +
+		  '<label for="dim_type_chooser_fixed_' + dimcount + '"> use fixed value </label>' +
+		  '<input id="dim_type_chooser_sheet_' + dimcount + '" name="dim_type_chooser_' + dimcount +  '" value="sheet" type="radio">' +
+		  '<label for="dim_type_chooser_sheet_' + dimcount + '"> use spreadsheet values </label>' +
+		  '<div style="display:none" id="show_dim_btn_sheet_dimension_select_' + dimcount + '">' +
+		  '<a class="button btn_sheet_dimension_select_' + dimcount + '">' +	
+		  '<img src="extensions/themes/silverblue/images/icon-add.png"/><span>&nbsp;Select Sheet Values</span></a></span></div>' +
+		  '<div style="display:none" id="show_dim_fixed_dimension_input_' + dimcount + '"><input type="text" name="dim_fixed_dimension_input_' + dimcount + '" />*Not yet implmented</div>' +
 		  '</div>';
 		
 		$('#sheet_dimensions').append(dimension_html);
 		//$('#sheet_dim_new_' + dimcount).hide();
 		//attach dimcount to the element
-		$('#btn_sheet_dimension_select_' + dimcount).data('dimcount', dimcount);
+		$('.btn_sheet_dimension_select_' + dimcount).data('dimcount', dimcount);
 		$('input[name="resuse_input_dimension_' + dimcount +'"]').data('dimcount', dimcount);
+		$('input[name="dim_type_chooser_' + dimcount +'"]').data('dimcount', dimcount);
+
 		//add the click handlers
+
+		$('input[name="dim_type_chooser_' + dimcount +'"]').change(function () {
+			if ($('input[name="dim_type_chooser_' + dimcount +'"]:checked').val() === 'sheet') {
+				$('#show_dim_fixed_dimension_input_' + $(this).data()['dimcount']).hide();
+				$('#show_dim_btn_sheet_dimension_select_' + $(this).data()['dimcount']).show();
+				//also clear value of fixed input field
+				$('input[name="dim_fixed_dimension_input_' + dimcount +'"]').val('');
+			} else {
+				$('#show_dim_btn_sheet_dimension_select_' + $(this).data()['dimcount']).hide();
+				$('#show_dim_fixed_dimension_input_' + $(this).data()['dimcount']).show();
+				//remove any data stored in dimension_sheet
+				//which is easier said than done.
+				var our_dim_name_is = '';
+				if ($('input[name="resuse_input_dimension_' + dimcount +'"]:checked').val() === 'No') {
+					our_dim_name_is = $("input[name='sheet_dimension_input_" + $(this).data()['dimcount'] + "']").val().uncapitalize();
+				} else {
+					our_dim_name_is = $('#ylscomp_components_' + $(this).data()['dimcount'] +  ' option:selected').val().split('#').pop().uncapitalize();
+				}
+				delete dimensions_sheet[our_dim_name_is];
+			}
+		});
 		$('input[name="resuse_input_dimension_' + dimcount +'"]').change(function () {
 			if ($('input[name="resuse_input_dimension_' + dimcount +'"]:checked').val() === 'No') {
 				$('#sheet_dim_existing_' + $(this).data()['dimcount']).hide();
@@ -420,23 +443,32 @@ $(document).ready(function () {
 				$('#sheet_dim_existing_' + $(this).data()['dimcount']).show();
 			}
 		});
-		$('#btn_sheet_dimension_select_' + dimcount).click(function () {	
+		$('.btn_sheet_dimension_select_' + dimcount).click(function () {	
 			//thing needed to make existing code work for us
 			var this_dim_is = $(this).data()['dimcount'];
 			currentColour = _getColor();
 			$('#sheet_dim_' + this_dim_is).css('background-color', currentColour);
 			selectionMode == 'dimension';
-			var dimensionInfo = {
-				color:currentColour,
-				label: $("input[name='sheet_dimension_label_" + this_dim_is + "']").val(),
-				elements: {}
-			};
-			currentDimension = $("input[name='sheet_dimension_input_" + this_dim_is + "']").val().uncapitalize();
+			if ($('input[name="resuse_input_dimension_' + dimcount +'"]:checked').val() === 'No') {
+				currentDimension = $("input[name='sheet_dimension_input_" + this_dim_is + "']").val().uncapitalize();
+				var dimensionInfo = {
+					color:currentColour,
+					label: $("input[name='sheet_dimension_label_" + this_dim_is + "']").val(),
+					elements: {},
+					dimension_name: currentDimension
+				};
+			} else {
+				currentDimension = $("#ylscomp_components_" + this_dim_is ).val().split('#').pop();
+				var dimensionInfo = {
+					color:currentColour,
+					label: $("#ylscomp_labels_" + this_dim_is ).val(),
+					elements: {},
+					dimension_name: currentDimension
+				};
+			}
 			dimensions_sheet[currentDimension] = dimensionInfo;
 		});
-
-		
-	});
+});
 
 
     /*
@@ -988,21 +1020,24 @@ $(document).ready(function () {
 
 		for (var sheet_dim in dimensions_sheet) {
 			if (dimensions_sheet.hasOwnProperty(sheet_dim) && sheet_dim !== 'cohort')  {
+				var _dim_object = {};
+				_dim_object['values'] = [];
 				for (var dim_ele in dimensions_sheet[sheet_dim]['elements']) {
 					if (dimensions_sheet[sheet_dim]['elements'].hasOwnProperty(dim_ele)) {
-						var _dim_object = {};
-						 _dim_object['values'] = [];
 						if (!_dim_object[dimensions_sheet[sheet_dim]['elements'][dim_ele]['label']]) {
-							_dim_object[dimensions_sheet[sheet_dim]['elements'][dim_ele]['label']] = {};
-							_dim_object[dimensions_sheet[sheet_dim]['elements'][dim_ele]['label']]['values'] = [make_point(dimensions_sheet[sheet_dim]['elements'][dim_ele]['col'], dimensions_sheet[sheet_dim]['elements'][dim_ele]['row'])];
-						} else {
-							_dim_object[dimensions_sheet[sheet_dim]['elements'][dim_ele]['label']]['values'].push(make_point(dimensions_sheet[sheet_dim]['elements'][dim_ele]['col'], dimensions_sheet[sheet_dim]['elements'][dim_ele]['row']));
-						}
-						_dim_object[dimensions_sheet[sheet_dim]['elements'][dim_ele]['label']]['dimension_uri']  = dimensions_sheet[sheet_dim]['elements'][dim_ele]['label'];
-						_dim_object[dimensions_sheet[sheet_dim]['elements'][dim_ele]['label']]['dim_label'] = dimensions_sheet[sheet_dim]['label'];
+							var a_dim_value = {};
+							a_dim_value[dimensions_sheet[sheet_dim]['elements'][dim_ele]['label']] = [make_point(dimensions_sheet[sheet_dim]['elements'][dim_ele]['col'], dimensions_sheet[sheet_dim]['elements'][dim_ele]['row'])];
+							_dim_object['values'] = [a_dim_value];
+						} else {  //TODO  check this there is a good chance this is wrong, but should only matter if the same dimension value occurs in more than one place in the sheet, so low priority atm.
+							_dim_object['values'][dimensions_sheet[sheet_dim]['elements'][dim_ele]['label']].push(make_point(dimensions_sheet[sheet_dim]['elements'][dim_ele]['col'], dimensions_sheet[sheet_dim]['elements'][dim_ele]['row']));
+						}	
 					}
-					dimensions_raw[sheet_dim] = _dim_object;
+					_dim_object['dimension_uri'] = {};
+					_dim_object['dimension_uri']  = dimensions_sheet[sheet_dim]['dimension_name'];
+					_dim_object['dim_label'] = {};
+					_dim_object['dim_label'] = dimensions_sheet[sheet_dim]['label'];	
 				}
+				dimensions_raw[sheet_dim] = _dim_object;
 			}
 		}
 
@@ -1107,12 +1142,12 @@ $(document).ready(function () {
 		//loop through all these points looking for which dimensions are usd
 		for (obs_point in observation_points) {
 			if(observation_points.hasOwnProperty(obs_point)){
-			var obid = yld + uuid() + 'observation';
+				var obid = yld + uuid() + 'observation';
 				//begin constructing the observation
 				//TODO set obsvalue from sheet here
-				obs_value = Math.round(Math.random()*100)/100;
+				loc_str = 'r' + observation_points[obs_point].row.toString() + '-c' + observation_points[obs_point].col.toString() ;
+				obs_value = $('#' + loc_str).text();
 				observation = {}; //clear this var
-				//loc_str = 'c' + observation_points[obs_point].col.toString() + '_r' + observation_points[obs_point].row.toString();
 				observation[obid] = {};
 				observation[obid]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] = [make_rdf_object("Observation", qb)];
 				// Attatch the observation to the appropriate dataset

@@ -1,0 +1,62 @@
+Young lives csv importer HOWTO
+
+
+choose a knowledgebase and click on the onotowiki symbol to the right of the uri.
+select 'Import CSV Data' from the list
+check 'Statistical data (uses DataCube mapping)'
+select a CSV file to upload. and click 'Import CSV' at the top right.
+
+you are now in the Young lives data importer. It should be titled 'Import Young Lives CSV Data'.
+
+overview
+
+The young lives csv data importer is designed to take data from a speadsheet and convert it into a rdf datacube format inside ontowiki. To this end requires a user to help describe the data. The system is designed to help with this process, but an understanding of the data to be imported is neccessary, and some familiarty with the importer.
+At this point you should see a page with 3 sections. At the top Control buttons, under it a section about data definitions, and then a representation of the imported csv file.
+
+The Importer - controls
+
+when looking at the importer you should see 4 buttons across the top. 
+Select Measure
+Select Data Range
+Add Dimension
+Extract Triples
+
+
+In order to use the 'Extract Triples' button to import data into ontowiki, the previous 3 need to have been correctly used, as well as an answer given to the about cohort question.
+Each 'Extract Triples' action assumes that a single type of measure is being used. If the csv has more than one kind of measure used then several seperate import actions will be required using the csv file. 
+Each 'Extract Triples' action also assumes that the data is from a single country and a single round. Like with the measure if this is not true then several seperate import actions using the csv file will be needed.
+
+The Select Measure button.
+
+This is required, and allows the measure to be selected or defined. You may change between these and your final choice when using Extract Triples is the one that will be sent to ontowiki. If making a new measure please write a suitable description that is not the same as an existing one, also take care with the name of the measure as if another maesure of that name exists, your measure will not be created, and the existing one used. Measure names should camel cased (eg ProportionOfSample , FishAndChips).
+
+The Select Data Range button.
+
+This is required. The importer allows for a rectanglar block of observation data to be imported at once. This button allow you to define that rectangle. If you need to import non-rectangluar data area you will have to use several import actions. The data range once selected can be reselected using this button. The curren range is shown at the top of the data defining section of the page under the main 4 buttons. The numbers refer to the 'speadsheet' cells where the top left is 0,0.
+
+The Add Dimension Button.
+
+This is required, in most cases. Dimension are very important, they describe what the measured value is about. When the Add Dimension button is pressed a new dimension section is added to the data definition section of the page. It is added to the bottom of the list so you may well need to scroll down the page to see this. (If you add extra dimensions by mistake, so long as they do not have fixed values entered or speadsheet cells defined, then they will be ignored, so don't worry.) 
+A new dimension starts by asking two questions. If you are resuing an existing dimension or if you want to create a new one, and if the values of the dimension are in the speadsheet orthagonal to the data range. This requires some explanation. It is always better to reuse an existing dimension if a correct one exists. You should use 'use fixed value' if there is  a piece of data in the sheet that is a dimension and appies to all values in the data range. (see  General Characteristics of the sample - India example later)
+Making a new dimension: 
+	the component should start with a lowercase letter, can contain any character except spaces. It is best to only use a-z,A-Z,-,_ though. Try to stick to one word values where possible. where not try to use a camel cased string with a lowercase first character. (eg. sampleSize, urbanOrRural, socialGroup)
+	the label should be a human readable and understandable phrase. Often it will be similar to that of the component value. (eg.  'urbanOrRural' and 'Urban or Rural' )
+Using a fixed value:
+	this value should be typed in or copied from the speadsheet. Try to keep it's value like others that are being used. If it is a date of somekind then ensure that it is typed in as a human understandable value. This is as we do not try to automaticly guess what is a date when the data is imported. If either a person or computer encounters a string like '10th May 1982' or 'November 2010' then there is a much better change of understanding it then say '9/10/11' which has two possible dates depending on if it is dd/mm/yy or mm/dd/yy etc. basicaly if it a date please be clear.
+Using Spreadsheet values:
+	this control will give you a 'Select Sheet Values' button. When pressed the dimension is given a random colour. now when you click on the speadsheet cells will be coloured the same. use this technique to select the values of this dimension in the sheet. Values toggle. A double click allows selection/deselection of an entire row. This dimensions colour highlighting will continue until a new dimensions 'Select Sheet Values' button is pressed.
+	
+If you later change your mind it is safe to change between existing/new dimensions and fixed/sheet values as often as you like for any particular dimension, only those visilbe when the 'Extract Triples' button is pressed will be used.
+
+
+
+
+
+
+
+
+
+
+
+
+
