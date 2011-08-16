@@ -2,18 +2,22 @@
 <div class="dimensionchoice">
     Show me: 
     <select class="dimensionchooser" name="dimension">
-        <% $.each(chooseable_dimensions, function(i,v){ %>
-            <option value="<%= v.uri %>"><%= v.label %></option>
+        <% $.each(dsd.chooseable_dimensions, function(i,v){ %>
+            <option value="<%= v.uri %>"
+                        <% if (v.uri == selectedDimension) { %>selected="selected"<% } %> >
+                <%= v.label %>
+            </option>
         <% }) %>
     </select>
 </div>
 
 <div class="includechoice options">
     Combined with:
-    <% $.each(standard_dimensions, function(i,v){ %>
+    <% $.each(dsd.standard_dimensions, function(i,v){ %>
         <input type="checkbox" 
                     id="<%= 'include_' + i.toString() %>" 
                     name="include" 
+                    <% if (_.include(includeDimensions, v.uri)) { %>checked="checked"<% } %>
                     value="<%= v.uri %>"/>
         <label for="<%= 'include_' + i.toString() %>">
             <%= v.label %>
@@ -24,18 +28,22 @@
 <div class="measurechoice">
     As:
     <select class="measurechooser" name="measure">
-        <% $.each(chooseable_measures, function(i,v){ %>
-            <option value="<%= v.uri %>"><%= v.label %></option>
+        <% $.each(dsd.chooseable_measures, function(i,v){ %>
+            <option value="<%= v.uri %>"
+                <% if (v.uri == selectedMeasure) { %>selected="selected"<% } %>>
+                <%= v.label %>
+            </option>
         <% }) %>
     </select>
 </div>
 
 <div class="grouping options">
     Group by:
-    <% $.each(standard_dimensions, function(i,v){ %>
+    <% $.each(dsd.standard_dimensions, function(i,v){ %>
         <input type="radio" 
                     id="<%= 'group_' + i.toString() %>" 
                     name="groupby" 
+                    <% if (v.uri == groupbyDimension) { %>checked="checked"<% } %>
                     value="<%= v.uri %>"/>
         <label for="<%= 'group_' + i.toString() %>">
             <%= v.label %>

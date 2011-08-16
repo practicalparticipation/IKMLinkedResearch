@@ -233,17 +233,52 @@ var Grapher = {  // Config object and api
                 // Draw a column for the grouping dimension
                 table.addColumn('string', Grapher.dsd.get_dimension(Grapher.groupbyDimension).label);
                 
-                // Now add a column for each combination of selectedDimension and includedDimensions
-                $.each(selectedDimensionValues, function(i, sdv){
-                    if (includeDimensionsValues.length > 0) {
-                        $.each(includeDimensionsValues, function(i, id){
-                            $.each(id[1], function(i, idv){
-                                table.addColumn('number', sdv + ' /  ' + idv);
-                            });
+                // Now add a column for each combination of each unique value from
+                // the selectedDimension and each includedDimensions
+                var colspec = [];
+                var dimension_loop = function(dimensions,dimdex, valstack, specs) {
+                    if (dimdex === (dimensions.length -1)) {
+                        // We're at the end of the stack run over the last set of values making specs
+                        $.each(dimensions[dimdex][1], function(i, value) {
+                            var spec = {};
+                            spec.type = 'number';
+                            spec.path = valstack.slice(0);// put a full copy of valstack into path
+                            spec.path.push(value)
+                            spec.label = spec.path.join(' / ');
+                            specs.push(spec);
                         });
                     } else {
-                        table.addColumn('number', sdv);
+                        $.each(dimensions[dimdex][1], function(i, value) {
+                            var newstack = valstack.slice(0);
+                            newstack.push(value);
+                            dimension_loop(dimensions, dimdex +1, newstack, specs);
+                        });
+                        
                     }
+                }
+                
+                $.each(selectedDimensionValues, function(i, sdv){
+                    if (includeDimensionsValues.length > 0) {
+                        /**$.each(includeDimensionsValues, function(i, id){
+                            $.each(id[1], function(i, idv){
+                                var spec = {};
+                                spec.type = 'number';
+                                spec.label = sdv + ' / ' + idv;
+                                spec.path = [sdv, idv];
+                                colspec.push(spec);
+                            });
+                        });*/
+                        dimension_loop(includeDimensionsValues, 0, [sdv], colspec);
+                    } else {
+                        var spec = {};
+                         spec.type = 'number';
+                         spec.label = sdv;
+                         spec.path = [sdv];
+                         colspec.push(spec);
+                    }
+                });
+                $.each(colspec, function(i,v){
+                    table.addColumn(v.type, v.label);
                 });
 
                 // Prepare a data structure by agressive use of _.groupBy
@@ -270,6 +305,7 @@ var Grapher = {  // Config object and api
                 };
                 var tree_data = bucketeer(Grapher.data.slice(0), bucket_stack, 0);          
                 
+                /**
                 var rowspec = [];
                 var traverse = function(obj, path, paths, addpath) {
                     var mypath = path.slice(0);
@@ -285,21 +321,56 @@ var Grapher = {  // Config object and api
                     }
                 };
                 traverse(tree_data, [], rowspec, null);
+                **/
                 
+                $.each(tree_data, function(i,v){
+                    // For this data table each top level key in tree_data will build a row
+                    // According to the column spec
+                    var row = [i];
+                    $.each(colspec, function(coldex, spec){
+                        var val = 0;
+                        var cur = v;
+                        try {
+                            $.each(spec.path, function(i, key) { //slice the rowspec to omit the first key which
+                                                                                   // is handled by our outer iterator
+                                cur = cur[key];
+                            });
+                            row.push(cur[0][Grapher.tokenizeURI(Grapher.selectedMeasure)].value);
+                        } catch (e) {
+                            // If there's no data along this path put in a blank column
+                            row.push(0);
+                        }
+                    });
+                    table.addRow(row);
+                });
+                
+                
+                /**
                 $.each(tree_data, function(i,v){
                     // For this data table each top level key in tree_data will build a row
                     var row = [i];
                     $.each(rowspec, function(rsi, rsv){
+                    
                         var val = 0;
                         var cur = v;
-                        $.each(rsv.slice(1), function(i, key) { //slice the rowspec to omit the first key which
+                        try {
+                            $.each(rsv.slice(1), function(i, key) { //slice the rowspec to omit the first key which
                                                                                    // is handled by our outer iterator
-                            cur = cur[key];
-                        });
-                        row.push(cur[0][Grapher.tokenizeURI(Grapher.selectedMeasure)].value);
+                                cur = cur[key];
+                            });
+                            row.push(cur[0][Grapher.tokenizeURI(Grapher.selectedMeasure)].value);
+                        } catch (e) {
+                            // If there's no data along this path put in a blank column
+                            row.push(0);
+                        }
+                        
                     });
                     table.addRow(row);
                 });
+                **/
+                
+                
+                
                 break;
         }  
         // Draw the chart
@@ -310,7 +381,7 @@ var Grapher = {  // Config object and api
     * Draw the Configuration screen
     */
    Grapher.drawConfig = function(){
-        var ui = $($.View('templates/configui.ejs', Grapher.dsd));
+        var ui = $($.View('templates/configui.ejs', Grapher));
         
         $('.options', ui).buttonset();
         
