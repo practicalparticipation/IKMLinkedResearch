@@ -172,6 +172,11 @@
             var ui = $($.View('templates/configui.ejs', Grapher));
             
             $('.options', ui).buttonset();
+            $('select', ui).multiselect({
+                                                       header: "Select an option",
+                                                       noneSelectedText: "Select an Option",
+                                                       selectedList: 1,
+                                                    multiple:false});
             
             // Connect the rechart button
             $('.rechart', ui).button()
