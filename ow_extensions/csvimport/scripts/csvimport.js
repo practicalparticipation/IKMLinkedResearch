@@ -1,4 +1,5 @@
 var dimensions_sheet = {};
+var dimensions_fixed = {};
 var uribase = '';
 
 // RDFa
@@ -253,7 +254,7 @@ $(document).ready(function () {
         }
     });
 	//add the extract triples dialog to the page and hide
-	var extract_dialog = '<div id="import-options" style="width:400px;height:350px;padding:5px;align:center;background:white;position:absolute;left:40%;top:30%;border: 1px solid #900; overflow: auto;"><div style="width:100%; text-align: right;"><a href="#" onclick="return false;" id="close-results">[x]</a></div><div id="extract_dialog" style="vertical-align: middle; overflow: auto;"><b>Import options.</b><br/><input type="text" id="template_name" value="Template Name" /><br/><input type="button" id="save_template_btn" value="Save Template" onclick="" /><br/></div><div id="dsd_stuff"><label for="dsd_label">Enter label text for dsd:</label><input id="dsd_label_input" type="Text" name="dsd_label"/><br/><input type="button" id="extract_triples_btn" value="Extract triples" onclick="" /></div></div>';
+	var extract_dialog = '<div id="import-options" style="width:400px;height:350px;padding:5px;align:center;background:white;position:absolute;left:40%;top:30%;border: 1px solid #900; overflow: auto;"><div style="width:100%; text-align: right;"><a href="#" onclick="return false;" id="close-results">[x]</a></div><!--<div id="extract_dialog" style="vertical-align: middle; overflow: auto;"><b>Import options.</b><br/><input type="text" id="template_name" value="Template Name" /><br/><input type="button" id="save_template_btn" value="Save Template" onclick="" /><br/></div>--><div id="dsd_stuff"><label for="dsd_label">Enter label text for dsd:</label><input id="dsd_label_input" type="Text" name="dsd_label"/><br/><input type="button" id="extract_triples_btn" value="Extract triples" onclick="" /></div></div>';
 	
 	$('body').append(extract_dialog);
 	$('#import-options').hide();
@@ -348,7 +349,7 @@ $(document).ready(function () {
 		//add html for a new dimension to page
 		//get container sheet_dimensions into which new dimensions will go.
 		dimcount += 1;
-		var dimension_html = '<div id="sheet_dim_' + dimcount + '">' +
+		var dimension_ui = $('<div id="sheet_dim_' + dimcount + '">' +
 		  '<fieldset class="dimension">  <div id="sheet_dim_reuse_' + dimcount +'">'+
 		  '<fieldset><legend>Reuse existing dimension?</legend><input id="resuse_input_dimension_yes_' + dimcount + '" type="radio" value="Yes" name="resuse_input_dimension_' + dimcount + '" />' +
 		  '<label for="resuse_input_dimension_yes_' + dimcount + '">Yes</label>' +
@@ -371,10 +372,12 @@ $(document).ready(function () {
 		  '<div style="display:none" id="show_dim_btn_sheet_dimension_select_' + dimcount + '">' +
 		  '<a class="button btn_sheet_dimension_select_' + dimcount + '">' +	
 		  '<img src="extensions/themes/silverblue/images/icon-add.png"/><span>&nbsp;Select Sheet Values</span></a></span></div>' +
-		  '<div style="display:none" id="show_dim_fixed_dimension_input_' + dimcount + '"><input type="text" name="dim_fixed_dimension_input_' + dimcount + '" />*Not yet implmented</div>' +
-		  '</div>';
+		  '<div style="display:none" id="show_dim_fixed_dimension_input_' + dimcount + '"><input type="text" name="dim_fixed_dimension_input_' + dimcount + '" /></div>' +
+		  '</div>');
 		
-		$('#sheet_dimensions').append(dimension_html);
+		$('#sheet_dimensions').append(dimension_ui);
+		$.scrollTo(dimension_ui);
+		
 		//$('#sheet_dim_new_' + dimcount).hide();
 		//attach dimcount to the element
 		$('.btn_sheet_dimension_select_' + dimcount).data('dimcount', dimcount);
@@ -385,21 +388,31 @@ $(document).ready(function () {
 
 		$('input[name="dim_type_chooser_' + dimcount +'"]').change(function () {
 			if ($('input[name="dim_type_chooser_' + dimcount +'"]:checked').val() === 'sheet') {
+				//using a value from the sheet
 				$('#show_dim_fixed_dimension_input_' + $(this).data()['dimcount']).hide();
 				$('#show_dim_btn_sheet_dimension_select_' + $(this).data()['dimcount']).show();
 				//also clear value of fixed input field
 				$('input[name="dim_fixed_dimension_input_' + dimcount +'"]').val('');
+				delete dimensions_fixed[our_dim_name_is];
 			} else {
+				//using a fixed value
 				$('#show_dim_btn_sheet_dimension_select_' + $(this).data()['dimcount']).hide();
 				$('#show_dim_fixed_dimension_input_' + $(this).data()['dimcount']).show();
 				//remove any data stored in dimension_sheet
 				//which is easier said than done.
 				var our_dim_name_is = '';
+				var our_dim_label_is = '';
 				if ($('input[name="resuse_input_dimension_' + dimcount +'"]:checked').val() === 'No') {
 					our_dim_name_is = $("input[name='sheet_dimension_input_" + $(this).data()['dimcount'] + "']").val().uncapitalize();
+					our_dim_label_is = $("input[name='sheet_dimension_label_" + $(this).data()['dimcount'] + "']").val();
 				} else {
 					our_dim_name_is = $('#ylscomp_components_' + $(this).data()['dimcount'] +  ' option:selected').val().split('#').pop().uncapitalize();
+					our_dim_label_is = $('#ylscomp_labels_' + $(this).data()['dimcount'] +  ' option:selected').val();
 				}
+				dimensions_fixed[our_dim_name_is] = {'dimension_number' : $(this).data(),
+									'label' : our_dim_label_is,
+									'uri' : our_dim_name_is
+									};
 				delete dimensions_sheet[our_dim_name_is];
 			}
 		});
@@ -468,7 +481,7 @@ $(document).ready(function () {
 			}
 			dimensions_sheet[currentDimension] = dimensionInfo;
 		});
-});
+	});
 
 
     /*
@@ -792,7 +805,7 @@ $(document).ready(function () {
 	
 		//alwways need this
 		dsd[ylcs + dsd_name] = {"http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [{"type": "uri", "value": qb + "DataStructureDefinition" }]};
-		//loop to add. we can only add one extra item from the array above, so can't have order and optional. limit of our code
+		//loop to add. 
 		var dsd_components = [];
 		var comp;
 		var dimensions = {};
@@ -846,22 +859,35 @@ $(document).ready(function () {
 	triples[yls + "measure-ProportionOfSample"][rdfs + "range"] =  [{"type": "uri", "value" : xsd + "decimal"}]; 
 	triples[yls + "measure-ProportionOfSample"][rdf + "Property"] = [{"type": "uri", "value" : qb + "MeasureProperty"}];
 	*/
-	/*
-	TODO update to be based on user input
-	this code provides a fixed uneditable measure*/
-		var input_measure_name = 'ProportionOfSample';
-		var measure_name = 'measure-' + input_measure_name;
-		var measure_label = 'The proportion of the total sample that belong in all the categories noted';
-		var measure_type = xsd + 'decimal';
 	
-		var measure = {};
-		measure[yls + measure_name] = { };
-		labels[yls + measure_name] = {};
-		labels[yls + measure_name][rdfs + 'label'] =  make_rdf_label(measure_label);
-		measure[yls + measure_name][rdfs + "subPropertyOf"] = [make_rdf_object("obsValue", sdmx_measure)];
-		measure[yls + measure_name][rdfs + "range"] =  [make_rdf_object(measure_type)]; 
-		measure[yls + measure_name][rdf + "Property"] = [make_rdf_object("MeasureProperty", qb)];
-		measure[yls + measure_name]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] = [make_rdf_object('MeasureProperty', qb), make_rdf_object('ComponentProperty', qb)];
+		var input_measure_name = '';
+		var measure_label = '';
+		var measure_type_input = '';
+		var measure_name = '';
+		if ($('input[name="measure_choice_neon"]:checked').val() === 'new') {
+			input_measure_name = $('#new_measure_name').val();
+			measure_label = $('#new_measure_label').val();
+			measure_type_input = $('#new_measure_type').val();
+			measure_name = 'measure-' + input_measure_name;
+			var measure_type = xsd + measure_type_input;
+		
+			var measure = {};
+			//make the measure triples if required
+			measure[yls + measure_name] = { };
+			labels[yls + measure_name] = {};
+			labels[yls + measure_name][rdfs + 'label'] =  make_rdf_label(measure_label);
+			measure[yls + measure_name][rdfs + "subPropertyOf"] = [make_rdf_object("obsValue", sdmx_measure)];
+			measure[yls + measure_name][rdfs + "range"] =  [make_rdf_object(measure_type)]; 
+			measure[yls + measure_name][rdf + "Property"] = [make_rdf_object("MeasureProperty", qb)];
+			measure[yls + measure_name]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] = [make_rdf_object('MeasureProperty', qb), make_rdf_object('ComponentProperty', qb)];
+
+		} else {
+			measure_label = $('#existing_measure_select option:selected').text();
+			input_measure_name =$('#existing_measure_select option:selected').val().split('measure-').pop();
+			measure_name = 'measure-' + input_measure_name;
+		}
+
+		
 		//add the measure triple to the dsd 
 		dsd[ylcs + dsd_name][qb + "ComponentProperty"].push(make_rdf_object(measure_name, yls));
 		
@@ -968,12 +994,12 @@ $(document).ready(function () {
 			}
 		top_left = make_point(datarange['start']['col'],datarange['start']['row']);
 		bottom_right = make_point(datarange['end']['col'],datarange['end']['row']);
-		var cohort_dim_object = {};
+		var cohort_dim_object = [];
 		dimensions_raw['Cohort'] = {};
 		//if fixed cohort is being used set it's value
 		if ($("input[name='cohort_choice']:checked").val() === 'fixed') {
 			cohort_dim_object[$("input[name='which_cohort']:checked").val()] =  get_coords(top_left, bottom_right);
-		} else {
+		} else  {
 			
 			//collect values from the dimensions object where they should be
 			if (!dimensions_sheet['cohort']) {
@@ -982,15 +1008,13 @@ $(document).ready(function () {
 			}
 			for (var cohort_ele in dimensions_sheet['cohort']['elements']) {
 				if (dimensions_sheet['cohort']['elements'].hasOwnProperty(cohort_ele)) {
-					if (!cohort_dim_object[dimensions_sheet['cohort']['elements'][cohort_ele]['label']]) {
-						cohort_dim_object[dimensions_sheet['cohort']['elements'][cohort_ele]['label']] = [make_point(dimensions_sheet['cohort']['elements'][cohort_ele]['col'], dimensions_sheet['cohort']['elements'][cohort_ele]['row'])];
-					} else {
-						cohort_dim_object[dimensions_sheet['cohort']['elements'][cohort_ele]['label']].push(make_point(dimensions_sheet['cohort']['elements'][cohort_ele]['col'], dimensions_sheet['cohort']['elements'][cohort_ele]['row']));
-					}
+					var this_cohort_value = {};
+					this_cohort_value[dimensions_sheet['cohort']['elements'][cohort_ele]['label']] = get_coords(top_left, bottom_right, make_point(dimensions_sheet['cohort']['elements'][cohort_ele]['col'], dimensions_sheet['cohort']['elements'][cohort_ele]['row']));
+					cohort_dim_object.push(this_cohort_value);
 				}
 			}
 		}
-		dimensions_raw['Cohort']['values'] = [cohort_dim_object];	
+		dimensions_raw['Cohort']['values'] = cohort_dim_object;	
 		//add values for country and round in a similar fashion
 		dimensions_raw['Country'] = {};
 		var country_dim_object = {};
@@ -1008,6 +1032,18 @@ $(document).ready(function () {
 		dimensions_raw['Round'] = {'values' : [{'roundThree' : get_coords(make_point('1','3'), make_point('2','20'))}]};
 		*/
 
+		//now do a similar thing for fixed dimensions tha tdo not have sheet values
+		for (var fixed_dim in dimensions_fixed) {
+			if (dimensions_fixed.hasOwnProperty(fixed_dim))  {
+				var cohort_dim_object = {};
+				cohort_dim_object[$('input[name="dim_fixed_dimension_input_' + dimensions_fixed[fixed_dim]['dimension_number']['dimcount'] + '"]').val()] = get_coords(top_left, bottom_right);
+				dimensions_raw[fixed_dim] = {};
+				dimensions_raw[fixed_dim]['values'] = [cohort_dim_object];
+				dimensions_raw[fixed_dim]['dimension_uri'] = dimensions_fixed[fixed_dim]['uri'];
+				dimensions_raw[fixed_dim]['dim_label'] = dimensions_fixed[fixed_dim]['label'];
+			}
+		}
+
 
 		//TODO work out how to handle number strings, do we do this with user input or just set them if they parseInt? (this is bad for year dates eg 2011, but easy)
 		//TODO current plan uses the make_rdf_object() function which return a uri object for strings, boolean literal for true/false strings or interger for integer strings, it cannot handle dates. 
@@ -1024,12 +1060,24 @@ $(document).ready(function () {
 				_dim_object['values'] = [];
 				for (var dim_ele in dimensions_sheet[sheet_dim]['elements']) {
 					if (dimensions_sheet[sheet_dim]['elements'].hasOwnProperty(dim_ele)) {
-						if (!_dim_object[dimensions_sheet[sheet_dim]['elements'][dim_ele]['label']]) {
-							var a_dim_value = {};
-							a_dim_value[dimensions_sheet[sheet_dim]['elements'][dim_ele]['label']] = [make_point(dimensions_sheet[sheet_dim]['elements'][dim_ele]['col'], dimensions_sheet[sheet_dim]['elements'][dim_ele]['row'])];
-							_dim_object['values'] = [a_dim_value];
-						} else {  //TODO  check this there is a good chance this is wrong, but should only matter if the same dimension value occurs in more than one place in the sheet, so low priority atm.
-							_dim_object['values'][dimensions_sheet[sheet_dim]['elements'][dim_ele]['label']].push(make_point(dimensions_sheet[sheet_dim]['elements'][dim_ele]['col'], dimensions_sheet[sheet_dim]['elements'][dim_ele]['row']));
+						//check to see if the values list contains an object with the key dim_ele already
+						//if not the we can create on if so the add to the list of points it contains
+						var new_dim_object_value = true;
+						for (var dim_object_value in _dim_object['values']) {
+							if (_dim_object['values'].hasOwnProperty(dim_object_value)){
+								if (dimensions_sheet[sheet_dim]['elements'][dim_ele]['label'] in Object.keys(_dim_object['values'][dim_object_value])) {
+									new_dim_object_value = false;
+								}
+							}
+						}
+						if (new_dim_object_value) {	
+							var new_dim_object = {};
+							new_dim_object[dimensions_sheet[sheet_dim]['elements'][dim_ele]['label']] = get_coords(top_left, bottom_right, make_point(dimensions_sheet[sheet_dim]['elements'][dim_ele]['col'], dimensions_sheet[sheet_dim]['elements'][dim_ele]['row']));
+							_dim_object['values'].push(new_dim_object);
+
+						} else {  //TODO   this is wrong, but should only matter if the same dimension value occurs in more than one place in the sheet, so low priority atm.
+							
+							//_dim_object['values'][dimensions_sheet[sheet_dim]['elements'][dim_ele]['label']]['values'].addArray(get_coords(top_left, bottom_right, make_point(dimensions_sheet[sheet_dim]['elements'][dim_ele]['col'], dimensions_sheet[sheet_dim]['elements'][dim_ele]['row'])));
 						}	
 					}
 					_dim_object['dimension_uri'] = {};
@@ -1112,13 +1160,13 @@ $(document).ready(function () {
 	
 	1. build a list of all the points in the sheet that contain an observation. this is the data range + any extra points from any of the dimensions.
 	2. for each of these points, loop throug all the dimensions recording those that are relevant.
-	2a. add the measure to each.
 	
 	*/
 		var observation_points = [];
 		var dim_value, key;
 		observation_points = get_coords(top_left, bottom_right);
-		for (dim in dimensions_raw) { //for each dimension
+		/*currently we only support a single data range-block so this is not yet needed.
+		/*for (dim in dimensions_raw) { //for each dimension
 			if (dimensions_raw.hasOwnProperty(dim)) {
 				for (dim_value in dimensions_raw[dim]['values']) { //for each value add all points
 					for (key in dimensions_raw[dim]['values'][dim_value]) {
@@ -1128,9 +1176,8 @@ $(document).ready(function () {
 					}
 				}
 			}
-		}
-	//TODO I am here
-	//TODO add to observation a new namespace to contain the sheet row col id etc.
+		}*/
+
 	//TODO test	
 		//remove duplicate points
 		observation_points = observation_points.getUniquePoints();
