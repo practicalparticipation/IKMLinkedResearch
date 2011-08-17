@@ -24,6 +24,23 @@
             token = token.replace(/[^a-zA-Z 0-9]+/g, '');
             return token;
         };
+        
+        /**
+         * Helper to work around cross browser issues with multiselect,
+         * which some times returns an array of one value and sometimes
+         * just the value
+         * Extract the first item from a list or return a string
+         * @param val - the return from .val(0 on the element
+         * @param first - boolean - just return the first item in the list?
+         */
+        Grapher.sanitiseMultiSelect = function(val, first){
+            if ($.isArray(val)) {
+                if (first) {
+                    return (val.length > 0)?val[0]:'';
+                }
+            }
+            return val;
+        };
     
         /**
          * Observation Class
@@ -221,10 +238,11 @@
             // Connect the rechart button
             $('.rechart', ui).button()
                 .bind('click', function(evt){
+                var sms = Grapher.sanitiseMultiSelect; //shortcut
                     // Oddly we're getting arrays out of .val() for inputs which have been 'enhanced' by multiselect
-                    Grapher.selectedDimension = $('.dimensionchooser', Grapher.configui).val()[0];
-                    Grapher.selectedMeasure = $('.measurechooser', Grapher.configui).val()[0];
-                    Grapher.groupbyDimension = $('.groupbychooser', Grapher.configui).val()[0];
+                    Grapher.selectedDimension = sms($('.dimensionchooser', Grapher.configui).val(), true);
+                    Grapher.selectedMeasure = sms($('.measurechooser', Grapher.configui).val(), true);
+                    Grapher.groupbyDimension = sms($('.groupbychooser', Grapher.configui).val(), true);
                     Grapher.includeDimensions = _.map($('input[name=include]:checked'), function(el){ return $(el).attr('value');});
                     
                     Grapher.getData(Grapher.selectedMeasure, Grapher.selectedDimension, Grapher.updateData);
