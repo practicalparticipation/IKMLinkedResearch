@@ -81,7 +81,7 @@ $(document).ready(function() {
     }, 750);
     
     if (typeof sectionRatio != 'undefined') {
-        setSectionRatio(sectionRatio);
+        //setSectionRatio(sectionRatio);
     }
     
     /* list selection */

@@ -74,7 +74,8 @@ this sheet contains two tables of similar data one for November 2010 and one for
 2. Check 'India' is the country and 'round three' is the round.
 3. Click the 'use spreadsheet values' button under 'Choose fixed cohort or dynamic cohort values from spread sheet'.
 4. Click the 'Select Sheet Values' button and click on YC and OC in cells (1,2) (2,2) (above 0.53 and 0.49 respectively)
-5. Add data range. Choose 'Select Data Range'. Click 'OK', Click on cell(1,3) with the value 0.53, then cell(2,20) with the value 0.19 just above the value 976.
+5. Add data range. Choose 'Select Data Range'. Click 'OK', Click on cell(1,3) with the value 0.53, then cell(2,20) with the value 0.19 just above the value 976. Near the top of the page the text should now read: Data Range: (1,3) to (2,20)
+
 
 
 
