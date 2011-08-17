@@ -1,0 +1,22 @@
+.selector {
+    width: 400px;
+}
+
+.iPhoneCheckContainer {
+    min-width: 89px;
+}
+
+.iPhoneCheckHandle {
+    width: 33px !important;
+}
+
+.hide {
+    display:none;
+}
+
+.includechoice label {
+    font-size: large;
+    font-style: bold;
+    display:block;
+    float:left;
+}

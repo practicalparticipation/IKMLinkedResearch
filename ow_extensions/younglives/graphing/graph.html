@@ -1,6 +1,9 @@
 <html>
   <head>
     <link rel="stylesheet" href="js/jquery-ui-1.8.14.custom/css/ui-lightness/jquery-ui-1.8.14.custom.css"/>
+    <link rel="stylesheet" href="js/jquery-ui-multiselect.css"/>
+    <link rel="stylesheet" href="js/iphone-checkbox/style.css"/>
+    
     <link rel="stylesheet" href="css/grapher.css"/>
   
   </head>
@@ -8,16 +11,28 @@
       <div id="grapher"></div>
       
       <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
-      <script type="text/javascript" src="js/jquery-ui-1.8.14.custom/js/jquery-ui-1.8.14.custom.min.js"></script>
       <script type="text/javascript" src="js/underscore-min.js"></script>
       <script type="text/javascript" src="js/classy.js"></script>
       <script type="text/javascript" src="js/jquery.view.ejs.js"></script>
+      
+      <!--<script type="text/javascript" src="js/jquery-ui-1.8.14.custom/js/jquery-ui-1.8.14.custom.min.js"></script>-->
+      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js"></script>       
+      <script type="text/javascript" src="js/jquery.multiselect.min.js"></script>
+      <script type="text/javascript" src="js/iphone-checkbox/iphone-style-checkboxes.js"></script>
+      
       <script type="text/javascript" src="https://www.google.com/jsapi"></script>
       <script type="text/javascript" src="js/urlEncode.js"></script>
       <script type="text/javascript" src="js/jquery.sparql.js"></script>
-      <script type="text/javascript" src="js/grapher.js"></script>
       
+      <script type="text/javascript" src="js/grapher.js"></script>
+      <script type="text/javascript" src="js/grapher_plugins/grapher.table.js"></script>
+      <script type="text/javascript" src="js/grapher_plugins/grapher.columnchart.js"></script>
       <!-- DEBUG -->
       <script type="text/javascript" src="js/ejs_fulljslint.js"></script>
+      
+      <script type="text/javascript">
+           var opts = {'sparql_endpoint': 'http://localhost/IKMLinkedResearch/build/service/sparql'};
+            $('#grapher').yl_grapher(opts);
+      </script>
   </body>
 </html>

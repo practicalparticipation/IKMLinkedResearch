@@ -3,372 +3,383 @@
  * Graphing UI for YoungLives
  *
  */
+(function($, google){
+        var Grapher = {
+            data:null, //store for processed observations
+            dimensionValues:{ //Unique values for each standard dimension
+                'cohort':["http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/YC", 
+                              "http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/OC"],
+                'round':["http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/roundTwo",
+                             "http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/roundThree"],
+                'country':["http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India",
+                                "http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Peru"]
+            } 
+        };
 
-var Grapher = {  // Config object and api
-                            'target': $('#grapher'), // Target dom element
-                            'useFixtures':false, //Use static data from the fixtures folder
-                            'sparql_endpoint': 'http://localhost/IKMLinkedResearch/build/service/sparql', // Sparql Endpoint
-                            'selectedMeasure':'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/measure-ProportionOfSample',
-                            'selectedDimension':'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/UrbanOrRural',
-                            'groupbyDimension':'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Country', // Dimension to group along the x axis
-                            'includeDimensions':['http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Cohort'],
-                            'visType': 'columnchart', // Set default visualization
-                            'availableVisTypes': [ // Available Visualization types
-                                    {id:'columnchart',
-                                      title:'Column Chart'},
-                                    {id:'table',
-                                      title:'Data Table'}
-                            ],
-                            'dimensions': { 'ignore':[ // Dimensions to omit from the UI
-                                                        //'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Round'
-                                                    ],
-                                                    'standard':[ // Dimensions to render as standard options
-                                                        'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Cohort',
-                                                        'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Country',
-                                                        'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Round'
-                                                    ] 
-                                                  },
-                             'measures': { 'ignore':[] // Measures to ignore from the ui
-                                                }
-                           }; 
-(function(){ // Self-executing closure
-    // Hook up to the dom
-    Grapher.target.data('Grapher', Grapher);
+        /**
+         * Extracts and sluggifies the last uri component
+         */
+        Grapher.tokenizeURI = function(uri){
+            var token = uri.slice(uri.lastIndexOf('/')+1).toLowerCase();
+            token = token.replace(/[^a-zA-Z 0-9]+/g, '');
+            return token;
+        };
     
-    /**
-     * Fetch a DataStructureDefinition
-     *      
-     * Gets the dsd from the endpoint
-     */
-    Grapher.getDSD = function(uri) {
-        // Stubbed for now pending having a dsd in the store
-        var data = {};
-        Grapher.updateDSD(data);
-    };
+        /**
+         * Observation Class
+         */
+        Grapher.Observation = Class.$extend({ __init__ : function() { console.log('called'); }});
+        
+        /**
+          * Fetch a DataStructureDefinition
+          *      
+          * Gets the dsd from the endpoint
+          */
+         Grapher.getDSD = function(uri, callback) {
+             // Stubbed for now pending having a dsd in the store
+             callback({});
+         };
+        
+        /**
+         * Process and store a dsd
+         */
+        Grapher.updateDSD = function(data){
+            //Building a structure by hand for now
+            var dsd = {
+                label: 'A Structure for Summary Statistics from Young Lives',
+                dimensions: [
+                    {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/UrbanOrRural',
+                     label:'Urban or Rural living location'},
+                    {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/MothersEducation',
+                     label:"Mother's level of education"},
+                    {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Region',
+                     label:"Region in Country"},
+                    {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Gender',
+                     label:"Gender of respondant"},
+                    {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Cohort',
+                     label:'The Young Lives study Cohort'},
+                    {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Country',
+                     label:'The Country'},
+                    {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Round',
+                     label:'The Young Lives study round'}   
+                ],
+                get_dimension: function(uri) {
+                    var dimension =  _.detect(this.dimensions, function(dim){ 
+                        return dim.uri === uri; 
+                    });
+                    return dimension;
+                },
+                measures: [
+                    {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/measure-ProportionOfSample',
+                    label: 'The proportion of the sample in the categories noted'
+                     }
+                ],
+                get_measure: function(uri) {
+                    return _.detect(this.measures, function(mea){ return mea.uri === uri; });
+                }
+            };
+            
+            dsd.chooseable_dimensions = _.select(dsd.dimensions, function(v){
+                    var ignore =  _.include(Grapher.dimensions.ignore, v.uri);
+                    var standard = _.include(Grapher.dimensions.standard, v.uri);
+                    return (!ignore && !standard);
+            });
+            
+            dsd.standard_dimensions = _.select(dsd.dimensions, function(v){
+                    var ignore =  _.include(Grapher.dimensions.ignore, v.uri);
+                    var standard = _.include(Grapher.dimensions.standard, v.uri);
+                    return (!ignore && standard);
+            });
+            
+            dsd.chooseable_measures = _.select(dsd.measures, function(v){
+                    var ignore =  _.include(Grapher.measures.ignore, v.uri);
+                    return !ignore;
+            });
+            
+            Grapher.dsd = dsd;
+            Grapher.target.trigger('grapherDSDUpdated');
+        };
     
-    /**
-     * Extracts and sluggifies the last uri component
-     */
-    Grapher.tokenizeURI = function(uri){
-        var token = uri.slice(uri.lastIndexOf('/')+1).toLowerCase();
-        token = token.replace(/[^a-zA-Z 0-9]+/g, '');
-        return token;
-    };
-    
-    /**
-     * Observation Class
-     */
-    Grapher.Observation = Class.$extend({ __init__ : function() { console.log('called'); }});
-    
-    /**
-     * Process and store a dsd
-     */
-    Grapher.updateDSD = function(data){
-        //Building a structure by hand for now
-        var dsd = {
-            label: 'A Structure for Summary Statistics from Young Lives',
-            dimensions: [
-                {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/UrbanOrRural',
-                 label:'Urban or Rural living location'},
-                {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/MothersEducation',
-                 label:"Mother's level of education"},
-                {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Region',
-                 label:"Region in Country"},
-                {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Gender',
-                 label:"Gender of respondant"},
-                {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Cohort',
-                 label:'The Young Lives study Cohort'},
-                {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Country',
-                 label:'The Country'},
-                {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Round',
-                 label:'The Young Lives study round'},     
-            ],
-            get_dimension: function(uri) {
-                var dimension =  _.detect(this.dimensions, function(dim){ 
-                    return dim.uri === uri; 
+        /**
+         * Request graphable data and process the results
+         */
+        Grapher.getData = function(measure, dimension, callback){
+            var measure_token = Grapher.tokenizeURI(measure);
+            var dimension_token = Grapher.tokenizeURI(dimension);
+            var url = null;
+            
+            // Construct our request url
+            if (Grapher.useFixtures) { 
+                url = './fixtures/obs_data.json';
+            } else {
+                var squery = $.sparql(Grapher.sparql_endpoint)
+                    .prefix('ylss', 'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/')
+                    .prefix('qb', 'http://purl.org/linked-data/cube#')
+                    .select(['?cohort', '?country', '?round', '?' + measure_token, '?' + dimension_token])
+                        .where('?obs', '<'+measure+'>', '?' + measure_token)
+                            .where('<'+dimension+'>', '?' + dimension_token)
+                            .where('ylss:Cohort', '?cohort')
+                            .where('ylss:Round', '?round')
+                            .where('ylss:Country', '?country');
+                url = squery.config.endpoint + '?query=' + $.URLEncode(squery.serialiseQuery());
+                        
+            }
+            
+            // Make our ajax object
+            var request = $.ajax({
+                    type: "get",
+                    url: url,
+                    dataType: 'json'
+            });
+            
+            // Execute the request, passing in success and error callbacks
+            request.then(function(results){ callback(results); },
+                                 function(){ $.error('Failed to get data'); });
+            
+        };
+   
+        /**
+        * Process the sparql json and store in Grapher.data
+        * Emit an updated event
+        */
+        Grapher.updateData = function(data){
+            // Extract the results from the data
+            data = data.results.bindings;
+            
+            var items = [];
+            var dimValMap = {};
+            $.each(data, function(i,v){
+                // Data conversion
+                $.each(v, function(key, val){
+                    // Sort type and find labels
+                    if ( val.type === 'typed-literal' && parseFloat(val.value) ) {
+                        val.value = parseFloat(val.value);
+                        val.label = val.value.toString();
+                        val.coltype = 'number';
+                    }  
+                    if ( val.type === 'uri' ) {
+                        val.coltype = 'string';
+                        val.label = this.hasOwnProperty(key + '_label')
+                            ?this[key + '_label']:val.value.slice(val.value.lastIndexOf('/')+1);
+                    }                
                 });
-                return dimension;
-            },
-            measures: [
-                {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/measure-ProportionOfSample',
-                label: 'The proportion of the sample in the categories noted'
-                 }
-            ],
-            get_measure: function(uri) {
-                return _.detect(this.measures, function(mea){ return mea.uri === uri; });
+                items.push(Grapher.Observation.$withData(v));
+            
+            });
+            
+            Grapher.data = items;
+            Grapher.target.trigger('grapherDataUpdated');
+        };
+        
+        /**
+        * Draw the selected visualisation
+        */
+        Grapher.drawVis = function(){
+            // Set up chart options
+            var options = {'title': 'The Title',
+                                    'height': 400,
+                                    'width': 600};
+            
+            // Prepare using the selected plugin
+            if (Grapher.availablePlugins[Grapher.visType] !== undefined) {
+                var prepped_vis = Grapher.availablePlugins[Grapher.visType].prepare(Grapher);
+                // Draw the chart
+                prepped_vis.chart.draw(prepped_vis.table, options);
+            } else {
+                $.error('No Grapher plugin has been registered with an id of ' + Grapher.visType);
+            }
+        };
+   
+        /**
+        * Draw the Configuration screen
+        */
+        Grapher.drawConfig = function(){
+            var ui = $($.View('templates/configui.ejs', Grapher));
+            
+            // Prettify our options checkboxes
+            $('.options :checkbox', ui).iphoneStyle();
+            // Find our multiple selects
+            $('.filter .selector', ui).multiselect({selectedList:2});
+            
+            // Connect the filter selectors to their option checkboxes
+            $('.options :checkbox', ui).change(function(){
+                var filter = $('.filter', $(this).parents('.includechoice'));
+                if ($(this).is(':checked')) {
+                    filter.show('blind',{},500);
+                } else {
+                    filter.hide('blind',{},500);
+                }
+            });
+            
+            // Find all our single selects
+            $('.dimensionchooser, .measurechooser, .groupbychooser', ui).multiselect(
+                        {header: "Select an option",
+                          noneSelectedText: "Select an Option",
+                          selectedList: 1,
+                          multiple:false});
+                          
+            // Connect the rechart button
+            $('.rechart', ui).button()
+                .bind('click', function(evt){
+                    // Oddly we're getting arrays out of .val() for inputs which have been 'enhanced' by multiselect
+                    Grapher.selectedDimension = $('.dimensionchooser', Grapher.configui).val()[0];
+                    Grapher.selectedMeasure = $('.measurechooser', Grapher.configui).val()[0];
+                    Grapher.groupbyDimension = $('.groupbychooser', Grapher.configui).val()[0];
+                    Grapher.includeDimensions = _.map($('input[name=include]:checked'), function(el){ return $(el).attr('value');});
+                    
+                    Grapher.getData(Grapher.selectedMeasure, Grapher.selectedDimension, Grapher.updateData);
+                });
+            
+            Grapher.configui.append(ui); 
+        };
+   
+        /**
+        * Initialise Event Bindings
+        */
+        Grapher.initBindings = function(){
+            this.target.bind('grapherDataUpdated', this.drawVis);
+            this.target.bind('grapherVisTypeChanged', this.drawVis);
+            
+            this.target.bind('grapherDSDUpdated', this.drawConfig);
+            
+            this.target.find('#grapher-vis-type-switch').bind('change', function(evt, el){
+                Grapher.changeVisType($(this).val());
+            });
+        };
+        
+        /**
+         * Set a different vis type and notify listeners
+         */
+        Grapher.changeVisType = function(visType) {
+            Grapher.visType = visType;
+            Grapher.target.trigger('grapherVisTypeChanged');
+        };
+   
+        /**
+        * Initialise
+        * 
+        * Build html in target element
+        */
+        Grapher.init = function( options ){  
+        
+            if (options) {
+                $.extend(Grapher, $.fn.yl_grapher.defaults, options);
+            }
+            
+            Grapher.target = this;
+            
+            // Build our main layout
+            var markup = $($.View('templates/init.ejs', Grapher));
+            // Fancify the vis selector
+            $('#grapher-vis-type-switch', markup).multiselect(
+                        {header: "Select a visualisation",
+                          noneSelectedText: "Select a visualisation",
+                          selectedList: 1,
+                          multiple:false,
+                          click: function(event, ui){ Grapher.changeVisType(ui.value); }
+                         });
+            //tabify the interface
+            markup.tabs();
+            
+            Grapher.vis = markup.find('#grapher-vis');
+            Grapher.configui = markup.find('#grapher-configui');
+            
+            Grapher.target.append(markup);
+            
+            /** Volatile config actions:
+             * Fetch the DSD and the data
+             * Once we've got the data we can draw the inital graph
+             * Once we've got both data and dsd we can draw the config
+             * Once the graph and config have been drawn the first time we can 
+             * set up bindings to refresh the graph and config at appropriate points
+             */
+             var fetches = $.when(
+                 // Make sure the google libraries are in and then fetch 
+                 $.Deferred(
+                    function(deferred){
+                        google.load('visualization', '1', {'packages':['corechart', 'table']});
+                        google.setOnLoadCallback(function(){ deferred.resolve(); });
+                    }
+                 ),
+              
+                //Get the graphable data
+                $.Deferred(
+                    function(deferred){
+                        Grapher.getData(
+                            Grapher.selectedMeasure,
+                            Grapher.selectedDimension,
+                            function(data){
+                                Grapher.updateData(data);
+                                deferred.resolve();
+                            }
+                        );
+                }),
+                
+                // Get the configuration data
+                $.Deferred(
+                    function(deferred){
+                        Grapher.getDSD(
+                            Grapher.activeDSD,
+                            function(data){
+                                Grapher.updateDSD(data);
+                                deferred.resolve();
+                            }
+                        );
+                    }
+                 )
+             );
+             
+             // Once contingent events have all finished we can do the last bits and bobs
+             fetches.done(
+                function(){
+                    Grapher.drawVis();
+                    Grapher.drawConfig(); // Draw the config screen
+                    Grapher.initBindings(); // Set up the bindings
+                }
+             );
+        };
+ 
+        $.fn.yl_grapher = function(method) {
+            // Method calling logic
+            if ( Grapher[method] ) {
+              return Grapher[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ));
+            } else if ( typeof method === 'object' || ! method ) {
+              return Grapher.init.apply( this, arguments );
+            } else {
+              $.error( 'Method ' +  method + ' does not exist on jQuery.yl_grapher' );
             }
         };
         
-        dsd.chooseable_dimensions = _.select(dsd.dimensions, function(v){
-                var ignore =  _.include(Grapher.dimensions.ignore, v.uri);
-                var standard = _.include(Grapher.dimensions.standard, v.uri);
-                return (!ignore && !standard);
-        });
+         $.fn.yl_grapher.plugins = {}; // Available Visualization types
         
-        dsd.standard_dimensions = _.select(dsd.dimensions, function(v){
-                var ignore =  _.include(Grapher.dimensions.ignore, v.uri);
-                var standard = _.include(Grapher.dimensions.standard, v.uri);
-                return (!ignore && standard);
-        });
+        $.fn.yl_grapher.defaults = {  // Config object and api
+            'useFixtures':false, //Use static data from the fixtures folder
+            'sparql_endpoint': 'http://localhost/IKMLinkedResearch/build/service/sparql', // Sparql Endpoint
+            'activeDSD': 'http://data.younglives.org.uk/data/summary/SummaryStatistics', //URI of the DSD to graph
+            'selectedMeasure':'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/measure-ProportionOfSample',
+            'selectedDimension':'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/UrbanOrRural',
+            'groupbyDimension':'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Country', // Dimension to group along the x axis
+            'includeDimensions':['http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Cohort'],
+            'visType': 'table', // Set default visualization
+            'availablePlugins': $.fn.yl_grapher.plugins,
+            'dimensions': { 'ignore':[ // Dimensions to omit from the UI
+                                        //'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Round'
+                                    ],
+                                    'standard':[ // Dimensions to render as standard options
+                                        'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Cohort',
+                                        'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Country',
+                                        'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Round'
+                                    ] 
+                                  },
+             'measures': { 'ignore':[] // Measures to ignore from the ui
+                                }
+        };
         
-        dsd.chooseable_measures = _.select(dsd.measures, function(v){
-                var ignore =  _.include(Grapher.measures.ignore, v.uri);
-                return !ignore;
-        });
+        $.fn.yl_grapher.registerPlugin = function(plugin){
+            $.fn.yl_grapher.plugins[plugin.id] = plugin;
+        };
         
-        Grapher.dsd = dsd;
-        Grapher.target.trigger('grapherDSDUpdated');
-    };
-    
-    /**
-     * Request graphable data
-     */
-   Grapher.getData = function(measure, dimension){
-        var measure_token = Grapher.tokenizeURI(measure);
-        var dimension_token = Grapher.tokenizeURI(dimension);
+           
+ })(jQuery, google);
 
-        if (Grapher.useFixtures) { 
-            $.ajax({url:'./fixtures/obs_data.json', 
-                        dataType:'json',
-                        success:function(data){Grapher.updateData(data.results.bindings);}
-                      });
-        } else {
-            $.sparql(Grapher.sparql_endpoint)
-                .prefix('ylss', 'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/')
-                .prefix('qb', 'http://purl.org/linked-data/cube#')
-                .select(['?cohort', '?country', '?round', '?' + measure_token, '?' + dimension_token])
-                    .where('?obs', '<'+measure+'>', '?' + measure_token)
-                        .where('<'+dimension+'>', '?' + dimension_token)
-                        .where('ylss:Cohort', '?cohort')
-                        .where('ylss:Round', '?round')
-                        .where('ylss:Country', '?country')
-                .execute(Grapher.updateData);
-        }
-   };
-   
-   /**
-    * Process the sparql json and store in Grapher.data
-    * Emit an updated event
-    */
-   Grapher.updateData = function(data){
-        var items = [];
-        $.each(data, function(i,v){
-            // Data conversion
-            $.each(v, function(key, val){
-                if ( val.type == 'typed-literal' && parseFloat(val.value) ) {
-                    val.value = parseFloat(val.value);
-                    val.label = val.value.toString();
-                    val.coltype = 'number';
-                }  
-                if ( val.type == 'uri' ) {
-                    val.coltype = 'string';
-                    val.label = this.hasOwnProperty(key + '_label')
-                        ?this[key + '_label']:val.value.slice(val.value.lastIndexOf('/')+1);
-                }
-            });
-            items.push(Grapher.Observation.$withData(v));
-        
-        });
-        
-        Grapher.data = items;
-        Grapher.target.trigger('grapherDataUpdated');
-   };
-   
-   Grapher.drawVis = function(){
-        var vis_el = Grapher.vis[0]
-        var options = {'title': 'The Title',
-                                'height': 400,
-                                'width': 600};
-        var chart = null;
-        var table = null;
-        
-        switch (Grapher.visType) {
-            case 'table':
-                chart = new google.visualization.Table(vis_el);
-                table = new google.visualization.DataTable();
-                
-                var rowspec = [];
-                rowspec.push(['dimension', Grapher.groupbyDimension, 'string']);
-                $.each(Grapher.includeDimensions, function(i,v){
-                     rowspec.push(['dimension', v, 'string']);
-                });
-                rowspec.push(['dimension', Grapher.selectedDimension, 'string']);
-                rowspec.push(['measure', Grapher.selectedMeasure, 'number']);
-                
-                // Add a columns as per rowspec
-                $.each(rowspec, function(i,v){
-                    // use the first item in the rowspec tuple to arbitrate between get+_dimension and get_measure
-                    table.addColumn(v[2], Grapher.dsd['get_'+v[0]](v[1]).label);
-                });
-                
-                $.each(Grapher.data, function(i,obs) { 
-                    var observation = obs;
-                    var row = [];
-                    $.each(rowspec, function(i,spec){
-                        var data = observation[Grapher.tokenizeURI(spec[1])];
-                        row.push(data[(data.type === 'uri')?'label':'value']);
-                    });
-                    table.addRow(row);
-                });
-                break;
-            case 'columnchart':
-                chart = new google.visualization.ColumnChart(vis_el);
-                table = new google.visualization.DataTable();
-                
-                // We need unique values for our selectedDimension groupbyDimension and the includeDimensions
-                
-                var groupbyDimensionValues = _.uniq(_.map(Grapher.data, function(obs){ 
-                    return obs[Grapher.tokenizeURI(Grapher.groupbyDimension)].label;
-                }));
-                var selectedDimensionValues = _.uniq(_.map(Grapher.data, function(obs){ 
-                    return obs[Grapher.tokenizeURI(Grapher.selectedDimension)].label;
-                }));
-                var includeDimensionsValues = [];
-                $.each(Grapher.includeDimensions, function(i, dimuri){
-                   includeDimensionsValues.push([dimuri, _.uniq(_.map(Grapher.data, function(obs){
-                        return obs[Grapher.tokenizeURI(dimuri)].label;
-                    }))]);
-                });
-                
-                // Draw a column for the grouping dimension
-                table.addColumn('string', Grapher.dsd.get_dimension(Grapher.groupbyDimension).label);
-                
-                // Now add a column for each combination of selectedDimension and includedDimensions
-                $.each(selectedDimensionValues, function(i, sdv){
-                    if (includeDimensionsValues.length > 0) {
-                        $.each(includeDimensionsValues, function(i, id){
-                            $.each(id[1], function(i, idv){
-                                table.addColumn('number', sdv + ' /  ' + idv);
-                            });
-                        });
-                    } else {
-                        table.addColumn('number', sdv);
-                    }
-                });
 
-                // Prepare a data structure by agressive use of _.groupBy
-                var bucket_stack = [Grapher.tokenizeURI(Grapher.groupbyDimension),
-                                                Grapher.tokenizeURI(Grapher.selectedDimension)];
-                $.each(Grapher.includeDimensions, function(i, dim){
-                    bucket_stack.push(Grapher.tokenizeURI(dim));
-                });
-                
-                // We'd like a tree which has as many levels as there are items in bucket_stack
-                // 1. a recusive function which takes a list of observations, a list of dimension
-                // tokens, and the current position in that list.
-                //  It'll convert the supplied list into a bucketed object, then recurse into each bucket
-                
-                var paths = [];
-                var bucketeer = function(observations, keys, key_index) {
-                    if (key_index < (keys.length)) {
-                            observations = _.groupBy(observations, function(obs)  { return obs[keys[key_index]].label; });
-                            $.each(observations, function(i, v) {
-                                observations[i] = bucketeer(v, keys, key_index +1);
-                            });
-                    } 
-                    return observations;
-                };
-                var tree_data = bucketeer(Grapher.data.slice(0), bucket_stack, 0);          
-                
-                var rowspec = [];
-                var traverse = function(obj, path, paths, addpath) {
-                    var mypath = path.slice(0);
-                    if (addpath) {
-                        mypath.push(addpath);
-                    }
-                    if (obj instanceof Grapher.Observation) {
-                        paths.push(mypath);
-                    } else {
-                        $.each(obj, function(i,v){
-                            traverse(v, mypath, paths, i);
-                        });
-                    }
-                };
-                traverse(tree_data, [], rowspec, null);
-                
-                $.each(tree_data, function(i,v){
-                    // For this data table each top level key in tree_data will build a row
-                    var row = [i];
-                    $.each(rowspec, function(rsi, rsv){
-                        var val = 0;
-                        var cur = v;
-                        $.each(rsv.slice(1), function(i, key) { //slice the rowspec to omit the first key which
-                                                                                   // is handled by our outer iterator
-                            cur = cur[key];
-                        });
-                        row.push(cur[0][Grapher.tokenizeURI(Grapher.selectedMeasure)].value);
-                    });
-                    table.addRow(row);
-                });
-                break;
-        }  
-        // Draw the chart
-        chart.draw(table, options);  
-   };
-   
-   /**
-    * Draw the Configuration screen
-    */
-   Grapher.drawConfig = function(){
-        var ui = $($.View('templates/configui.ejs', Grapher.dsd));
-        
-        $('.options', ui).buttonset();
-        
-        // Connect the rechart button
-        $('.rechart', ui).button()
-            .bind('click', function(evt){
-                Grapher.selectedDimension = $('.dimensionchooser', Grapher.configui).val();
-                Grapher.groupbyDimension = $('input[name=groupby]:checked', Grapher.configui).attr('value');
-                Grapher.includeDimensions = _.map($('input[name=include]:checked'), function(el){ return $(el).attr('value');});
-                Grapher.getData(Grapher.selectedMeasure, Grapher.selectedDimension);
-            });
-        
-        Grapher.configui.append(ui);
-   };
-   
-   /**
-    * Initialise Event Bindings
-    */
-   Grapher.initBindings = function(){
-        this.target.bind('grapherDataUpdated', this.drawVis);
-        this.target.bind('grapherVisTypeChanged', this.drawVis);
-        
-        this.target.bind('grapherDSDUpdated', this.drawConfig);
-        
-        this.target.find('#grapher-vis-type-switch').bind('change', function(evt, el){
-            Grapher.visType = $(this).val();
-            Grapher.target.trigger('grapherVisTypeChanged');
-        });
-   };
-   
-   /**
-    * Initialise
-    * 
-    * Build html in target element
-    */
-   Grapher.init = function(){  
-        // Build our main layout
-        var markup = $($.View('templates/init.ejs', Grapher));
-        
-        markup.tabs();
-        
-        Grapher.vis = markup.find('#grapher-vis');
-        Grapher.configui = markup.find('#grapher-configui');
-        
-        Grapher.target.append(markup);
-        
-        Grapher.initBindings();
-        
-        // Load the Visualization API and the piechart package.
-       google.load('visualization', '1', {'packages':['corechart', 'table']});
-       google.setOnLoadCallback(function(){
-            Grapher.getDSD('http://data.younglives.org.uk/data/summary/SummaryStatistics');
-            Grapher.getData(Grapher.selectedMeasure, Grapher.selectedDimension);
-       });
-
-   };
-
-   // Kick Off
-   Grapher.init();
-   
-}()); // End self-executing closure
