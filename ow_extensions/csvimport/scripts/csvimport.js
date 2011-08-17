@@ -1250,9 +1250,9 @@ $(document).ready(function () {
 		//now add our measure 
 		sparql_q = sparql_q.where('?dsd', 'qb:ComponentProperty', 'yls:' + measure_name )
 		//now loop over our dimensions
-		for (dim in dimensions_raw) {
+		for (var dim in dimensions_raw) {
 			if (dimensions_raw.hasOwnProperty(dim)) {
-				if (dimensions_raw[dim].hasOwnProperty('dimension_uri')) {
+				if (dimensions_raw[dim].hasOwnProperty('dimension_uri') && dimensions_raw[dim]['dimension_uri'].uncapitalize() !== 'cohort') {
 					sparql_q = sparql_q.where('?dsd', 'qb:ComponentProperty', 'ylcomp:' + dimensions_raw[dim]['dimension_uri'].uncapitalize() )
 				}
 			}	
@@ -1261,7 +1261,8 @@ $(document).ready(function () {
 		//all the rest of the code for importing data happens in here as we _MUST_ have a response or we cannot know what to do with the dsd
 		function dsd_sparql_result(data) {
 	
-			var dsd_data = data;
+			var dsd_data = {};
+			dsd_data = data;
 	
 			//ok data is a list of objects each with a dsd and label keys
 			var have_dsd = false;
@@ -1276,6 +1277,8 @@ $(document).ready(function () {
 			//write this list into the page
 			//define a place to put this.
 			var dsd_list_place = $('#dsd_stuff') ;
+			//remove any old lists
+			$('#dsd_stuff ul').remove();
 			dsd_list_place.prepend(dsd_list_place_str);
 			//show dialog options box
 			$('#import-options').show();
@@ -1326,7 +1329,7 @@ $(document).ready(function () {
 				//dimensionString = $.toJSON( {"http://data.younglives.org.uk//7829f2eacb60b5f76a60316eae8573d9/74d71e57-8e62-4845-81e2-506b67006c94c1_r79":{"http://www.w3.org/1999/02/22-rdf-syntax-ns#type":[{"type":"uri","value":"http://purl.org/linked-data/cube#Observation"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/measure-ProportionOfSample":[{"type":"literal","value":"0.51","datatype":"http://www.w3.org/2001/XMLSchema#decimal"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/cohort":[{"type":"uri","value":"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/YC"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/country":[{"type":"uri","value":"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/round":[{"type":"uri","value":"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/roundThree"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/sampleSize":[{"type":"uri","value":"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/1930"}],"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/MothersEducation":[{"type":"uri","value":"http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Mother%20has%20no%20educationßß;'%20f"}]}});	
 			}
 
-			$("#extract_triples_btn").click(function(){
+			$("#extract_triples_btn").one('click', function(){
 				//check all is well first
 				if (check_before_post()) {
 					$.post(actionURL, {dimensions: dimensionString}, function () {
