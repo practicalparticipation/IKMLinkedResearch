@@ -3,20 +3,19 @@
  * Graphing UI for YoungLives
  *
  */
- (function($, google){
-        var Grapher = {};
-        
-         /**
-          * Fetch a DataStructureDefinition
-          *      
-          * Gets the dsd from the endpoint
-          */
-         Grapher.getDSD = function(uri) {
-             // Stubbed for now pending having a dsd in the store
-             var data = {};
-             Grapher.updateDSD(data);
-         };
-    
+(function($, google){
+        var Grapher = {
+            data:null, //store for processed observations
+            dimensionValues:{ //Unique values for each standard dimension
+                'cohort':["http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/YC", 
+                              "http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/OC"],
+                'round':["http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/roundTwo",
+                             "http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/roundThree"],
+                'country':["http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India",
+                                "http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Peru"]
+            } 
+        };
+
         /**
          * Extracts and sluggifies the last uri component
          */
@@ -30,6 +29,16 @@
          * Observation Class
          */
         Grapher.Observation = Class.$extend({ __init__ : function() { console.log('called'); }});
+        
+        /**
+          * Fetch a DataStructureDefinition
+          *      
+          * Gets the dsd from the endpoint
+          */
+         Grapher.getDSD = function(uri, callback) {
+             // Stubbed for now pending having a dsd in the store
+             callback({});
+         };
         
         /**
          * Process and store a dsd
@@ -52,7 +61,7 @@
                     {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Country',
                      label:'The Country'},
                     {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Round',
-                     label:'The Young Lives study round'},     
+                     label:'The Young Lives study round'}   
                 ],
                 get_dimension: function(uri) {
                     var dimension =  _.detect(this.dimensions, function(dim){ 
@@ -92,19 +101,18 @@
         };
     
         /**
-         * Request graphable data
+         * Request graphable data and process the results
          */
-        Grapher.getData = function(measure, dimension){
+        Grapher.getData = function(measure, dimension, callback){
             var measure_token = Grapher.tokenizeURI(measure);
             var dimension_token = Grapher.tokenizeURI(dimension);
-
+            var url = null;
+            
+            // Construct our request url
             if (Grapher.useFixtures) { 
-                $.ajax({url:'./fixtures/obs_data.json', 
-                            dataType:'json',
-                            success:function(data){Grapher.updateData(data.results.bindings);}
-                          });
+                url = './fixtures/obs_data.json';
             } else {
-                $.sparql(Grapher.sparql_endpoint)
+                var squery = $.sparql(Grapher.sparql_endpoint)
                     .prefix('ylss', 'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/')
                     .prefix('qb', 'http://purl.org/linked-data/cube#')
                     .select(['?cohort', '?country', '?round', '?' + measure_token, '?' + dimension_token])
@@ -112,9 +120,22 @@
                             .where('<'+dimension+'>', '?' + dimension_token)
                             .where('ylss:Cohort', '?cohort')
                             .where('ylss:Round', '?round')
-                            .where('ylss:Country', '?country')
-                    .execute(Grapher.updateData);
+                            .where('ylss:Country', '?country');
+                url = squery.config.endpoint + '?query=' + $.URLEncode(squery.serialiseQuery());
+                        
             }
+            
+            // Make our ajax object
+            var request = $.ajax({
+                    type: "get",
+                    url: url,
+                    dataType: 'json'
+            });
+            
+            // Execute the request, passing in success and error callbacks
+            request.then(function(results){ callback(results); },
+                                 function(){ $.error('Failed to get data'); });
+            
         };
    
         /**
@@ -122,20 +143,25 @@
         * Emit an updated event
         */
         Grapher.updateData = function(data){
+            // Extract the results from the data
+            data = data.results.bindings;
+            
             var items = [];
+            var dimValMap = {};
             $.each(data, function(i,v){
                 // Data conversion
                 $.each(v, function(key, val){
-                    if ( val.type == 'typed-literal' && parseFloat(val.value) ) {
+                    // Sort type and find labels
+                    if ( val.type === 'typed-literal' && parseFloat(val.value) ) {
                         val.value = parseFloat(val.value);
                         val.label = val.value.toString();
                         val.coltype = 'number';
                     }  
-                    if ( val.type == 'uri' ) {
+                    if ( val.type === 'uri' ) {
                         val.coltype = 'string';
                         val.label = this.hasOwnProperty(key + '_label')
                             ?this[key + '_label']:val.value.slice(val.value.lastIndexOf('/')+1);
-                    }
+                    }                
                 });
                 items.push(Grapher.Observation.$withData(v));
             
@@ -144,7 +170,6 @@
             Grapher.data = items;
             Grapher.target.trigger('grapherDataUpdated');
         };
-        
         
         /**
         * Draw the selected visualisation
@@ -156,7 +181,7 @@
                                     'width': 600};
             
             // Prepare using the selected plugin
-            if (Grapher.availablePlugins[Grapher.visType] != undefined) {
+            if (Grapher.availablePlugins[Grapher.visType] !== undefined) {
                 var prepped_vis = Grapher.availablePlugins[Grapher.visType].prepare(Grapher);
                 // Draw the chart
                 prepped_vis.chart.draw(prepped_vis.table, options);
@@ -171,28 +196,41 @@
         Grapher.drawConfig = function(){
             var ui = $($.View('templates/configui.ejs', Grapher));
             
-            // Find out buttonsets
-            $('.options', ui).buttonset();
+            // Prettify our options checkboxes
+            $('.options :checkbox', ui).iphoneStyle();
+            // Find our multiple selects
+            $('.filter .selector', ui).multiselect({selectedList:2});
+            
+            // Connect the filter selectors to their option checkboxes
+            $('.options :checkbox', ui).change(function(){
+                var filter = $('.filter', $(this).parents('.includechoice'));
+                if ($(this).is(':checked')) {
+                    filter.show('blind',{},500);
+                } else {
+                    filter.hide('blind',{},500);
+                }
+            });
             
             // Find all our single selects
-            $('.dimensionchooser, .measurechooser', ui).multiselect({header: "Select an option",
-                                                     noneSelectedText: "Select an Option",
-                                                     selectedList: 1,
-                                                     multiple:false});
-            // Find our multiple selects
-            $('.cohortfilter', ui).multiselect({selectedList:2
-                                                              });
-            
+            $('.dimensionchooser, .measurechooser, .groupbychooser', ui).multiselect(
+                        {header: "Select an option",
+                          noneSelectedText: "Select an Option",
+                          selectedList: 1,
+                          multiple:false});
+                          
             // Connect the rechart button
             $('.rechart', ui).button()
                 .bind('click', function(evt){
-                    Grapher.selectedDimension = $('.dimensionchooser', Grapher.configui).val();
-                    Grapher.groupbyDimension = $('input[name=groupby]:checked', Grapher.configui).attr('value');
+                    // Oddly we're getting arrays out of .val() for inputs which have been 'enhanced' by multiselect
+                    Grapher.selectedDimension = $('.dimensionchooser', Grapher.configui).val()[0];
+                    Grapher.selectedMeasure = $('.measurechooser', Grapher.configui).val()[0];
+                    Grapher.groupbyDimension = $('.groupbychooser', Grapher.configui).val()[0];
                     Grapher.includeDimensions = _.map($('input[name=include]:checked'), function(el){ return $(el).attr('value');});
-                    Grapher.getData(Grapher.selectedMeasure, Grapher.selectedDimension);
+                    
+                    Grapher.getData(Grapher.selectedMeasure, Grapher.selectedDimension, Grapher.updateData);
                 });
             
-            Grapher.configui.append(ui);
+            Grapher.configui.append(ui); 
         };
    
         /**
@@ -205,9 +243,16 @@
             this.target.bind('grapherDSDUpdated', this.drawConfig);
             
             this.target.find('#grapher-vis-type-switch').bind('change', function(evt, el){
-                Grapher.visType = $(this).val();
-                Grapher.target.trigger('grapherVisTypeChanged');
+                Grapher.changeVisType($(this).val());
             });
+        };
+        
+        /**
+         * Set a different vis type and notify listeners
+         */
+        Grapher.changeVisType = function(visType) {
+            Grapher.visType = visType;
+            Grapher.target.trigger('grapherVisTypeChanged');
         };
    
         /**
@@ -219,13 +264,21 @@
         
             if (options) {
                 $.extend(Grapher, $.fn.yl_grapher.defaults, options);
-            };
+            }
             
             Grapher.target = this;
             
             // Build our main layout
             var markup = $($.View('templates/init.ejs', Grapher));
-            
+            // Fancify the vis selector
+            $('#grapher-vis-type-switch', markup).multiselect(
+                        {header: "Select a visualisation",
+                          noneSelectedText: "Select a visualisation",
+                          selectedList: 1,
+                          multiple:false,
+                          click: function(event, ui){ Grapher.changeVisType(ui.value); }
+                         });
+            //tabify the interface
             markup.tabs();
             
             Grapher.vis = markup.find('#grapher-vis');
@@ -233,14 +286,57 @@
             
             Grapher.target.append(markup);
             
-            Grapher.initBindings();
-            
-            // Load the Visualization API and the piechart package.
-           google.load('visualization', '1', {'packages':['corechart', 'table']});    
-           google.setOnLoadCallback(function(){
-                    Grapher.getDSD('http://data.younglives.org.uk/data/summary/SummaryStatistics');
-                    Grapher.getData(Grapher.selectedMeasure, Grapher.selectedDimension);
-            });
+            /** Volatile config actions:
+             * Fetch the DSD and the data
+             * Once we've got the data we can draw the inital graph
+             * Once we've got both data and dsd we can draw the config
+             * Once the graph and config have been drawn the first time we can 
+             * set up bindings to refresh the graph and config at appropriate points
+             */
+             var fetches = $.when(
+                 // Make sure the google libraries are in and then fetch 
+                 $.Deferred(
+                    function(deferred){
+                        google.load('visualization', '1', {'packages':['corechart', 'table']});
+                        google.setOnLoadCallback(function(){ deferred.resolve(); });
+                    }
+                 ),
+              
+                //Get the graphable data
+                $.Deferred(
+                    function(deferred){
+                        Grapher.getData(
+                            Grapher.selectedMeasure,
+                            Grapher.selectedDimension,
+                            function(data){
+                                Grapher.updateData(data);
+                                deferred.resolve();
+                            }
+                        );
+                }),
+                
+                // Get the configuration data
+                $.Deferred(
+                    function(deferred){
+                        Grapher.getDSD(
+                            Grapher.activeDSD,
+                            function(data){
+                                Grapher.updateDSD(data);
+                                deferred.resolve();
+                            }
+                        );
+                    }
+                 )
+             );
+             
+             // Once contingent events have all finished we can do the last bits and bobs
+             fetches.done(
+                function(){
+                    Grapher.drawVis();
+                    Grapher.drawConfig(); // Draw the config screen
+                    Grapher.initBindings(); // Set up the bindings
+                }
+             );
         };
  
         $.fn.yl_grapher = function(method) {
@@ -259,6 +355,7 @@
         $.fn.yl_grapher.defaults = {  // Config object and api
             'useFixtures':false, //Use static data from the fixtures folder
             'sparql_endpoint': 'http://localhost/IKMLinkedResearch/build/service/sparql', // Sparql Endpoint
+            'activeDSD': 'http://data.younglives.org.uk/data/summary/SummaryStatistics', //URI of the DSD to graph
             'selectedMeasure':'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/measure-ProportionOfSample',
             'selectedDimension':'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/UrbanOrRural',
             'groupbyDimension':'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Country', // Dimension to group along the x axis

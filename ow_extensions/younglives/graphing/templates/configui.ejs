@@ -1,7 +1,7 @@
 <div class="configui">
 <div class="dimensionchoice">
     Show me: 
-    <select class="dimensionchooser selector" name="dimension" multiple="false">
+    <select class="dimensionchooser selector" name="dimension">
         <% $.each(dsd.chooseable_dimensions, function(i,v){ %>
             <option value="<%= v.uri %>"
                         <% if (v.uri == selectedDimension) { %>selected="selected"<% } %> >
@@ -11,30 +11,34 @@
     </select>
 </div>
 
-<div class="includechoice options">
+<div class="includechoices options">
     Combined with:
     <% $.each(dsd.standard_dimensions, function(i,v){ %>
-        <input type="checkbox" 
-                    id="<%= 'include_' + i.toString() %>" 
-                    name="include" 
-                    <% if (_.include(includeDimensions, v.uri)) { %>checked="checked"<% } %>
-                    value="<%= v.uri %>"/>
-        <label for="<%= 'include_' + i.toString() %>">
-            <%= v.label %>
-        </label>
+            <div class="includechoice">
+                <label for="<%= 'include_' + i.toString() %>">
+                    <%= v.label %>
+                </label>
+                <input type="checkbox" 
+                            id="<%= 'include_' + i.toString() %>" 
+                            name="include" 
+                            <% if (_.include(includeDimensions, v.uri)) { %>checked="checked"<% } %>
+                            value="<%= v.uri %>"/>
+            
+                <div class="filter <% if (!_.include(includeDimensions, v.uri)) { %>hide<% } %>">
+                    <select class="<%= tokenizeURI(v.uri) %>filter selector" name="<%= tokenizeURI(v.uri) %>filter" multiple="multiple">
+                        <% $.each(dimensionValues[tokenizeURI(v.uri)], function(vdex, val){ %>
+                            <option value="<%= val %>" selected="selected"><%= tokenizeURI(val) %></option>
+                        <% }); %>
+                    </select>
+                </div>
+            </div>
+         
     <% }) %>
-</div>
-
-<div class="filter">
-    <select class="cohortfilter selector" name="cohortfilter" multiple="multiple">
-        <option value="YC">Young Cohort</option>
-        <option value="OC">Older Cohort</option>
-    </select>
 </div>
 
 <div class="measurechoice">
     As:
-    <select class="measurechooser selector" name="measure" multiple="false">
+    <select class="measurechooser selector" name="measure">
         <% $.each(dsd.chooseable_measures, function(i,v){ %>
             <option value="<%= v.uri %>"
                 <% if (v.uri == selectedMeasure) { %>selected="selected"<% } %>>
@@ -44,18 +48,16 @@
     </select>
 </div>
 
-<div class="grouping options">
+<div class="groupbychoice">
     Group by:
-    <% $.each(dsd.standard_dimensions, function(i,v){ %>
-        <input type="radio" 
-                    id="<%= 'group_' + i.toString() %>" 
-                    name="groupby" 
-                    <% if (v.uri == groupbyDimension) { %>checked="checked"<% } %>
-                    value="<%= v.uri %>"/>
-        <label for="<%= 'group_' + i.toString() %>">
-            <%= v.label %>
-        </label>
-    <% }) %>
+    <select class="groupbychooser selector" name="group">
+        <% $.each(dsd.standard_dimensions, function(i,v){ %>
+            <option value="<%= v.uri %>"
+                <% if (v.uri == groupbyDimension) { %>selected="selected"<% } %>>
+                <%= v.label %>
+            </option>
+        <% }) %>
+     </select>
 </div>
 
 
