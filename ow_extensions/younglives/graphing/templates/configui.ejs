@@ -1,7 +1,7 @@
 <div class="configui">
 <div class="dimensionchoice">
     Show me: 
-    <select class="dimensionchooser" name="dimension" multiple="false">
+    <select class="dimensionchooser selector" name="dimension" multiple="false">
         <% $.each(dsd.chooseable_dimensions, function(i,v){ %>
             <option value="<%= v.uri %>"
                         <% if (v.uri == selectedDimension) { %>selected="selected"<% } %> >
@@ -25,9 +25,16 @@
     <% }) %>
 </div>
 
+<div class="filter">
+    <select class="cohortfilter selector" name="cohortfilter" multiple="multiple">
+        <option value="YC">Young Cohort</option>
+        <option value="OC">Older Cohort</option>
+    </select>
+</div>
+
 <div class="measurechoice">
     As:
-    <select class="measurechooser" name="measure" multiple="false">
+    <select class="measurechooser selector" name="measure" multiple="false">
         <% $.each(dsd.chooseable_measures, function(i,v){ %>
             <option value="<%= v.uri %>"
                 <% if (v.uri == selectedMeasure) { %>selected="selected"<% } %>>

@@ -171,12 +171,17 @@
         Grapher.drawConfig = function(){
             var ui = $($.View('templates/configui.ejs', Grapher));
             
+            // Find out buttonsets
             $('.options', ui).buttonset();
-            $('select', ui).multiselect({
-                                                       header: "Select an option",
-                                                       noneSelectedText: "Select an Option",
-                                                       selectedList: 1,
-                                                    multiple:false});
+            
+            // Find all our single selects
+            $('.dimensionchooser, .measurechooser', ui).multiselect({header: "Select an option",
+                                                     noneSelectedText: "Select an Option",
+                                                     selectedList: 1,
+                                                     multiple:false});
+            // Find our multiple selects
+            $('.cohortfilter', ui).multiselect({selectedList:2
+                                                              });
             
             // Connect the rechart button
             $('.rechart', ui).button()
