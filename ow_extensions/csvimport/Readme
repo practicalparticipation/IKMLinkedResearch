@@ -60,10 +60,12 @@ something is writing '* Configurations' into the bottom of the page, when found 
 Give me Help, well it doesn't.
 Only tested in ff 5.0, may well not work in other browsers, don't use them.
 could use some extra styling.
+ontowiki creates an unlabeled DataStrucutureDefinition in addition to the labeled one we aim to create, don't know why, judged not serious as this at worst results in some data duplication, and our current sparql queries all ask for dsd's with labels, so the extra ones are not used.
 
 Example 1.
 
-export from google docs the 1st sheet of 'India - Country Report Data Table' called 'R3 Sample Characteristics' as csv. Import this into the Young lives csv importer (see start of this file).
+export from google docs the 1st sheet of 'India - Country Report Data Table' called 'R3 Sample Characteristics' as csv. 
+As the importer takes values from the csv file directly, if there are any errors or inconsistencies in the csv file they will be imported into ontowiki. It is best to try and fix such thing in the csv data before we import it. When we view this speadsheet there is one inconsistency which is the value 'rural' is spelt with a lowercase 'r' unlike all they other values. We need to change this before we import the data. This can be done by opening the csv file in an editor, and doing a search and replace action to change 'rural' to 'Rural' and resave the csv file. It is now ready to import this into the Young lives csv importer (see start of this file).
 
 overview:
 this sheet contains two tables of similar data one for November 2010 and one for January 2011. To import this data we will have to make two separate export triples actions.
