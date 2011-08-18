@@ -21,6 +21,9 @@
          */
         Grapher.tokenizeURI = function(uri){
             var token = uri.slice(uri.lastIndexOf('/')+1).toLowerCase();
+	    if (token.lastIndexOf('#')) {
+		token = token.slice(token.lastIndexOf('#')+1);
+	    }
             token = token.replace(/[^a-zA-Z 0-9]+/g, '');
             return token;
         };
@@ -48,19 +51,19 @@
             var dsd = {
                 label: 'A Structure for Summary Statistics from Young Lives',
                 dimensions: [
-                    {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/UrbanOrRural',
+                    {uri:'http://data.younglives.org.uk/component#localityType',
                      label:'Urban or Rural living location'},
-                    {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/MothersEducation',
+                    {uri:'http://data.younglives.org.uk/component#mothersEducation',
                      label:"Mother's level of education"},
-                    {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Region',
+                    {uri:'http://data.younglives.org.uk/component#region',
                      label:"Region in Country"},
-                    {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Gender',
+                    {uri:'http://data.younglives.org.uk/component#gender',
                      label:"Gender of respondant"},
-                    {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Cohort',
+                    {uri:'http://data.younglives.org.uk/component#cohort',
                      label:'The Young Lives study Cohort'},
-                    {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Country',
+                    {uri:'http://data.younglives.org.uk/component#country',
                      label:'The Country'},
-                    {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Round',
+                    {uri:'http://data.younglives.org.uk/component#round',
                      label:'The Young Lives study round'}   
                 ],
                 get_dimension: function(uri) {
@@ -114,13 +117,14 @@
             } else {
                 var squery = $.sparql(Grapher.sparql_endpoint)
                     .prefix('ylss', 'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/')
+		    .prefix('ylcomp', 'http://data.younglives.org.uk/component#')
                     .prefix('qb', 'http://purl.org/linked-data/cube#')
                     .select(['?cohort', '?country', '?round', '?' + measure_token, '?' + dimension_token])
                         .where('?obs', '<'+measure+'>', '?' + measure_token)
                             .where('<'+dimension+'>', '?' + dimension_token)
-                            .where('ylss:Cohort', '?cohort')
-                            .where('ylss:Round', '?round')
-                            .where('ylss:Country', '?country');
+                            .where('ylcomp:cohort', '?cohort')
+                            .where('ylcomp:round', '?round')
+                            .where('ylcomp:country', '?country');
                 url = squery.config.endpoint + '?query=' + $.URLEncode(squery.serialiseQuery());
                         
             }
@@ -222,9 +226,9 @@
             $('.rechart', ui).button()
                 .bind('click', function(evt){
                     // Oddly we're getting arrays out of .val() for inputs which have been 'enhanced' by multiselect
-                    Grapher.selectedDimension = $('.dimensionchooser', Grapher.configui).val()[0];
-                    Grapher.selectedMeasure = $('.measurechooser', Grapher.configui).val()[0];
-                    Grapher.groupbyDimension = $('.groupbychooser', Grapher.configui).val()[0];
+                    Grapher.selectedDimension = $('.dimensionchooser', Grapher.configui).val();
+                    Grapher.selectedMeasure = $('.measurechooser', Grapher.configui).val();
+                    Grapher.groupbyDimension = $('.groupbychooser', Grapher.configui).val();
                     Grapher.includeDimensions = _.map($('input[name=include]:checked'), function(el){ return $(el).attr('value');});
                     
                     Grapher.getData(Grapher.selectedMeasure, Grapher.selectedDimension, Grapher.updateData);
@@ -357,18 +361,18 @@
             'sparql_endpoint': 'http://localhost/IKMLinkedResearch/build/service/sparql', // Sparql Endpoint
             'activeDSD': 'http://data.younglives.org.uk/data/summary/SummaryStatistics', //URI of the DSD to graph
             'selectedMeasure':'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/measure-ProportionOfSample',
-            'selectedDimension':'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/UrbanOrRural',
-            'groupbyDimension':'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Country', // Dimension to group along the x axis
-            'includeDimensions':['http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Cohort'],
+            'selectedDimension':'http://data.younglives.org.uk/component#localityType',
+            'groupbyDimension':'http://data.younglives.org.uk/component#country', // Dimension to group along the x axis
+            'includeDimensions':['http://data.younglives.org.uk/component#cohort'],
             'visType': 'table', // Set default visualization
             'availablePlugins': $.fn.yl_grapher.plugins,
             'dimensions': { 'ignore':[ // Dimensions to omit from the UI
                                         //'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Round'
                                     ],
                                     'standard':[ // Dimensions to render as standard options
-                                        'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Cohort',
-                                        'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Country',
-                                        'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Round'
+                                        'http://data.younglives.org.uk/component#cohort',
+                                        'http://data.younglives.org.uk/component#country',
+                                        'http://data.younglives.org.uk/component#round'
                                     ] 
                                   },
              'measures': { 'ignore':[] // Measures to ignore from the ui
