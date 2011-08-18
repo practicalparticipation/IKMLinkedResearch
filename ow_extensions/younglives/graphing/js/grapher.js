@@ -17,6 +17,24 @@
             includeDimensionFilters: {} // Filter settings for included dimensions
         };
 
+
+	//setup some namespaces
+	Grapher.yld =  'http://data.younglives.org.uk/data/';
+	Grapher.ylcs =  'http://data.younglives.org.uk/data/summary/';
+	Grapher.yls = 'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/';
+	Grapher.ylcomp =  'http://data.younglives.org.uk/component#';
+	Grapher.qb = 'http://purl.org/linked-data/cube#';
+	Grapher.rdf = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
+	Grapher.rdfs = 'http://www.w3.org/2000/01/rdf-schema#';
+	Grapher.sdmx_measure = 'http://purl.org/linked-data/sdmx/2009/measures#';
+	Grapher.sdmx_dimension = 'http://purl.org/linked-data/sdmx/2009/dimension#'; 
+	Grapher.sdmx_code = 'http://purl.org/linked-data/sdmx/2009/code#';
+	Grapher.xsd = 'http://www.w3.org/2001/XMLSchema#';
+	
+	
+
+
+
         /**
          * Extracts and sluggifies the last uri component
          */
@@ -54,11 +72,46 @@
         /**
           * Fetch a DataStructureDefinition
           *      
+PREFIX qb: <http://purl.org/linked-data/cube#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+SELECT ?dsdlabel ?dimension ?dimlabel
+WHERE {
+         <http://data.younglives.org.uk/data/summary/SumaryStatistics-204dbdc0-c90b-4bd9-9632-0dfdf0c3b51f> rdfs:label ?dsdlabel.
+  <http://data.younglives.org.uk/data/summary/SumaryStatistics-204dbdc0-c90b-4bd9-9632-0dfdf0c3b51f> qb:ComponentProperty ?dimension.
+  ?dimension rdf:type qb:DimensionProperty.
+  ?dimension rdfs:label ?dimlabel.
+  }
+
+
+LIMIT 20
           * Gets the dsd from the endpoint
           */
          Grapher.getDSD = function(uri, callback) {
              // Stubbed for now pending having a dsd in the store
-             callback({});
+		//ok make a spqarql request here to collect from the dsd with a value of uri
+		//the dsd label , the dimensions and their labels.
+		var sparql_q = $.sparql(Grapher.sparql_endpoint)
+			.prefix('qb', Grapher.qb)
+			.prefix('rdfs', Grapher.rdfs)
+			.prefix('rdf', Grapher.rdf)
+			.select(['?dsdlabel', '?dimlabel', '?dimension', '?mealabel'])
+				.where('<' + uri + '>', 'rdfs:label' , '?dsdlabel')
+				.where('<' + uri + '>', 'qb:ComponentProperty', '?dimension')
+				.where('?dimension', 'rdf:type', 'qb:DimensionProperty')
+				.where('?dimension', 'rdfs:label', '?dimlabel')
+				.where('<' + uri + '>', 'qb:ComponentProperty', '?measure')
+				.where('?measure', 'rdf:type', 'qb:MeasureProperty')
+				.where('?measure', 'rdfs:label', '?mealabel')
+;
+		sparql_q.execute(get_dsd);
+		function get_dsd (dsd_data)  {
+			if (dsd_data) {
+				callback(dsd_data);
+			}
+		} 
+
+             
          };
         
         /**
@@ -67,7 +120,24 @@
         Grapher.updateDSD = function(data){
             //Building a structure by hand for now
             var dsd = {
-                label: 'A Structure for Summary Statistics from Young Lives',
+                label : data[0]['dsdlabel']['value'], 
+		dimensions: [], //populate these later when we can loop
+		get_dimension: function(uri) {
+                    var dimension =  _.detect(this.dimensions, function(dim){ 
+                        return dim.uri === uri; 
+                    });
+                    return dimension;
+                },
+		get_measure: function(uri) {
+                    return _.detect(this.measures, function(mea){ return mea.uri === uri; });
+                },
+		measures: [
+                    {uri:Grapher.selectedMeasure,
+                    label: data[0]['mealabel']['value']
+                     }
+                ]
+		/*
+		label: 'A Structure for Summary Statistics from Young Lives',
                 dimensions: [
                     {uri:'http://data.younglives.org.uk/component#localityType',
                      label:'Urban or Rural living location'},
@@ -98,7 +168,17 @@
                 get_measure: function(uri) {
                     return _.detect(this.measures, function(mea){ return mea.uri === uri; });
                 }
+		*/
             };
+	    for (var dsd_dim in data) {
+		if (data.hasOwnProperty(dsd_dim)) {
+			var a_dim = {};
+			a_dim.uri = data[dsd_dim]['dimension']['value'];
+			a_dim.label = data[dsd_dim]['dimlabel']['value'];
+			dsd['dimensions'].push(a_dim);
+		}
+	    }
+	    
             
             dsd.chooseable_dimensions = _.select(dsd.dimensions, function(v){
                     var ignore =  _.include(Grapher.dimensions.ignore, v.uri);
