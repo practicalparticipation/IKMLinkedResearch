@@ -65,7 +65,8 @@ ontowiki creates an unlabeled DataStrucutureDefinition in addition to the labele
 Example 1.
 
 export from google docs the 1st sheet of 'India - Country Report Data Table' called 'R3 Sample Characteristics' as csv. 
-As the importer takes values from the csv file directly, if there are any errors or inconsistencies in the csv file they will be imported into ontowiki. It is best to try and fix such thing in the csv data before we import it. When we view this speadsheet there is one inconsistency which is the value 'rural' is spelt with a lowercase 'r' unlike all they other values. We need to change this before we import the data. This can be done by opening the csv file in an editor, and doing a search and replace action to change 'rural' to 'Rural' and resave the csv file. It is now ready to import this into the Young lives csv importer (see start of this file).
+As the importer takes values from the csv file directly, if there are any errors, inconsistencies or obscure values in the csv file they will be imported into ontowiki. It is best to try and fix such thing in the csv data before we import it. When we view this speadsheet there is one inconsistency which is the value 'rural' is spelt with a lowercase 'r' unlike all they other values. We need to change this before we import the data. This can be done by opening the csv file in an editor, and doing a search and replace action to change 'rural' to 'Rural' and resave the csv file. There is also one obscure value here, which is that of 'Other', this value appears as part of the religion/faith set of values, and in the context of the speadsheet it's meaning is clear, but we will be importing this value without this context. This is the case because what 'Other' in this context actualy means is 'Not Hindu or Muslim' imagine another csv file is being imported when the dominant faith has changed and the values are now 'Hindu' 'Muslim' 'Cargo cult' and 'Other', the meaning of 'Other' has now changed, but ontowiki will see them as the same because to it 'Other'='Other' and this is wrong. So we need to continue editing the csv file and change this value of 'Other' to 'Not Hindu or Muslim'. By the same logic we need to change the value of 'Other Castes' to '"Not Scheduled castes, tribes or Backward Classes"' (include the " so that the , is not interpreted as a delimter of the csv file).
+It is now ready to import this into the Young lives csv importer (see start of this file).
 
 overview:
 this sheet contains two tables of similar data one for November 2010 and one for January 2011. To import this data we will have to make two separate export triples actions.
@@ -112,12 +113,12 @@ d.	http://data.younglives.org.uk/component# =  "geographicRegion"
 e	http://data.younglives.org.uk/component# =  "religion"
 	Dimension label: = "The religion or faith of the participant"
 	Use 'use speadsheet values'
-	Select the cells: (0,14) Hindu, (0,15) Muslim, (0,16) Other
+	Select the cells: (0,14) Hindu, (0,15) Muslim, (0,16) Not Hindu or Muslim
 
 f.	http://data.younglives.org.uk/component# =  "socialGrouping"
 	Dimension label: = "Social group or caste of the participant"
 	Use 'use speadsheet values'
-	Select the cells: (0,17) Scheduled castes,(0,18) Scheduled tribes, (0,19) Backward Classes, (0,20) Other Castes
+	Select the cells: (0,17) Scheduled castes,(0,18) Scheduled tribes, (0,19) Backward Classes, (0,20) Not Scheduled castes, tribes or Backward Classes
 	
 g.	http://data.younglives.org.uk/component# =  "sampleSize"
 	Dimension label: = "Sample Size"
@@ -164,6 +165,7 @@ b.	http://data.younglives.org.uk/component# =  "localityType"
 	Dimension label: = "Characteristic of participants location eg. Urban or Rural"
 	Use 'use fixed value'
 	fixed Value = "Both Urban and Rural"
+IMPORTANT we are not using the value 'All' as on the speadsheet as this in isloation has no meaning. This is simplar to the changes we made to the csv file in example 1. We are choosing to use the value 'Both Urban and Rural'.
 
 	Now we need to add dimensions for the two axis that read (Poor in R3,Non-poor in R3) and (Poor in R2,Non-poor in R2). These values are not the same dimension, as those across the table (Poor in R3,Non-poor in R3) are about affluence as measured of participants in round 3. But those going down the table are about affluence values from a previous round as seen from the current round. So we enter the data as follows:
 
