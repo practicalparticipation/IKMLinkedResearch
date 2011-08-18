@@ -10,6 +10,7 @@
         vis.title = "Data Table";
         vis.google_packages = ['table'];
         vis.prepare = function(Grapher) {
+                    var observations = Grapher.filterData();
                     var vis_el = Grapher.vis[0]
                     var chart = new google.visualization.Table(vis_el);
                     var table = new google.visualization.DataTable();
@@ -28,7 +29,7 @@
                         table.addColumn(v[2], Grapher.dsd['get_'+v[0]](v[1]).label);
                     });
                     
-                    $.each(Grapher.data, function(i,obs) { 
+                    $.each(observations, function(i,obs) { 
                         var observation = obs;
                         var row = [];
                         $.each(rowspec, function(i,spec){

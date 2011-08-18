@@ -13,7 +13,8 @@
                              "http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/roundThree"],
                 'country':["http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India",
                                 "http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Peru"]
-            } 
+            },
+            includeDimensionFilters: {} // Filter settings for included dimensions
         };
 
         /**
@@ -26,6 +27,23 @@
 	    }
             token = token.replace(/[^a-zA-Z 0-9]+/g, '');
             return token;
+        };
+        
+        /**
+         * Helper to work around cross browser issues with multiselect,
+         * which some times returns an array of one value and sometimes
+         * just the value
+         * Extract the first item from a list or return a string
+         * @param val - the return from .val(0 on the element
+         * @param first - boolean - just return the first item in the list?
+         */
+        Grapher.sanitiseMultiSelect = function(val, first){
+            if ($.isArray(val)) {
+                if (first) {
+                    return (val.length > 0)?val[0]:'';
+                }
+            }
+            return val;
         };
     
         /**
@@ -176,6 +194,26 @@
         };
         
         /**
+         * Filter the observation data according to the settings for 
+         * includeDimensionsFilters
+         */
+        Grapher.filterData = function(){
+            var fd = _.reject(Grapher.data.slice(0), function(obs){
+                var filter = false;
+                _.each(Grapher.includeDimensionFilters, function(values, dim){
+                    var token = Grapher.tokenizeURI(dim);
+                    if (obs.hasOwnProperty(token)) {
+                        if (_.include(values, obs[token].value)) {
+                            filter = true;
+                        }
+                    }
+                });
+                return filter;
+            });   
+            return fd;
+        };
+        
+        /**
         * Draw the selected visualisation
         */
         Grapher.drawVis = function(){
@@ -225,11 +263,24 @@
             // Connect the rechart button
             $('.rechart', ui).button()
                 .bind('click', function(evt){
+                var sms = Grapher.sanitiseMultiSelect; //shortcut
                     // Oddly we're getting arrays out of .val() for inputs which have been 'enhanced' by multiselect
-                    Grapher.selectedDimension = $('.dimensionchooser', Grapher.configui).val();
-                    Grapher.selectedMeasure = $('.measurechooser', Grapher.configui).val();
-                    Grapher.groupbyDimension = $('.groupbychooser', Grapher.configui).val();
+
+                    Grapher.selectedDimension = sms($('.dimensionchooser', Grapher.configui).val(), true);
+                    Grapher.selectedMeasure = sms($('.measurechooser', Grapher.configui).val(), true);
+                    Grapher.groupbyDimension = sms($('.groupbychooser', Grapher.configui).val(), true);
+
                     Grapher.includeDimensions = _.map($('input[name=include]:checked'), function(el){ return $(el).attr('value');});
+                    
+                    // Extract the filter settings for the selected includeDimensions
+                    var filters = {};
+                    $.each(Grapher.includeDimensions, function(i, dim){
+                        filters[dim] = sms(
+                            $('.'+Grapher.tokenizeURI(dim)+'filter', Grapher.configui).val(),
+                            false
+                        );
+                    });
+                    Grapher.includeDimensionFilters = filters;
                     
                     Grapher.getData(Grapher.selectedMeasure, Grapher.selectedDimension, Grapher.updateData);
                 });
@@ -354,7 +405,7 @@
             }
         };
         
-         $.fn.yl_grapher.plugins = {}; // Available Visualization types
+        $.fn.yl_grapher.plugins = {}; // Available Visualization types
         
         $.fn.yl_grapher.defaults = {  // Config object and api
             'useFixtures':false, //Use static data from the fixtures folder
@@ -364,7 +415,8 @@
             'selectedDimension':'http://data.younglives.org.uk/component#localityType',
             'groupbyDimension':'http://data.younglives.org.uk/component#country', // Dimension to group along the x axis
             'includeDimensions':['http://data.younglives.org.uk/component#cohort'],
-            'visType': 'table', // Set default visualization
+            'visType': 'columnchart', // Set default visualization
+
             'availablePlugins': $.fn.yl_grapher.plugins,
             'dimensions': { 'ignore':[ // Dimensions to omit from the UI
                                         //'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Round'
