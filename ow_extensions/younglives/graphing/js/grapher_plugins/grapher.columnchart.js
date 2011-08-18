@@ -10,20 +10,21 @@
         vis.title = "Column Chart";
         vis.google_components = ['corechart'];
         vis.prepare = function(Grapher) {
+                    var observations = Grapher.filterData();
                     var vis_el = Grapher.vis[0]
                     var chart = new google.visualization.ColumnChart(vis_el);
                     var table = new google.visualization.DataTable();
                     
                     // We need unique values for our selectedDimension groupbyDimension and the includeDimensions
-                    var groupbyDimensionValues = _.uniq(_.map(Grapher.data, function(obs){ 
+                    var groupbyDimensionValues = _.uniq(_.map(observations, function(obs){ 
                         return obs[Grapher.tokenizeURI(Grapher.groupbyDimension)].label;
                     }));
-                    var selectedDimensionValues = _.uniq(_.map(Grapher.data, function(obs){ 
+                    var selectedDimensionValues = _.uniq(_.map(observations, function(obs){ 
                         return obs[Grapher.tokenizeURI(Grapher.selectedDimension)].label;
                     }));
                     var includeDimensionsValues = [];
                     $.each(Grapher.includeDimensions, function(i, dimuri){
-                       includeDimensionsValues.push([dimuri, _.uniq(_.map(Grapher.data, function(obs){
+                       includeDimensionsValues.push([dimuri, _.uniq(_.map(observations, function(obs){
                             return obs[Grapher.tokenizeURI(dimuri)].label;
                         }))]);
                     });
@@ -92,7 +93,7 @@
                         } 
                         return observations;
                     };
-                    var tree_data = bucketeer(Grapher.data.slice(0), bucket_stack, 0);          
+                    var tree_data = bucketeer(observations, bucket_stack, 0);          
 
                     $.each(tree_data, function(i,v){
                         // For this data table each top level key in tree_data will build a row

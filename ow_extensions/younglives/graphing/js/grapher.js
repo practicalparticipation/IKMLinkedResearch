@@ -13,7 +13,8 @@
                              "http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/roundThree"],
                 'country':["http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/India",
                                 "http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Peru"]
-            } 
+            },
+            includeDimensionFilters: {} // Filter settings for included dimensions
         };
 
         /**
@@ -189,6 +190,26 @@
         };
         
         /**
+         * Filter the observation data according to the settings for 
+         * includeDimensionsFilters
+         */
+        Grapher.filterData = function(){
+            var fd = _.reject(Grapher.data.slice(0), function(obs){
+                var filter = false;
+                _.each(Grapher.includeDimensionFilters, function(values, dim){
+                    var token = Grapher.tokenizeURI(dim);
+                    if (obs.hasOwnProperty(token)) {
+                        if (_.include(values, obs[token].value)) {
+                            filter = true;
+                        }
+                    }
+                });
+                return filter;
+            });   
+            return fd;
+        };
+        
+        /**
         * Draw the selected visualisation
         */
         Grapher.drawVis = function(){
@@ -244,6 +265,16 @@
                     Grapher.selectedMeasure = sms($('.measurechooser', Grapher.configui).val(), true);
                     Grapher.groupbyDimension = sms($('.groupbychooser', Grapher.configui).val(), true);
                     Grapher.includeDimensions = _.map($('input[name=include]:checked'), function(el){ return $(el).attr('value');});
+                    
+                    // Extract the filter settings for the selected includeDimensions
+                    var filters = {};
+                    $.each(Grapher.includeDimensions, function(i, dim){
+                        filters[dim] = sms(
+                            $('.'+Grapher.tokenizeURI(dim)+'filter', Grapher.configui).val(),
+                            false
+                        );
+                    });
+                    Grapher.includeDimensionFilters = filters;
                     
                     Grapher.getData(Grapher.selectedMeasure, Grapher.selectedDimension, Grapher.updateData);
                 });
@@ -368,7 +399,7 @@
             }
         };
         
-         $.fn.yl_grapher.plugins = {}; // Available Visualization types
+        $.fn.yl_grapher.plugins = {}; // Available Visualization types
         
         $.fn.yl_grapher.defaults = {  // Config object and api
             'useFixtures':false, //Use static data from the fixtures folder
@@ -378,7 +409,7 @@
             'selectedDimension':'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/UrbanOrRural',
             'groupbyDimension':'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Country', // Dimension to group along the x axis
             'includeDimensions':['http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Cohort'],
-            'visType': 'table', // Set default visualization
+            'visType': 'columnchart', // Set default visualization
             'availablePlugins': $.fn.yl_grapher.plugins,
             'dimensions': { 'ignore':[ // Dimensions to omit from the UI
                                         //'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Round'
