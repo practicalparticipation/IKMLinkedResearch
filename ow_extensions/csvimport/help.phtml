@@ -1,0 +1,210 @@
+<p>Young lives csv importer HOWTO
+</p>
+<p>Open ontowiki using firefox version 5.0, log into ontowiki. 
+choose a knowledgebase and click on the onotowiki symbol to the right of the uri.
+select 'Import CSV Data' from the list<br/>
+check 'Statistical data (uses DataCube mapping)'
+select a CSV file to upload. and click 'Import CSV' at the top right.
+</p>
+<p>you are now in the Young lives data importer. It should be titled 'Import Young Lives CSV Data'.
+</p>
+<p>overview
+</p>
+<p>The young lives csv data importer is designed to take data from a speadsheet and convert it into a rdf datacube format inside ontowiki. To this end it requires a user to help describe the data. The system is designed to help with this process, but an understanding of the data to be imported is neccessary, and some familiarty with the importer.
+At this point you should see a page with 3 sections. At the top; Control buttons, under it a section about data definitions, and then a speadsheet like representation of the imported csv file.
+</p>
+<p>The Importer - controls
+</p>
+<p>when looking at the importer you should see 4 buttons across the top: 
+Select Measure<br/>
+Select Data Range<br/>
+Add Dimension<br/>
+Extract Triples
+</p>
+<p>In order to use the 'Extract Triples' button to import data into ontowiki, the previous 3 need to have been correctly used, as well as an answer given to the about cohort question.
+Each 'Extract Triples' action assumes that a single type of measure is being used. If the csv has more than one kind of measure used then several seperate import actions will be required using the csv file. 
+Each 'Extract Triples' action also assumes that the data is from a single country and a single round. Like with the measure if this is not true then several seperate import actions using the csv file will be needed.
+</p>
+<p>The Select Measure button.
+</p>
+<p>This is required, and allows the measure to be selected or defined. You may change between values and your final choice when using Extract Triples is the one that will be sent to ontowiki. If making a new measure please write a suitable description that is not the same as an existing one, also take care with the name of the measure as if another maesure of that name exists, your measure will not be created, and the existing one used. Measure names should camel cased (eg ProportionOfSample , FishAndChips).
+</p>
+<p>The Select Data Range button.
+</p>
+<p>This is required. The importer allows for a single rectanglar block of observation data to be imported at once. This button allow you to define that rectangle. If you need to import non-rectangluar data area you will have to use several import actions. The data range, once selected, can be reselected using this button. The current range is shown at the top of the data defining section of the page under the main 4 buttons. The numbers refer to the 'speadsheet' cells where the top left is 0,0.
+</p>
+<p>The Add Dimension Button.
+</p>
+<p>This is required, in most cases. Dimension are very important, they describe what the measured value is about. When the Add Dimension button is pressed a new dimension section is added to the data definition section of the page. It is added to the bottom of the list so you may well need to scroll down the page to see this. (If you add extra dimensions by mistake, so long as they do not have fixed values entered or speadsheet cells defined, then they will be ignored, so don't worry.) 
+A new dimension starts by asking two questions. If you are resuing an existing dimension or if you want to create a new one, and if the values of the dimension are in the speadsheet orthagonal to the data range. This requires some explanation. It is always better to reuse an existing dimension if a correct one exists. You should use 'use fixed value' if there is  a piece of data in the sheet that is a dimension and appies to all values in the data range. (see  General Characteristics of the sample - India example later)
+Making a new dimension: 
+</p><pre>
+        the component should start with a lowercase letter, can contain any character except spaces. It is best to only use a-z,A-Z,-,_ though. Try to stick to one word values where possible. Where not try to use a camel cased string with a lowercase first character. (eg. sampleSize, urbanOrRural, socialGroup)
+        the label should be a human readable and understandable phrase. Often it will be similar to that of the component value. (eg.  'urbanOrRural' and 'Urban or Rural' )
+Using a fixed value:
+        this value should be typed in or copied from the speadsheet. Try to keep it's value like others that are being used. If it is a date of somekind then ensure that it is typed in as a human understandable value. This is as we do not try to automaticly guess what is a date when the data is imported. If either a person or computer encounters a string like '10th May 1982' or 'November 2010' then there is a much better change of understanding it then say '9/10/11' which has two possible dates depending on if it is dd/mm/yy or mm/dd/yy etc. basicaly if it a date please be clear.
+Using Spreadsheet values:
+        this control will give you a 'Select Sheet Values' button. When pressed the dimension is given a random colour (click multiple times to choose new colours). Now when you click on the speadsheet cells will be coloured the same. Use this technique to select the values of this dimension in the sheet. Values toggle. A double click allows selection/deselection of an entire row. This dimensions colour highlighting will continue until a new dimensions 'Select Sheet Values' button is pressed.
+</pre>
+        
+<p>If you later change your mind it is safe to change between existing/new dimensions and fixed/sheet values as often as you like for any particular dimension, only those visible when the 'Extract Triples' button is pressed will be used.
+</p>
+<p>The Extract Triples button.
+</p>
+<p>When all dimensions, the measure and the datarange are defined, then to import data into ontowiki, click the 'Extract Triples' button. If no warnings were recived then a popout dialog box should now be showing. Next is a list of possible DataStructureDefinitions, these have been choosen from those that exist within ontowiki that could be used for your import. You must either choose one by copying and pasting the text into the dsd label box (be careful not to copy extra spaces at the beginning) or type a new label for the DataStructureDefinition of your data. Now click the 'Extract triples' button. You should see a success dialog box, which when cleared will take you back to the Import young Lives CSV Data page, where you may modify values and make more imports if needed. 
+Each successful import action does several things. It creates any new dimensions and measures in the youglives knowledge base, it adds a new dsd if needed, and it creates a unique dataset which is realated to all of the observations just imported. If you have made an error, at this point you must use ontowiki's editing tools to find and change the error/s.
+</p>
+<p>Bugs and Features
+</p>
+<p>something is writing '* Configurations' into the bottom of the page, when found it will be removed. -- Ignore cosmetic only
+Give me Help, well it doesn't.<br/>
+Only tested in ff 5.0, may well not work in other browsers, don't use them.
+could use some extra styling.<br/>
+ontowiki creates an unlabeled DataStrucutureDefinition in addition to the labeled one we aim to create, don't know why, judged not serious as this at worst results in some data duplication, and our current sparql queries all ask for dsd's with labels, so the extra ones are not used.
+</p>
+<p>Example 1.
+</p>
+<p>export from google docs the 1st sheet of 'India - Country Report Data Table' called 'R3 Sample Characteristics' as csv. 
+As the importer takes values from the csv file directly, if there are any errors, inconsistencies or obscure values in the csv file they will be imported into ontowiki. It is best to try and fix such thing in the csv data before we import it. When we view this speadsheet there is one inconsistency which is the value 'rural' is spelt with a lowercase 'r' unlike all they other values. We need to change this before we import the data. This can be done by opening the csv file in an editor, and doing a search and replace action to change 'rural' to 'Rural' and resave the csv file. There is also one obscure value here, which is that of 'Other', this value appears as part of the religion/faith set of values, and in the context of the speadsheet it's meaning is clear, but we will be importing this value without this context. This is the case because what 'Other' in this context actualy means is 'Not Hindu or Muslim' imagine another csv file is being imported when the dominant faith has changed and the values are now 'Hindu' 'Muslim' 'Cargo cult' and 'Other', the meaning of 'Other' has now changed, but ontowiki will see them as the same because to it 'Other'='Other' and this is wrong. So we need to continue editing the csv file and change this value of 'Other' to 'Not Hindu or Muslim'. By the same logic we need to change the value of 'Other Castes' to '"Not Scheduled castes, tribes or Backward Classes"' (include the " so that the , is not interpreted as a delimter of the csv file).
+It is now ready to import this into the Young lives csv importer (see start of this file).
+</p>
+<dl>
+  <dt>overview</dt>
+<dd>this sheet contains two tables of similar data one for November 2010 and one for January 2011. To import this data we will have to make two separate export triples actions.
+  <ol>
+    <li>Click 'Select Measure'. Click 'use existing measure, and if 'The Proportion of the total sample that belong in all the categories noted' is in the values of the dropdown box select it. If not, choose 'make a new measure' then type 'The Proportion of the total sample that belong in all the categories noted' in the Measure Label box. Now type 'ProportionOfSample' in the Name for Measure box.
+    </li><li>Check 'India' is the country and 'round three' is the round.
+    </li><li>Click the 'use spreadsheet values' button under 'Choose fixed cohort or dynamic cohort values from spread sheet'.
+    </li><li>Click the 'Select Sheet Values' button and click on YC and OC in cells (1,2) (2,2) (above 0.53 and 0.49 respectively)
+    </li><li>Add data range. Choose 'Select Data Range'. Click 'OK', Click on cell(1,3) with the value 0.53, then cell(2,20) with the value 0.19 just above the value 976. Near the top of the page the text should now read: Data Range: (1,3) to (2,20)
+    </li><li>Adding the dimensions:
+<p>        We will now add new dimensions using the Adding a new dimension procedure below. Read through this before doing anything.
+</p>
+  </li></ol>
+</dd></dl>
+<pre>
+        Adding a new dimension procedure:
+        A. Click the 'Add Dimension' button at the top of the page. A new dimensions' controls will appear just above the spreadsheet and the page will scroll to there.
+        B. Click 'Yes' and look at the existing dimensions in the drop down boxes. Select the one needed, if it is not there do:
+                B`. Click on 'No' instead of 'Yes', the form will change from having two select boxes to having two input boxes where data can be typed in. Type the required dimension information into the two boxes.
+        C. Choose 'use fixed value' or 'use speadsheet values' as required. If using 'use fixed value' now type in the value that will be used. If using 'use speadsheet values', then a 'Select Sheet Values' button will appear, click on this. When the 'Select Sheet Values' button is clicked the dimension will change to a random colour, and the speadsheet selection ability is activated. Now click on all the dimension values in the spreadsheet that are values for the dimension currerntly being entered. The speadsheet cells will change colour to match the colour of the dimension to show they have been selected.
+        D. When done either start a new dimension by following these instructions from A again, or start the import process by clicking on 'Extract Triples' button at the top of the page.
+</pre>
+<p>Use the Adding a new dimension procedure to add each of these dimensions:
+Values to be typed in are in quotes after the = sign, don't type the quotes or = sign in.
+</p>
+<ol>
+  <li><a href="http://data.younglives.org.uk/component">http://data.younglives.org.uk/component</a># =  "gender"
+        Dimension label: = "Gender of participant"
+        Use 'use speadsheet values'
+        Select the cells: (0,3) Male, (0,4) Female
+  </li><li><a href="http://data.younglives.org.uk/component">http://data.younglives.org.uk/component</a># =  "localityType"
+        Dimension label: = "Characteristic of participants location eg. Urban or Rural"
+        Use 'use speadsheet values'
+        Select the cells: (0,5) Urban, (0,6) rural
+  </li><li><a href="http://data.younglives.org.uk/component">http://data.younglives.org.uk/component</a># =  "mothersEducationLevel"
+        Dimension label: = "Educational level of the mother"
+        Use 'use speadsheet values'
+        Select the cells: (0,7) Mother has no education, (0,8) Mother has primary educ or below, (0,9) Mother has secondary educ or below, and (0,10) Mother has above secondary educ
+  </li><li><a href="http://data.younglives.org.uk/component">http://data.younglives.org.uk/component</a># =  "geographicRegion"
+        Dimension label: = "Geographic Region"
+        Use 'use speadsheet values'
+        Select the cells: (0,11) Coastal andhra, (0,12) Rayalseema, (0,13) Telangana
+</li></ol>
+<pre>
+e       <a href="http://data.younglives.org.uk/component">http://data.younglives.org.uk/component</a># =  "religion"
+        Dimension label: = "The religion or faith of the participant"
+        Use 'use speadsheet values'
+        Select the cells: (0,14) Hindu, (0,15) Muslim, (0,16) Not Hindu or Muslim
+
+f.      <a href="http://data.younglives.org.uk/component">http://data.younglives.org.uk/component</a># =  "socialGrouping"
+        Dimension label: = "Social group or caste of the participant"
+        Use 'use speadsheet values'
+        Select the cells: (0,17) Scheduled castes,(0,18) Scheduled tribes, (0,19) Backward Classes, (0,20) Not Scheduled castes, tribes or Backward Classes
+        
+g.      <a href="http://data.younglives.org.uk/component">http://data.younglives.org.uk/component</a># =  "sampleSize"
+        Dimension label: = "Sample Size"
+        Use 'use speadsheet values'
+        Select the cells: (1,21) 1930, (2,21) 976
+
+h.      <a href="http://data.younglives.org.uk/component">http://data.younglives.org.uk/component</a># =  "timePoint"
+        Dimension label: = "Time point"
+        Use 'use fixed value'
+        fixed Value = "November 2010"
+</pre>
+<p>7. Click 'Extract Triples' button at the top of the page. The choose dsd label dialogue will now appear in a popup box. A list of label (if any) will be shown with a text entry box underneath. Either cut and paste into the text input box or type 'General Characteristics of the sample' (without the quotes, or spaces before or after it). Now click the 'Extract triples' button under the input box in the popout window. You should now see an alert dialog with the following text 'Data submited to ontowiki', click on the 'OK' button to return to the speadsheet page ready to enter the second set of data in the sheet to ontowiki.
+</p>
+<p>We will now adjust the values set in the importer to submit the second set of data in the speadsheet to ontowiki.
+</p>
+<p>8. Change data range. Choose 'Select Data Range'. Click 'OK', Click on cell(5,3) with the value 0.54, then cell(6,20) with the value 0.19 just above the value 976. Near the top of the page the text should now read: Data Range: (5,3) to (6,20)
+9. Edit dimension values. Most of the dimension values do not have to be changed as those in column 4 are the same as those we have selected in column 0. The first change is to select new cohort values from the sheet.
+9a. Scroll to the top of the page and locate the 'select Sheet Values' button that is next to the cohort definition. Click this button, the colour of this dimension will now change, now click on cell (1,2) YC and (2,2) OC which should now turn white, and then click on cell (5,2) YC and cell (6,2) OC which should change colour to match the new cohort colour  Do the same for the sampleSize dimension, unselecting (1,21) 1930, (2,21) 976 , and selecting (5,21) 1930, (6,21) 976. now we need to change the fixed value of timePoint. We do this by deleting the value 'November 2010' and entering 'January 2011' instead.
+10. Click 'Extract Triples' button at the top of the page. The 'choose dsd label' dialogue will now appear in a popup box. This time 'General Characteristics of the sample' should be in the list. Cut and paste this value into the text entry box, and click the 'Extract triples' button under the input box in the popout window. Again you should now see an alert dialog with the following text 'Data submited to ontowiki', click on the 'OK' button to return to the speadsheet page ready to enter the second set of data in the sheet to ontowiki.
+</p>
+<p>Example 2
+</p>
+<p>export from google docs the sheet of 'India - Country Report Data Table' called 'Poverty Dynamics_1_OC' as csv. Import this into the Young lives csv importer (see start of this file).
+</p>
+<dl>
+  <dt>overview</dt>
+<dd>this sheet contains six tables of similar data, for different values of urbanOrRural and different timePoints one for November 2010 and one for January 2011. To import this data we will have to make six separate export triples actions. The data in this sheet is interestingly different as some of the dimension values require some thought to define.
+  <ol>
+    <li>Click 'Select Measure'. Click 'use existing measure, and if 'Percentage moving across the poverty line' is in the values of the dropdown box select it. If not, choose 'make a new measure' then type 'Percentage moving across the poverty line' in the Measure Label box. Now type 'PercentageCrossingPovertyLine' in the Name for Measure box.
+    </li><li>Check 'India' is the country and 'round three' is the round.
+    </li><li>Click the 'use fixed value' button under 'Choose fixed cohort or dynamic cohort values from spread sheet'.
+    </li><li>Check 'Old Cohort'
+    </li><li>Add data range. Choose 'Select Data Range'. Click 'OK', Click on cell(1,3) with the value 30, then cell(2,4) with the value 91.4 . Near the top of the page the text should now read: Data Range: (1,3) to (2,4)
+    </li><li>Adding dimensions, 
+<p>        First we will add fixed dimensions;
+</p>
+    </li><li><a href="http://data.younglives.org.uk/component">http://data.younglives.org.uk/component</a># =  "timePoint"
+        Dimension label: = "Time point"
+        Use 'use fixed value'
+        fixed Value = "November 2010"
+    </li><li><a href="http://data.younglives.org.uk/component">http://data.younglives.org.uk/component</a># =  "localityType"
+        Dimension label: = "Characteristic of participants location eg. Urban or Rural"
+        Use 'use fixed value'
+        fixed Value = "Both Urban and Rural"
+IMPORTANT we are not using the value 'All' as on the speadsheet as this in isloation has no meaning. This is simplar to the changes we made to the csv file in example 1. We are choosing to use the value 'Both Urban and Rural'.
+  </li></ol>
+</dd></dl>
+<p>        Now we need to add dimensions for the two axis that read (Poor in R3,Non-poor in R3) and (Poor in R2,Non-poor in R2). These values are not the same dimension, as those across the table (Poor in R3,Non-poor in R3) are about affluence as measured of participants in round 3. But those going down the table are about affluence values from a previous round as seen from the current round. So we enter the data as follows:
+</p>
+<pre>
+c.      <a href="http://data.younglives.org.uk/component">http://data.younglives.org.uk/component</a># =  "affluence"
+        Dimension label: = "The affluence of the participant in a particular round"
+        Use 'use speadsheet values'
+        Select the cells: (1,2) Poor in R3, (1,3) Non-poor in R3
+
+d       <a href="http://data.younglives.org.uk/component">http://data.younglives.org.uk/component</a># =  "affluenceInPreviousRound"
+        Dimension label: = "The affluence in a previous round"
+        Use 'use speadsheet values'
+        Select the cells: (0,3) Poor in R2, (0,4) Non-poor in R2
+</pre>
+<p>7. Click 'Extract Triples' button at the top of the page. The choose dsd label dialogue will now appear in a popup box. A list of label (if any) will be shown with a text entry box underneath. Either cut and paste into the text input box or type 'Crossing poverty line' (without the quotes, or spaces before or after it). Now click the 'Extract triples' button under the input box in the popout window. You should now see an alert dialog with the following text 'Data submited to ontowiki', click on the 'OK' button to return to the speadsheet page ready to enter the second set of data in the sheet to ontowiki.
+</p>
+<p>now change for importing the second table 
+8. Change data range. Choose 'Select Data Range'. Click 'OK', Click on cell(1,7) with the value 50, then cell(2,8) with the value 94.65 .Near the top of the page the text should now read: Data Range: (1,7) to (2,8)
+9. Change dimensions. First change the value of localityType from "Both Urban and Rural" to "Urban". Next click on the 'Select Sheet Values' button for  "affluenceInPreviousRound" and click on cells (0,3) Poor in R2, (0,4) Non-poor in R2 to clear them, and then on (0,7) Poor in R2, (0,8) Non-poor in R2 to select them.
+10. Click 'Extract Triples' button at the top of the page. The 'choose dsd label' dialogue will now appear in a popup box. This time 'Crossing poverty line' should be in the list. Cut and paste this value into the text entry box, and click the 'Extract triples' button under the input box in the popout window. Again you should now see an alert dialog with the following text 'Data submited to ontowiki', click on the 'OK' button to return to the speadsheet page ready to enter the third set of data in the sheet to ontowiki.
+</p>
+<p>now change for importing the third table 
+11. Change data range. Choose 'Select Data Range'. Click 'OK', Click on cell(1,11) with the value 24, then cell(2,12) with the value 90.2 .Near the top of the page the text should now read: Data Range: (1,11) to (2,12)
+12. Change dimensions. First change the value of localityType from "Urban" to "Rural". Next click on the 'Select Sheet Values' button for  "affluenceInPreviousRound" and click on cells (0,7) Poor in R2, (0,8) Non-poor in R2 to clear them, and then on (0,11) Poor in R2, (0,12) Non-poor in R2 to select them.
+13. Click 'Extract Triples' button at the top of the page. The 'choose dsd label' dialogue will now appear in a popup box. This time 'Crossing poverty line' should be in the list. Cut and paste this value into the text entry box, and click the 'Extract triples' button under the input box in the popout window. Again you should now see an alert dialog with the following text 'Data submited to ontowiki', click on the 'OK' button to return to the speadsheet page ready to enter the fourth set of data in the sheet to ontowiki.
+</p>
+<p>now change for importing the fourth table 
+14. Change data range. Choose 'Select Data Range'. Click 'OK', Click on cell(5,11) with the value 27.34, then cell(6,12) with the value 90..09 .Near the top of the page the text should now read: Data Range: (5,11) to (6,12)
+115. Change dimensions. First change the value of timePoint from "November 2010" to "January 2011". Next click on the 'Select Sheet Values' button for  "affluence" and click on cells (1,2) Poor in R3, (2,2) Non-poor in R3 to clear them, and then on (5,2) Poor in R3, (6,2) Non-poor in R3 to select them.
+16. Click 'Extract Triples' button at the top of the page. The 'choose dsd label' dialogue will now appear in a popup box. This time 'Crossing poverty line' should be in the list. Cut and paste this value into the text entry box, and click the 'Extract triples' button under the input box in the popout window. Again you should now see an alert dialog with the following text 'Data submited to ontowiki', click on the 'OK' button to return to the speadsheet page ready to enter the fifth set of data in the sheet to ontowiki.
+</p>
+<p>now change for importing the fifth table 
+17. Change data range. Choose 'Select Data Range'. Click 'OK', Click on cell(5,7) with the value 48.78, then cell(6,8) with the value 94.82 .Near the top of the page the text should now read: Data Range: (5,7) to (6,8)
+18. Change dimensions. First change the value of localityType from "Rural" to "Urban". Next click on the 'Select Sheet Values' button for  "affluenceInPreviousRound" and click on cells (0,11) Poor in R2, (0,12) Non-poor in R2 to clear them, and then on (0,7) Poor in R2, (0,8) Non-poor in R2 to select them.
+19. Click 'Extract Triples' button at the top of the page. The 'choose dsd label' dialogue will now appear in a popup box. This time 'Crossing poverty line' should be in the list. Cut and paste this value into the text entry box, and click the 'Extract triples' button under the input box in the popout window. Again you should now see an alert dialog with the following text 'Data submited to ontowiki', click on the 'OK' button to return to the speadsheet page ready to enter the last set of data in the sheet to ontowiki.
+</p>
+<p>now change for importing the fifth table 
+20. Change data range. Choose 'Select Data Range'. Click 'OK', Click on cell(5,3) with the value 32.22, then cell(6,4) with the value 91.35 .Near the top of the page the text should now read: Data Range: (5,3) to (6,4)
+21. Change dimensions. First change the value of localityType from "Rural" to "Both Urban and Rural". Next click on the 'Select Sheet Values' button for  "affluenceInPreviousRound" and click on cells (0,7) Poor in R2, (0,8) Non-poor in R2 to clear them, and then on (0,3) Poor in R2, (0,4) Non-poor in R2 to select them.
+22. Click 'Extract Triples' button at the top of the page. The 'choose dsd label' dialogue will now appear in a popup box. This time 'Crossing poverty line' should be in the list. Cut and paste this value into the text entry box, and click the 'Extract triples' button under the input box in the popout window. Again you should now see an alert dialog with the following text 'Data submited to ontowiki', click on the 'OK' button to return to the speadsheet.
+</p>

@@ -798,9 +798,9 @@ $(document).ready(function () {
 		// define a list of dimensions, these are core and may well not be in the imported sheet itself, 
 		//TODO prompt for label elements, or use fixed as below
 		
-		var components =       [['cohort', 'label for Cohort dimension'],
-					['country', 'label for Country dimension'],
-					['round', 'label for Round dimension']]; 
+		var components =       [['cohort', 'Younglives Cohort'],
+					['country', 'Country'],
+					['round', 'Younglives Round']]; 
 		//NOTE sample size is nolonger considered core
 	
 		//alwways need this

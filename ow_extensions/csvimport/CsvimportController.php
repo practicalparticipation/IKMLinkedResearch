@@ -29,6 +29,11 @@ class CsvimportController extends OntoWiki_Controller_Component
         $this->view->headScript()->appendFile($this->_componentUrlBase . 'scripts/rdfa.object.js');
 	
     }
+    public function helpAction()
+    {        
+        //by default magic zend will call xxxAction xxx.phtml unless overriden
+	//this calls help.phtml
+    }
 
     public function indexAction()
     {        
