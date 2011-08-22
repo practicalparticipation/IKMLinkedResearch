@@ -316,7 +316,7 @@ LIMIT 20
         * Draw the Configuration screen
         */
         Grapher.drawConfig = function(){
-            var ui = $($.View('templates/configui.ejs', Grapher));
+	    var ui = $($.View('templates/configui.ejs', Grapher));
             
             // Prettify our options checkboxes
             $('.options :checkbox', ui).iphoneStyle();
@@ -404,7 +404,8 @@ LIMIT 20
             Grapher.target = this;
             
             // Build our main layout
-            var markup = $($.View('templates/init.ejs', Grapher));
+
+	    var markup = $($.View('templates/init.ejs', Grapher));
             // Fancify the vis selector
             $('#grapher-vis-type-switch', markup).multiselect(
                         {header: "Select a visualisation",

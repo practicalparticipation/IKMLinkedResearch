@@ -31,13 +31,27 @@
       <script type="text/javascript" src="js/ejs_fulljslint.js"></script>
       
       <script type="text/javascript">
-           // URL parsing examples - get them all as an object
-           var urlVars = $.getUrlVars();
-           // get a specifiv var by name (you'll get null if it's not in the request
-           var myUrlVar = $.getUrlVar('myvar');
-           var opts = {'sparql_endpoint': 'http://neil/~neil/IKMLinkedResearch/build/service/sparql', 
-			'activeDSD' : 'http://data.younglives.org.uk/data/summary/SumaryStatistics-204dbdc0-c90b-4bd9-9632-0dfdf0c3b51f'};
-            $('#grapher').yl_grapher(opts);
+        // URL parsing examples - get them all as an object
+	var urlVars = $.getUrlVars();
+        // get a specifiv var by name (you'll get null if it's not in the request
+        var opts = {'sparql_endpoint': $.getUrlVar('sparql_endpoint'), 
+			'activeDSD' : $.getUrlVar('activeDSD')};
+	if ($.getUrlVar('useFixtures')){
+		opts['useFixtures'] = $.getUrlVar('useFixtures');
+	}
+	if ($.getUrlVar('selectedMeasure')){
+		opts['selectedMeasure'] = $.getUrlVar('selectedMeasure');
+	}
+	if ($.getUrlVar('selectedDimension')){
+		opts['selectedDimension'] = $.getUrlVar('selectedDimension');
+	}
+	if ($.getUrlVar('groupbyDimension')){
+		opts['groupbyDimension'] = $.getUrlVar('groupbyDimension');
+	}
+	if ($.getUrlVar('visType')){
+		opts['visType'] = $.getUrlVar('visType');
+	}
+        $('#grapher').yl_grapher(opts);
       </script>
   </body>
 </html>
