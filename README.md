@@ -37,4 +37,11 @@ Run the dev-build target from the build.xml
 
     $> phing dev-build
 
+then edit build/.htaccess and add a RewriteBase eg `RewriteBase /~neil/IKMLinkedResearch/build/`
+then edit conf/owcli so that the baseuri is correct for your install eg `http://neil/~neil/IKMLinkedResearch/build/`
+Important, now login to your ontowiki, this creates important entries in the database. 
+
+you can now run 
+    $> phing setup
+
     

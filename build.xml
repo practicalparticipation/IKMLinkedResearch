@@ -16,13 +16,19 @@
         </delete>
         <delete  dir="${builddir}" includeemptydirs="true" />
     </target>
+    <target name="get_sources">
+    	<echo msg="creating source directory" />
+	<exec command="mkdir -p src/Tar" />
+	<echo msg="downloading ontowiki src if needed" />
+	<exec command="if [ ! -f src/Tar/ontowiki-0.9.6-pre2.zip ]; then  wget -P src/Tar/  http://ontowiki.googlecode.com/files/ontowiki-0.9.6-pre2.zip; fi" />
+    </target>
     
+    
+	       
     <target name="dev-build">
-        <echo msg="Cloning Ontowiki from ${ontowiki_repos} ..."/>
-        <exec command="hg clone ${ontowiki_repos} ${builddir}" />
-        <echo msg="Running ontowiki make install..." />
-        <exec command="make  --directory ${builddir} install" 
-                   logoutput="true"/>
+	<phingcall target="get_sources" />
+        <echo msg="unpacking ontowiki" />
+	<exec command="unzip ./src/Tar/ontowiki-0.9.6-pre2.zip -d ./; mv ontowiki-0.9.6/ build/" />
         <input propertyname="owConfigFile" 
                     validargs="younglives-mysql,virtuoso"
                     defaultValue="younglives-mysql"
@@ -31,13 +37,17 @@
         </input>
         <copy file="./conf/config.ini.${owConfigFile}" 
                    tofile="./${builddir}/config.ini" overwrite="true"  />  
-                   
+                 
         <phingcall target="overwrite-sysont"/>
-        <phingcall target="dev-csvimport"/>   
-        <phingcall target="create-kb"/>   
-        <phingcall target="load-general-triples"/>
-        <phingcall target="load-statistics-triples"/>  
-        <phingcall target="load-studystructure-triples"/>  
+        <phingcall target="dev-csvimport"/>
+    </target>
+    
+    <target name="setup">
+    	<phingcall target="create-kb"/>   
+    	<phingcall target="load-general-triples"/>
+    	<phingcall target="load-studystructure-triples"/>  
+    	<phingcall target="load-test_country_summary_stats"/>
+	<phingcall target="copy_theme" />
     </target>
     
     <target name="overwrite-sysont">
@@ -105,6 +115,20 @@
             </fileset>
         </foreach>
     </target>
-
+    <target name="load-test_country_summary_stats">
+	<echo msg="Loading triples for example country summary stats" />
+	    <foreach param="name" absparam="absname" target="load-rdf" >
+		    <fileset dir="initial_data/">
+			    <include name="*.xml" />
+		    </fileset>
+	    </foreach>
+    </target> 
+    
+    <target name="copy_theme" >
+	<echo msg="copying theme files into place" />
+	<exec command="cp theme/layout.phtml ${builddir}/application/views/templates/layouts/; rm -rf ${builddir}/extensions/themes/silverblue; cp -r  theme/silverblue ${builddir}/extensions/themes/" />
+    	
+    </target>
+    
 </project>
 
