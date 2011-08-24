@@ -374,7 +374,7 @@ $this->logEvent('end measures/n');
                 array(
                     'type' => 'uri',
                     'value' => $datastructDefinition
-                )locate 	
+                ) 	
 
             )
         );
