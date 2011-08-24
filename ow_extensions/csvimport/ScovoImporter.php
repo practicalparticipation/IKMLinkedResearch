@@ -34,7 +34,8 @@ class ScovoImporter extends Importer
         $this->logEvent("Import started..");
 
         $this->_createDimensions();
-        $this->_createDataset();
+	//we don't need thia as we create our own in the csvimporter.js
+        //$this->_createDataset();
         $this->_saveData();
 
         $this->logEvent("Done saving data!");

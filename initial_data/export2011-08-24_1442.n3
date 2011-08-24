@@ -1,0 +1,1956 @@
+# Exported with the Erfurt API - http://aksw.org/Projects/Erfurt
+
+@base <http://data.younglives.org.uk> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ns0: <http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/> .
+@prefix ns1: <http://data.younglives.org.uk/component#> .
+@prefix ns2: <http://purl.org/linked-data/cube#> .
+
+<http://data.younglives.org.uk> a <http://www.w3.org/2002/07/owl#Ontology> .
+
+ns1:affluence a ns2:ComponentProperty .
+
+ns1:affluenceInPreviousRound a ns2:ComponentProperty .
+
+ns1:cohort a ns2:ComponentProperty .
+
+ns1:country a ns2:ComponentProperty .
+
+ns1:gender a ns2:ComponentProperty .
+
+ns1:geographicRegion a ns2:ComponentProperty .
+
+ns1:localityType a ns2:ComponentProperty .
+
+ns1:mothersEducationLevel a ns2:ComponentProperty .
+
+ns1:religion a ns2:ComponentProperty .
+
+ns1:round a ns2:ComponentProperty .
+
+ns1:sampleSize a ns2:ComponentProperty .
+
+ns1:socialGrouping a ns2:ComponentProperty .
+
+ns1:timePoint a ns2:ComponentProperty .
+
+ns0:measure-PercentageCrossingPovertyLine a ns2:ComponentProperty .
+
+ns0:measure-ProportionOfSample a ns2:ComponentProperty .
+
+<http://data.younglives.org.uk/data/0055a4b5-c54e-492f-8833-55cf52fad5e3observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/022f7524-3129-4edf-aecd-5ea5edb41639observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/057e5d60-6fd2-4bb3-9674-58aaf4d47fa1observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/062b19d7-75c5-487a-9987-732091ef31dbobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/078bf2ca-ef1c-42a9-ac3c-e311b679568eobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/0a391657-ad93-4ef3-83ef-1f8084808143observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/0eb29ea1-0172-4795-96d4-d1f1068d5ebfobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/11f5a980-00da-434b-b360-5eecae994cc5observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/1658ee33-ac1e-4f2b-a9f1-5527ce08916fobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/17d43c36-f6b0-4ee7-afc6-89c4533c3ba0observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/17fe3ea4-55ac-4bb1-bbaf-fb91a37b7eabobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/1840d7cb-2da7-4a43-b41e-d2067a2c2e07observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/19df1e19-0427-4f91-8de1-5299e868c272observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/20bc3aa5-704e-48f8-9a45-064dacf2760bobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/21d4b1a4-aaec-45c4-9446-8e1dd1db8e2cobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/226b4b3f-6c62-4c46-a083-c0bc23402e03observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/268044a1-b20d-49f8-8350-a52f9e63d56eobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/2ad83b60-69db-4123-bdd3-8dcdd102d46fobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/31ac66d6-c865-4090-9bdb-1b6fba883b76observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/345ea078-36b3-4b84-8b74-8c7530bfa3e5observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/35cc7f65-f841-426b-95b0-aa960b7d8783observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/365e208d-9bfa-4805-b9a8-3569788e8710observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/389fcafb-1ff5-40d3-b520-28439d1d1e29observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/397e11d4-ee1e-4d89-b94b-56645f3d93e2observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/3a7ac43b-87e7-443b-9571-8b53bfdbd228observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/3b0efcba-0e34-4d9e-8f4d-5b440ebab302observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/3cea4a09-c1bc-49f6-b8ae-fcd196418c4cobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/3e1d0a44-eb3e-4ec0-9ce3-c4c9bf27669eobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/3e68494e-5f96-4cb4-bbdd-e0d27a3aa0edobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/43a8d69e-8c95-4117-9caa-559ec18a3e01observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/454e85c9-d439-441f-addf-8849ba1d7bc5observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/46d932b3-2b4f-4be0-8a91-424c53364975observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/482d019c-b5bc-4b78-b520-37a1e14256deobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/49412a62-d998-4309-aea3-736f63c94070observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/4bb4b7d0-e52c-47a5-9452-33520e9596adobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/4c771df0-89d6-4d03-98cf-39bbabd07dacobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/4c78909a-030d-44f5-af79-3bde66a408bfobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/4fd27831-f57a-4ffa-9d44-2ec291cf1c12observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/50b991c1-f68a-4b5e-b7c2-d2c5b9a038b6observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/5291b60e-73a2-4eb4-b4fd-2ee4555f2b95observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/57fbf5f3-0e0b-41a3-9a76-464869e7d64dobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/583fa46e-8bb2-464e-b393-f0e9b74643caobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/5985d306-9f2b-499f-801c-ac183657674bobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/59ecec89-b9ec-49de-a2db-ed060b16573aobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/5a0afe81-c4e9-4ff9-a61b-d8128ddc2f7bobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/5b2a10ab-2cab-47ca-b9dc-2e19962f1369observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/5bdadab2-059d-480f-bb9e-78567c6e19bbobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/5fc44b27-c3ef-46dc-af90-a8435a831470observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/5fdf4b0a-9c60-44d7-a88b-f98cf52f3212observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/6014e3d9-de91-4bff-95fd-25defe1ae484observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/616d5991-51b8-47f7-a340-e144751a5e6dobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/6470dec7-d191-40d0-bdd6-616ed3a712f4observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/69e49994-ff7c-4161-81c8-a4c82816b7ffobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/71016982-d8f4-40cf-8875-dc238e3e5e85observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/7228be05-e519-433f-b99d-c8cc434dd1b0observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/761921c6-737f-4513-9810-e2b07dcf1a67observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/765bd941-f800-4f38-8304-0e0e80e98d70observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/7670b50c-0372-45a3-b763-df7473439471observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/77dbac77-d1c0-40cc-95d3-60147940fcb8observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/798d94f2-8a70-4854-ba4e-eeac3aef3588observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/7d5dcf51-acbc-44d7-939a-72b74ea7d0f2observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/8460f423-cfad-44c6-8617-6dbf5ff3dcb2observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/8988a945-df15-435f-809b-49ac654ae06eobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/8a3b983c-8a0d-4995-991e-1f58731487cbobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/8d1e1566-b0d1-483d-95f5-6dd1f9e3830cobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/9077e15c-0bd8-4949-822c-d8f42a7e449cobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/93b0c54e-ea1e-475a-8940-b75e86c65b1fobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/9784904c-012f-4b9e-9fda-2cbcac8f6dcbobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/9863b6d3-1cc6-4fc5-9c06-b5bb5a139089observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/9b7971b7-3296-4b1a-b5f0-5ac341fa12e8observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/a5e7a2f5-cc60-45af-9fe8-abc24b0dd64dobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/a910464f-36ea-4a98-adc8-7709cc084159observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/ab7fad5f-f9f5-4b11-a3b4-8edebfface05observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/b6830d7a-8be6-469d-8668-e8cc1ec2f0a1observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/bbc5ae80-c10b-4322-b67e-1ae682ad60c0observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/c0652ada-9ea4-4c85-82b7-6050b3689d09observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/c2c052c4-654a-4bcd-bfe6-9df4bb9d48dbobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/c85ecc6b-7b2b-4ee8-90f2-24a6e1907933observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/cb7696d2-6ff6-4366-b83e-ec83dda53ac4observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/cc9785bc-cab6-4613-a542-5cda8ced7243observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/cfcba024-3cbf-42d8-b009-3518ccb378c4observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/d25284d2-7033-4d17-bc8d-d1d32d9de4e0observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/d25fda6c-be64-4fae-97d3-1dc94ae9eb42observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/d3a40d6d-7876-4fd9-bc5a-47949e8c0a7dobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/d5bd245e-83cc-4f29-96e3-18aae7cb855aobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/d83b013e-e729-44bb-9303-423ebd33629aobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/d890976d-85cc-4405-8f6c-20b6a871a53fobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/d994a217-e2a5-4bac-96bd-49941dd7d9f3observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/dd85b5ed-4232-415c-a156-e75becb5124bobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/e1c0c236-3513-469f-9f62-37c6bc117f26observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/e900123a-430e-42a5-bb59-ffbc34fb8230observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/ead432ce-50cc-4ab8-b4a8-0b68f129ed01observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/eb445ee5-82f9-4336-8207-1230c9d4a75eobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/f23c6a2f-0394-4b8f-a7ec-0e04838d3c1aobservation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/f2ba7de8-a66c-465b-ab5a-fa39166f0806observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/f5afa9c4-aad2-454c-b631-1180997d6859observation> a ns2:Observation .
+
+<http://data.younglives.org.uk/data/summary/SumaryStatistics-204dbdc0-c90b-4bd9-9632-0dfdf0c3b51f> a ns2:DataStructureDefinition .
+
+<http://data.younglives.org.uk/data/summary/SumaryStatistics-315ed24f-1493-44c6-84b6-816a38f1a45d> a ns2:DataStructureDefinition .
+
+ns0:dataset-1eae6a27-4753-40f7-9113-9c91b15f9254 a ns2:DataSet .
+
+ns0:dataset-2a7a0943-8728-4cda-92c1-ade9bf3a890a a ns2:DataSet .
+
+ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d a ns2:DataSet .
+
+ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 a ns2:DataSet .
+
+ns0:dataset-53dfbe6c-f562-4c1c-b75e-615590d55d29 a ns2:DataSet .
+
+ns0:dataset-929009ef-9fad-4aca-916a-b9656eb5b3ca a ns2:DataSet .
+
+ns0:dataset-a5b07718-0aae-4bb3-b405-126b015f4a14 a ns2:DataSet .
+
+ns0:dataset-f1306a3e-ef01-45b9-9e8f-54d59fcba1d7 a ns2:DataSet .
+
+ns0:measure-PercentageCrossingPovertyLine a ns2:MeasureProperty .
+
+ns0:measure-ProportionOfSample a ns2:MeasureProperty .
+
+ns1:affluence a ns2:DimensionProperty .
+
+ns1:affluenceInPreviousRound a ns2:DimensionProperty .
+
+ns1:cohort a ns2:DimensionProperty .
+
+ns1:country a ns2:DimensionProperty .
+
+ns1:gender a ns2:DimensionProperty .
+
+ns1:geographicRegion a ns2:DimensionProperty .
+
+ns1:localityType a ns2:DimensionProperty .
+
+ns1:mothersEducationLevel a ns2:DimensionProperty .
+
+ns1:religion a ns2:DimensionProperty .
+
+ns1:round a ns2:DimensionProperty .
+
+ns1:sampleSize a ns2:DimensionProperty .
+
+ns1:socialGrouping a ns2:DimensionProperty .
+
+ns1:timePoint a ns2:DimensionProperty .
+
+ns1:sampleSize <http://www.w3.org/2000/01/rdf-schema#label> "Sample Size"@en .
+
+<http://data.younglives.org.uk/data/summary/SumaryStatistics-315ed24f-1493-44c6-84b6-816a38f1a45d> <http://www.w3.org/2000/01/rdf-schema#label> "General Characteristics of the sample"@en .
+
+ns1:gender <http://www.w3.org/2000/01/rdf-schema#label> "Gender of participant"@en .
+
+ns1:geographicRegion <http://www.w3.org/2000/01/rdf-schema#label> "Geographic Region"@en .
+
+ns1:timePoint <http://www.w3.org/2000/01/rdf-schema#label> "Time point"@en .
+
+ns1:socialGrouping <http://www.w3.org/2000/01/rdf-schema#label> "Social group or caste of the participant"@en .
+
+ns0:measure-ProportionOfSample <http://www.w3.org/2000/01/rdf-schema#label> "The Proportion of the total sample that belong in all the categories noted"@en .
+
+ns1:mothersEducationLevel <http://www.w3.org/2000/01/rdf-schema#label> "Educational level of the mother"@en .
+
+ns1:religion <http://www.w3.org/2000/01/rdf-schema#label> "The religion or faith of the participant"@en .
+
+ns0:measure-PercentageCrossingPovertyLine <http://www.w3.org/2000/01/rdf-schema#label> "Percentage moving across the poverty line"@en .
+
+ns1:affluence <http://www.w3.org/2000/01/rdf-schema#label> "The affluence of the participant in a particular round"@en .
+
+<http://data.younglives.org.uk/data/summary/SumaryStatistics-204dbdc0-c90b-4bd9-9632-0dfdf0c3b51f> <http://www.w3.org/2000/01/rdf-schema#label> "Crossing poverty line"@en .
+
+ns1:affluenceInPreviousRound <http://www.w3.org/2000/01/rdf-schema#label> "The affluence in a previous round"@en .
+
+ns1:localityType <http://www.w3.org/2000/01/rdf-schema#label> "Characteristic of participants location eg. Urban or Rural"@en .
+
+ns1:round <http://www.w3.org/2000/01/rdf-schema#label> "Younglives Round"@en .
+
+ns1:country <http://www.w3.org/2000/01/rdf-schema#label> "Country"@en .
+
+ns1:cohort <http://www.w3.org/2000/01/rdf-schema#label> "Younglives Cohort"@en .
+
+ns0:measure-PercentageCrossingPovertyLine <http://www.w3.org/2000/01/rdf-schema#range> xsd:decimal .
+
+ns0:measure-ProportionOfSample <http://www.w3.org/2000/01/rdf-schema#range> xsd:decimal .
+
+ns0:measure-PercentageCrossingPovertyLine rdf:Property ns2:MeasureProperty .
+
+ns0:measure-ProportionOfSample rdf:Property ns2:MeasureProperty .
+
+ns0:measure-PercentageCrossingPovertyLine <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://purl.org/linked-data/sdmx/2009/measures#obsValue> .
+
+ns0:measure-ProportionOfSample <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://purl.org/linked-data/sdmx/2009/measures#obsValue> .
+
+<http://data.younglives.org.uk/data/062b19d7-75c5-487a-9987-732091ef31dbobservation> ns1:affluence ns0:Poor_in_R3 .
+
+<http://data.younglives.org.uk/data/11f5a980-00da-434b-b360-5eecae994cc5observation> ns1:affluence ns0:Poor_in_R3 .
+
+<http://data.younglives.org.uk/data/1658ee33-ac1e-4f2b-a9f1-5527ce08916fobservation> ns1:affluence ns0:Poor_in_R3 .
+
+<http://data.younglives.org.uk/data/1840d7cb-2da7-4a43-b41e-d2067a2c2e07observation> ns1:affluence ns0:Poor_in_R3 .
+
+<http://data.younglives.org.uk/data/43a8d69e-8c95-4117-9caa-559ec18a3e01observation> ns1:affluence ns0:Poor_in_R3 .
+
+<http://data.younglives.org.uk/data/583fa46e-8bb2-464e-b393-f0e9b74643caobservation> ns1:affluence ns0:Poor_in_R3 .
+
+<http://data.younglives.org.uk/data/765bd941-f800-4f38-8304-0e0e80e98d70observation> ns1:affluence ns0:Poor_in_R3 .
+
+<http://data.younglives.org.uk/data/8460f423-cfad-44c6-8617-6dbf5ff3dcb2observation> ns1:affluence ns0:Poor_in_R3 .
+
+<http://data.younglives.org.uk/data/8988a945-df15-435f-809b-49ac654ae06eobservation> ns1:affluence ns0:Poor_in_R3 .
+
+<http://data.younglives.org.uk/data/b6830d7a-8be6-469d-8668-e8cc1ec2f0a1observation> ns1:affluence ns0:Poor_in_R3 .
+
+<http://data.younglives.org.uk/data/d25284d2-7033-4d17-bc8d-d1d32d9de4e0observation> ns1:affluence ns0:Poor_in_R3 .
+
+<http://data.younglives.org.uk/data/f23c6a2f-0394-4b8f-a7ec-0e04838d3c1aobservation> ns1:affluence ns0:Poor_in_R3 .
+
+<http://data.younglives.org.uk/data/057e5d60-6fd2-4bb3-9674-58aaf4d47fa1observation> ns1:affluence ns0:Non-poor_in_R3 .
+
+<http://data.younglives.org.uk/data/2ad83b60-69db-4123-bdd3-8dcdd102d46fobservation> ns1:affluence ns0:Non-poor_in_R3 .
+
+<http://data.younglives.org.uk/data/31ac66d6-c865-4090-9bdb-1b6fba883b76observation> ns1:affluence ns0:Non-poor_in_R3 .
+
+<http://data.younglives.org.uk/data/3b0efcba-0e34-4d9e-8f4d-5b440ebab302observation> ns1:affluence ns0:Non-poor_in_R3 .
+
+<http://data.younglives.org.uk/data/4bb4b7d0-e52c-47a5-9452-33520e9596adobservation> ns1:affluence ns0:Non-poor_in_R3 .
+
+<http://data.younglives.org.uk/data/4c771df0-89d6-4d03-98cf-39bbabd07dacobservation> ns1:affluence ns0:Non-poor_in_R3 .
+
+<http://data.younglives.org.uk/data/5985d306-9f2b-499f-801c-ac183657674bobservation> ns1:affluence ns0:Non-poor_in_R3 .
+
+<http://data.younglives.org.uk/data/c85ecc6b-7b2b-4ee8-90f2-24a6e1907933observation> ns1:affluence ns0:Non-poor_in_R3 .
+
+<http://data.younglives.org.uk/data/d5bd245e-83cc-4f29-96e3-18aae7cb855aobservation> ns1:affluence ns0:Non-poor_in_R3 .
+
+<http://data.younglives.org.uk/data/d994a217-e2a5-4bac-96bd-49941dd7d9f3observation> ns1:affluence ns0:Non-poor_in_R3 .
+
+<http://data.younglives.org.uk/data/e900123a-430e-42a5-bb59-ffbc34fb8230observation> ns1:affluence ns0:Non-poor_in_R3 .
+
+<http://data.younglives.org.uk/data/f2ba7de8-a66c-465b-ab5a-fa39166f0806observation> ns1:affluence ns0:Non-poor_in_R3 .
+
+<http://data.younglives.org.uk/data/summary/SumaryStatistics-204dbdc0-c90b-4bd9-9632-0dfdf0c3b51f> ns2:ComponentProperty ns1:affluence, ns1:affluenceInPreviousRound, ns1:cohort .
+
+<http://data.younglives.org.uk/data/summary/SumaryStatistics-315ed24f-1493-44c6-84b6-816a38f1a45d> ns2:ComponentProperty ns1:cohort .
+
+<http://data.younglives.org.uk/data/summary/SumaryStatistics-204dbdc0-c90b-4bd9-9632-0dfdf0c3b51f> ns2:ComponentProperty ns1:country .
+
+<http://data.younglives.org.uk/data/summary/SumaryStatistics-315ed24f-1493-44c6-84b6-816a38f1a45d> ns2:ComponentProperty ns1:country, ns1:gender, ns1:geographicRegion .
+
+<http://data.younglives.org.uk/data/summary/SumaryStatistics-204dbdc0-c90b-4bd9-9632-0dfdf0c3b51f> ns2:ComponentProperty ns1:localityType .
+
+<http://data.younglives.org.uk/data/summary/SumaryStatistics-315ed24f-1493-44c6-84b6-816a38f1a45d> ns2:ComponentProperty ns1:localityType, ns1:mothersEducationLevel, ns1:religion .
+
+<http://data.younglives.org.uk/data/summary/SumaryStatistics-204dbdc0-c90b-4bd9-9632-0dfdf0c3b51f> ns2:ComponentProperty ns1:round .
+
+<http://data.younglives.org.uk/data/summary/SumaryStatistics-315ed24f-1493-44c6-84b6-816a38f1a45d> ns2:ComponentProperty ns1:round, ns1:sampleSize, ns1:socialGrouping .
+
+<http://data.younglives.org.uk/data/summary/SumaryStatistics-204dbdc0-c90b-4bd9-9632-0dfdf0c3b51f> ns2:ComponentProperty ns1:timePoint .
+
+<http://data.younglives.org.uk/data/summary/SumaryStatistics-315ed24f-1493-44c6-84b6-816a38f1a45d> ns2:ComponentProperty ns1:timePoint .
+
+<http://data.younglives.org.uk/data/summary/SumaryStatistics-204dbdc0-c90b-4bd9-9632-0dfdf0c3b51f> ns2:ComponentProperty ns0:measure-PercentageCrossingPovertyLine .
+
+<http://data.younglives.org.uk/data/summary/SumaryStatistics-315ed24f-1493-44c6-84b6-816a38f1a45d> ns2:ComponentProperty ns0:measure-ProportionOfSample .
+
+<http://data.younglives.org.uk/data/062b19d7-75c5-487a-9987-732091ef31dbobservation> ns1:affluenceInPreviousRound ns0:Poor_in_R2 .
+
+<http://data.younglives.org.uk/data/11f5a980-00da-434b-b360-5eecae994cc5observation> ns1:affluenceInPreviousRound ns0:Poor_in_R2 .
+
+<http://data.younglives.org.uk/data/1658ee33-ac1e-4f2b-a9f1-5527ce08916fobservation> ns1:affluenceInPreviousRound ns0:Poor_in_R2 .
+
+<http://data.younglives.org.uk/data/1840d7cb-2da7-4a43-b41e-d2067a2c2e07observation> ns1:affluenceInPreviousRound ns0:Poor_in_R2 .
+
+<http://data.younglives.org.uk/data/3b0efcba-0e34-4d9e-8f4d-5b440ebab302observation> ns1:affluenceInPreviousRound ns0:Poor_in_R2 .
+
+<http://data.younglives.org.uk/data/4bb4b7d0-e52c-47a5-9452-33520e9596adobservation> ns1:affluenceInPreviousRound ns0:Poor_in_R2 .
+
+<http://data.younglives.org.uk/data/8460f423-cfad-44c6-8617-6dbf5ff3dcb2observation> ns1:affluenceInPreviousRound ns0:Poor_in_R2 .
+
+<http://data.younglives.org.uk/data/c85ecc6b-7b2b-4ee8-90f2-24a6e1907933observation> ns1:affluenceInPreviousRound ns0:Poor_in_R2 .
+
+<http://data.younglives.org.uk/data/d25284d2-7033-4d17-bc8d-d1d32d9de4e0observation> ns1:affluenceInPreviousRound ns0:Poor_in_R2 .
+
+<http://data.younglives.org.uk/data/d5bd245e-83cc-4f29-96e3-18aae7cb855aobservation> ns1:affluenceInPreviousRound ns0:Poor_in_R2 .
+
+<http://data.younglives.org.uk/data/e900123a-430e-42a5-bb59-ffbc34fb8230observation> ns1:affluenceInPreviousRound ns0:Poor_in_R2 .
+
+<http://data.younglives.org.uk/data/f2ba7de8-a66c-465b-ab5a-fa39166f0806observation> ns1:affluenceInPreviousRound ns0:Poor_in_R2 .
+
+<http://data.younglives.org.uk/data/057e5d60-6fd2-4bb3-9674-58aaf4d47fa1observation> ns1:affluenceInPreviousRound ns0:Non-poor_in_R2 .
+
+<http://data.younglives.org.uk/data/2ad83b60-69db-4123-bdd3-8dcdd102d46fobservation> ns1:affluenceInPreviousRound ns0:Non-poor_in_R2 .
+
+<http://data.younglives.org.uk/data/31ac66d6-c865-4090-9bdb-1b6fba883b76observation> ns1:affluenceInPreviousRound ns0:Non-poor_in_R2 .
+
+<http://data.younglives.org.uk/data/43a8d69e-8c95-4117-9caa-559ec18a3e01observation> ns1:affluenceInPreviousRound ns0:Non-poor_in_R2 .
+
+<http://data.younglives.org.uk/data/4c771df0-89d6-4d03-98cf-39bbabd07dacobservation> ns1:affluenceInPreviousRound ns0:Non-poor_in_R2 .
+
+<http://data.younglives.org.uk/data/583fa46e-8bb2-464e-b393-f0e9b74643caobservation> ns1:affluenceInPreviousRound ns0:Non-poor_in_R2 .
+
+<http://data.younglives.org.uk/data/5985d306-9f2b-499f-801c-ac183657674bobservation> ns1:affluenceInPreviousRound ns0:Non-poor_in_R2 .
+
+<http://data.younglives.org.uk/data/765bd941-f800-4f38-8304-0e0e80e98d70observation> ns1:affluenceInPreviousRound ns0:Non-poor_in_R2 .
+
+<http://data.younglives.org.uk/data/8988a945-df15-435f-809b-49ac654ae06eobservation> ns1:affluenceInPreviousRound ns0:Non-poor_in_R2 .
+
+<http://data.younglives.org.uk/data/b6830d7a-8be6-469d-8668-e8cc1ec2f0a1observation> ns1:affluenceInPreviousRound ns0:Non-poor_in_R2 .
+
+<http://data.younglives.org.uk/data/d994a217-e2a5-4bac-96bd-49941dd7d9f3observation> ns1:affluenceInPreviousRound ns0:Non-poor_in_R2 .
+
+<http://data.younglives.org.uk/data/f23c6a2f-0394-4b8f-a7ec-0e04838d3c1aobservation> ns1:affluenceInPreviousRound ns0:Non-poor_in_R2 .
+
+<http://data.younglives.org.uk/data/022f7524-3129-4edf-aecd-5ea5edb41639observation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/078bf2ca-ef1c-42a9-ac3c-e311b679568eobservation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/17fe3ea4-55ac-4bb1-bbaf-fb91a37b7eabobservation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/19df1e19-0427-4f91-8de1-5299e868c272observation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/21d4b1a4-aaec-45c4-9446-8e1dd1db8e2cobservation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/226b4b3f-6c62-4c46-a083-c0bc23402e03observation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/35cc7f65-f841-426b-95b0-aa960b7d8783observation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/365e208d-9bfa-4805-b9a8-3569788e8710observation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/397e11d4-ee1e-4d89-b94b-56645f3d93e2observation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/3e1d0a44-eb3e-4ec0-9ce3-c4c9bf27669eobservation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/3e68494e-5f96-4cb4-bbdd-e0d27a3aa0edobservation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/454e85c9-d439-441f-addf-8849ba1d7bc5observation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/482d019c-b5bc-4b78-b520-37a1e14256deobservation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/49412a62-d998-4309-aea3-736f63c94070observation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/4c78909a-030d-44f5-af79-3bde66a408bfobservation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/4fd27831-f57a-4ffa-9d44-2ec291cf1c12observation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/5b2a10ab-2cab-47ca-b9dc-2e19962f1369observation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/5bdadab2-059d-480f-bb9e-78567c6e19bbobservation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/616d5991-51b8-47f7-a340-e144751a5e6dobservation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/7670b50c-0372-45a3-b763-df7473439471observation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/77dbac77-d1c0-40cc-95d3-60147940fcb8observation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/8a3b983c-8a0d-4995-991e-1f58731487cbobservation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/9077e15c-0bd8-4949-822c-d8f42a7e449cobservation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/9784904c-012f-4b9e-9fda-2cbcac8f6dcbobservation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/9b7971b7-3296-4b1a-b5f0-5ac341fa12e8observation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/a5e7a2f5-cc60-45af-9fe8-abc24b0dd64dobservation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/a910464f-36ea-4a98-adc8-7709cc084159observation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/ab7fad5f-f9f5-4b11-a3b4-8edebfface05observation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/bbc5ae80-c10b-4322-b67e-1ae682ad60c0observation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/c0652ada-9ea4-4c85-82b7-6050b3689d09observation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/d83b013e-e729-44bb-9303-423ebd33629aobservation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/d890976d-85cc-4405-8f6c-20b6a871a53fobservation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/dd85b5ed-4232-415c-a156-e75becb5124bobservation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/ead432ce-50cc-4ab8-b4a8-0b68f129ed01observation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/eb445ee5-82f9-4336-8207-1230c9d4a75eobservation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/f5afa9c4-aad2-454c-b631-1180997d6859observation> ns1:cohort ns0:YC .
+
+<http://data.younglives.org.uk/data/0055a4b5-c54e-492f-8833-55cf52fad5e3observation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/0a391657-ad93-4ef3-83ef-1f8084808143observation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/0eb29ea1-0172-4795-96d4-d1f1068d5ebfobservation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/17d43c36-f6b0-4ee7-afc6-89c4533c3ba0observation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/20bc3aa5-704e-48f8-9a45-064dacf2760bobservation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/268044a1-b20d-49f8-8350-a52f9e63d56eobservation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/345ea078-36b3-4b84-8b74-8c7530bfa3e5observation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/389fcafb-1ff5-40d3-b520-28439d1d1e29observation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/3a7ac43b-87e7-443b-9571-8b53bfdbd228observation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/3cea4a09-c1bc-49f6-b8ae-fcd196418c4cobservation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/46d932b3-2b4f-4be0-8a91-424c53364975observation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/50b991c1-f68a-4b5e-b7c2-d2c5b9a038b6observation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/5291b60e-73a2-4eb4-b4fd-2ee4555f2b95observation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/57fbf5f3-0e0b-41a3-9a76-464869e7d64dobservation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/59ecec89-b9ec-49de-a2db-ed060b16573aobservation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/5a0afe81-c4e9-4ff9-a61b-d8128ddc2f7bobservation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/5fc44b27-c3ef-46dc-af90-a8435a831470observation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/5fdf4b0a-9c60-44d7-a88b-f98cf52f3212observation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/6014e3d9-de91-4bff-95fd-25defe1ae484observation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/6470dec7-d191-40d0-bdd6-616ed3a712f4observation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/69e49994-ff7c-4161-81c8-a4c82816b7ffobservation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/71016982-d8f4-40cf-8875-dc238e3e5e85observation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/7228be05-e519-433f-b99d-c8cc434dd1b0observation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/761921c6-737f-4513-9810-e2b07dcf1a67observation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/798d94f2-8a70-4854-ba4e-eeac3aef3588observation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/7d5dcf51-acbc-44d7-939a-72b74ea7d0f2observation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/8d1e1566-b0d1-483d-95f5-6dd1f9e3830cobservation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/93b0c54e-ea1e-475a-8940-b75e86c65b1fobservation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/9863b6d3-1cc6-4fc5-9c06-b5bb5a139089observation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/c2c052c4-654a-4bcd-bfe6-9df4bb9d48dbobservation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/cb7696d2-6ff6-4366-b83e-ec83dda53ac4observation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/cc9785bc-cab6-4613-a542-5cda8ced7243observation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/cfcba024-3cbf-42d8-b009-3518ccb378c4observation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/d25fda6c-be64-4fae-97d3-1dc94ae9eb42observation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/d3a40d6d-7876-4fd9-bc5a-47949e8c0a7dobservation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/e1c0c236-3513-469f-9f62-37c6bc117f26observation> ns1:cohort ns0:OC .
+
+<http://data.younglives.org.uk/data/0055a4b5-c54e-492f-8833-55cf52fad5e3observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/022f7524-3129-4edf-aecd-5ea5edb41639observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/057e5d60-6fd2-4bb3-9674-58aaf4d47fa1observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/062b19d7-75c5-487a-9987-732091ef31dbobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/078bf2ca-ef1c-42a9-ac3c-e311b679568eobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/0a391657-ad93-4ef3-83ef-1f8084808143observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/0eb29ea1-0172-4795-96d4-d1f1068d5ebfobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/11f5a980-00da-434b-b360-5eecae994cc5observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/1658ee33-ac1e-4f2b-a9f1-5527ce08916fobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/17d43c36-f6b0-4ee7-afc6-89c4533c3ba0observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/17fe3ea4-55ac-4bb1-bbaf-fb91a37b7eabobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/1840d7cb-2da7-4a43-b41e-d2067a2c2e07observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/19df1e19-0427-4f91-8de1-5299e868c272observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/20bc3aa5-704e-48f8-9a45-064dacf2760bobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/21d4b1a4-aaec-45c4-9446-8e1dd1db8e2cobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/226b4b3f-6c62-4c46-a083-c0bc23402e03observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/268044a1-b20d-49f8-8350-a52f9e63d56eobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/2ad83b60-69db-4123-bdd3-8dcdd102d46fobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/31ac66d6-c865-4090-9bdb-1b6fba883b76observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/345ea078-36b3-4b84-8b74-8c7530bfa3e5observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/35cc7f65-f841-426b-95b0-aa960b7d8783observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/365e208d-9bfa-4805-b9a8-3569788e8710observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/389fcafb-1ff5-40d3-b520-28439d1d1e29observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/397e11d4-ee1e-4d89-b94b-56645f3d93e2observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/3a7ac43b-87e7-443b-9571-8b53bfdbd228observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/3b0efcba-0e34-4d9e-8f4d-5b440ebab302observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/3cea4a09-c1bc-49f6-b8ae-fcd196418c4cobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/3e1d0a44-eb3e-4ec0-9ce3-c4c9bf27669eobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/3e68494e-5f96-4cb4-bbdd-e0d27a3aa0edobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/43a8d69e-8c95-4117-9caa-559ec18a3e01observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/454e85c9-d439-441f-addf-8849ba1d7bc5observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/46d932b3-2b4f-4be0-8a91-424c53364975observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/482d019c-b5bc-4b78-b520-37a1e14256deobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/49412a62-d998-4309-aea3-736f63c94070observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/4bb4b7d0-e52c-47a5-9452-33520e9596adobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/4c771df0-89d6-4d03-98cf-39bbabd07dacobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/4c78909a-030d-44f5-af79-3bde66a408bfobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/4fd27831-f57a-4ffa-9d44-2ec291cf1c12observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/50b991c1-f68a-4b5e-b7c2-d2c5b9a038b6observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/5291b60e-73a2-4eb4-b4fd-2ee4555f2b95observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/57fbf5f3-0e0b-41a3-9a76-464869e7d64dobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/583fa46e-8bb2-464e-b393-f0e9b74643caobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/5985d306-9f2b-499f-801c-ac183657674bobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/59ecec89-b9ec-49de-a2db-ed060b16573aobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/5a0afe81-c4e9-4ff9-a61b-d8128ddc2f7bobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/5b2a10ab-2cab-47ca-b9dc-2e19962f1369observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/5bdadab2-059d-480f-bb9e-78567c6e19bbobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/5fc44b27-c3ef-46dc-af90-a8435a831470observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/5fdf4b0a-9c60-44d7-a88b-f98cf52f3212observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/6014e3d9-de91-4bff-95fd-25defe1ae484observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/616d5991-51b8-47f7-a340-e144751a5e6dobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/6470dec7-d191-40d0-bdd6-616ed3a712f4observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/69e49994-ff7c-4161-81c8-a4c82816b7ffobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/71016982-d8f4-40cf-8875-dc238e3e5e85observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/7228be05-e519-433f-b99d-c8cc434dd1b0observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/761921c6-737f-4513-9810-e2b07dcf1a67observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/765bd941-f800-4f38-8304-0e0e80e98d70observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/7670b50c-0372-45a3-b763-df7473439471observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/77dbac77-d1c0-40cc-95d3-60147940fcb8observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/798d94f2-8a70-4854-ba4e-eeac3aef3588observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/7d5dcf51-acbc-44d7-939a-72b74ea7d0f2observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/8460f423-cfad-44c6-8617-6dbf5ff3dcb2observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/8988a945-df15-435f-809b-49ac654ae06eobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/8a3b983c-8a0d-4995-991e-1f58731487cbobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/8d1e1566-b0d1-483d-95f5-6dd1f9e3830cobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/9077e15c-0bd8-4949-822c-d8f42a7e449cobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/93b0c54e-ea1e-475a-8940-b75e86c65b1fobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/9784904c-012f-4b9e-9fda-2cbcac8f6dcbobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/9863b6d3-1cc6-4fc5-9c06-b5bb5a139089observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/9b7971b7-3296-4b1a-b5f0-5ac341fa12e8observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/a5e7a2f5-cc60-45af-9fe8-abc24b0dd64dobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/a910464f-36ea-4a98-adc8-7709cc084159observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/ab7fad5f-f9f5-4b11-a3b4-8edebfface05observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/b6830d7a-8be6-469d-8668-e8cc1ec2f0a1observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/bbc5ae80-c10b-4322-b67e-1ae682ad60c0observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/c0652ada-9ea4-4c85-82b7-6050b3689d09observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/c2c052c4-654a-4bcd-bfe6-9df4bb9d48dbobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/c85ecc6b-7b2b-4ee8-90f2-24a6e1907933observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/cb7696d2-6ff6-4366-b83e-ec83dda53ac4observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/cc9785bc-cab6-4613-a542-5cda8ced7243observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/cfcba024-3cbf-42d8-b009-3518ccb378c4observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/d25284d2-7033-4d17-bc8d-d1d32d9de4e0observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/d25fda6c-be64-4fae-97d3-1dc94ae9eb42observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/d3a40d6d-7876-4fd9-bc5a-47949e8c0a7dobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/d5bd245e-83cc-4f29-96e3-18aae7cb855aobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/d83b013e-e729-44bb-9303-423ebd33629aobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/d890976d-85cc-4405-8f6c-20b6a871a53fobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/d994a217-e2a5-4bac-96bd-49941dd7d9f3observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/dd85b5ed-4232-415c-a156-e75becb5124bobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/e1c0c236-3513-469f-9f62-37c6bc117f26observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/e900123a-430e-42a5-bb59-ffbc34fb8230observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/ead432ce-50cc-4ab8-b4a8-0b68f129ed01observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/eb445ee5-82f9-4336-8207-1230c9d4a75eobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/f23c6a2f-0394-4b8f-a7ec-0e04838d3c1aobservation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/f2ba7de8-a66c-465b-ab5a-fa39166f0806observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/f5afa9c4-aad2-454c-b631-1180997d6859observation> ns1:country ns0:India .
+
+<http://data.younglives.org.uk/data/0a391657-ad93-4ef3-83ef-1f8084808143observation> ns1:gender ns0:Female .
+
+<http://data.younglives.org.uk/data/35cc7f65-f841-426b-95b0-aa960b7d8783observation> ns1:gender ns0:Female .
+
+<http://data.younglives.org.uk/data/3e1d0a44-eb3e-4ec0-9ce3-c4c9bf27669eobservation> ns1:gender ns0:Female .
+
+<http://data.younglives.org.uk/data/7228be05-e519-433f-b99d-c8cc434dd1b0observation> ns1:gender ns0:Female .
+
+<http://data.younglives.org.uk/data/46d932b3-2b4f-4be0-8a91-424c53364975observation> ns1:gender ns0:Male .
+
+<http://data.younglives.org.uk/data/5bdadab2-059d-480f-bb9e-78567c6e19bbobservation> ns1:gender ns0:Male .
+
+<http://data.younglives.org.uk/data/69e49994-ff7c-4161-81c8-a4c82816b7ffobservation> ns1:gender ns0:Male .
+
+<http://data.younglives.org.uk/data/bbc5ae80-c10b-4322-b67e-1ae682ad60c0observation> ns1:gender ns0:Male .
+
+<http://data.younglives.org.uk/data/0eb29ea1-0172-4795-96d4-d1f1068d5ebfobservation> ns1:geographicRegion ns0:Coastal_andhra .
+
+<http://data.younglives.org.uk/data/3cea4a09-c1bc-49f6-b8ae-fcd196418c4cobservation> ns1:geographicRegion ns0:Coastal_andhra .
+
+<http://data.younglives.org.uk/data/5b2a10ab-2cab-47ca-b9dc-2e19962f1369observation> ns1:geographicRegion ns0:Coastal_andhra .
+
+<http://data.younglives.org.uk/data/77dbac77-d1c0-40cc-95d3-60147940fcb8observation> ns1:geographicRegion ns0:Coastal_andhra .
+
+<http://data.younglives.org.uk/data/022f7524-3129-4edf-aecd-5ea5edb41639observation> ns1:geographicRegion ns0:Rayalseema .
+
+<http://data.younglives.org.uk/data/3a7ac43b-87e7-443b-9571-8b53bfdbd228observation> ns1:geographicRegion ns0:Rayalseema .
+
+<http://data.younglives.org.uk/data/5291b60e-73a2-4eb4-b4fd-2ee4555f2b95observation> ns1:geographicRegion ns0:Rayalseema .
+
+<http://data.younglives.org.uk/data/a910464f-36ea-4a98-adc8-7709cc084159observation> ns1:geographicRegion ns0:Rayalseema .
+
+<http://data.younglives.org.uk/data/4fd27831-f57a-4ffa-9d44-2ec291cf1c12observation> ns1:geographicRegion ns0:Telangana .
+
+<http://data.younglives.org.uk/data/c0652ada-9ea4-4c85-82b7-6050b3689d09observation> ns1:geographicRegion ns0:Telangana .
+
+<http://data.younglives.org.uk/data/c2c052c4-654a-4bcd-bfe6-9df4bb9d48dbobservation> ns1:geographicRegion ns0:Telangana .
+
+<http://data.younglives.org.uk/data/cfcba024-3cbf-42d8-b009-3518ccb378c4observation> ns1:geographicRegion ns0:Telangana .
+
+<http://data.younglives.org.uk/data/0055a4b5-c54e-492f-8833-55cf52fad5e3observation> ns1:localityType ns0:Rural .
+
+<http://data.younglives.org.uk/data/057e5d60-6fd2-4bb3-9674-58aaf4d47fa1observation> ns1:localityType ns0:Rural .
+
+<http://data.younglives.org.uk/data/1658ee33-ac1e-4f2b-a9f1-5527ce08916fobservation> ns1:localityType ns0:Rural .
+
+<http://data.younglives.org.uk/data/2ad83b60-69db-4123-bdd3-8dcdd102d46fobservation> ns1:localityType ns0:Rural .
+
+<http://data.younglives.org.uk/data/454e85c9-d439-441f-addf-8849ba1d7bc5observation> ns1:localityType ns0:Rural .
+
+<http://data.younglives.org.uk/data/4bb4b7d0-e52c-47a5-9452-33520e9596adobservation> ns1:localityType ns0:Rural .
+
+<http://data.younglives.org.uk/data/4c78909a-030d-44f5-af79-3bde66a408bfobservation> ns1:localityType ns0:Rural .
+
+<http://data.younglives.org.uk/data/583fa46e-8bb2-464e-b393-f0e9b74643caobservation> ns1:localityType ns0:Rural .
+
+<http://data.younglives.org.uk/data/8988a945-df15-435f-809b-49ac654ae06eobservation> ns1:localityType ns0:Rural .
+
+<http://data.younglives.org.uk/data/d25284d2-7033-4d17-bc8d-d1d32d9de4e0observation> ns1:localityType ns0:Rural .
+
+<http://data.younglives.org.uk/data/d25fda6c-be64-4fae-97d3-1dc94ae9eb42observation> ns1:localityType ns0:Rural .
+
+<http://data.younglives.org.uk/data/d5bd245e-83cc-4f29-96e3-18aae7cb855aobservation> ns1:localityType ns0:Rural .
+
+<http://data.younglives.org.uk/data/11f5a980-00da-434b-b360-5eecae994cc5observation> ns1:localityType ns0:Both_Urban_and_Rural .
+
+<http://data.younglives.org.uk/data/1840d7cb-2da7-4a43-b41e-d2067a2c2e07observation> ns1:localityType ns0:Both_Urban_and_Rural .
+
+<http://data.younglives.org.uk/data/31ac66d6-c865-4090-9bdb-1b6fba883b76observation> ns1:localityType ns0:Both_Urban_and_Rural .
+
+<http://data.younglives.org.uk/data/3b0efcba-0e34-4d9e-8f4d-5b440ebab302observation> ns1:localityType ns0:Both_Urban_and_Rural .
+
+<http://data.younglives.org.uk/data/4c771df0-89d6-4d03-98cf-39bbabd07dacobservation> ns1:localityType ns0:Both_Urban_and_Rural .
+
+<http://data.younglives.org.uk/data/b6830d7a-8be6-469d-8668-e8cc1ec2f0a1observation> ns1:localityType ns0:Both_Urban_and_Rural .
+
+<http://data.younglives.org.uk/data/e900123a-430e-42a5-bb59-ffbc34fb8230observation> ns1:localityType ns0:Both_Urban_and_Rural .
+
+<http://data.younglives.org.uk/data/f23c6a2f-0394-4b8f-a7ec-0e04838d3c1aobservation> ns1:localityType ns0:Both_Urban_and_Rural .
+
+<http://data.younglives.org.uk/data/062b19d7-75c5-487a-9987-732091ef31dbobservation> ns1:localityType ns0:Urban .
+
+<http://data.younglives.org.uk/data/397e11d4-ee1e-4d89-b94b-56645f3d93e2observation> ns1:localityType ns0:Urban .
+
+<http://data.younglives.org.uk/data/43a8d69e-8c95-4117-9caa-559ec18a3e01observation> ns1:localityType ns0:Urban .
+
+<http://data.younglives.org.uk/data/50b991c1-f68a-4b5e-b7c2-d2c5b9a038b6observation> ns1:localityType ns0:Urban .
+
+<http://data.younglives.org.uk/data/5985d306-9f2b-499f-801c-ac183657674bobservation> ns1:localityType ns0:Urban .
+
+<http://data.younglives.org.uk/data/765bd941-f800-4f38-8304-0e0e80e98d70observation> ns1:localityType ns0:Urban .
+
+<http://data.younglives.org.uk/data/8460f423-cfad-44c6-8617-6dbf5ff3dcb2observation> ns1:localityType ns0:Urban .
+
+<http://data.younglives.org.uk/data/9863b6d3-1cc6-4fc5-9c06-b5bb5a139089observation> ns1:localityType ns0:Urban .
+
+<http://data.younglives.org.uk/data/c85ecc6b-7b2b-4ee8-90f2-24a6e1907933observation> ns1:localityType ns0:Urban .
+
+<http://data.younglives.org.uk/data/d994a217-e2a5-4bac-96bd-49941dd7d9f3observation> ns1:localityType ns0:Urban .
+
+<http://data.younglives.org.uk/data/f2ba7de8-a66c-465b-ab5a-fa39166f0806observation> ns1:localityType ns0:Urban .
+
+<http://data.younglives.org.uk/data/f5afa9c4-aad2-454c-b631-1180997d6859observation> ns1:localityType ns0:Urban .
+
+<http://data.younglives.org.uk/data/078bf2ca-ef1c-42a9-ac3c-e311b679568eobservation> ns1:mothersEducationLevel ns0:Mother_has_no_education .
+
+<http://data.younglives.org.uk/data/59ecec89-b9ec-49de-a2db-ed060b16573aobservation> ns1:mothersEducationLevel ns0:Mother_has_no_education .
+
+<http://data.younglives.org.uk/data/6470dec7-d191-40d0-bdd6-616ed3a712f4observation> ns1:mothersEducationLevel ns0:Mother_has_no_education .
+
+<http://data.younglives.org.uk/data/ab7fad5f-f9f5-4b11-a3b4-8edebfface05observation> ns1:mothersEducationLevel ns0:Mother_has_no_education .
+
+<http://data.younglives.org.uk/data/6014e3d9-de91-4bff-95fd-25defe1ae484observation> ns1:mothersEducationLevel ns0:Mother_has_primary_educ_or_below .
+
+<http://data.younglives.org.uk/data/616d5991-51b8-47f7-a340-e144751a5e6dobservation> ns1:mothersEducationLevel ns0:Mother_has_primary_educ_or_below .
+
+<http://data.younglives.org.uk/data/cc9785bc-cab6-4613-a542-5cda8ced7243observation> ns1:mothersEducationLevel ns0:Mother_has_primary_educ_or_below .
+
+<http://data.younglives.org.uk/data/eb445ee5-82f9-4336-8207-1230c9d4a75eobservation> ns1:mothersEducationLevel ns0:Mother_has_primary_educ_or_below .
+
+<http://data.younglives.org.uk/data/268044a1-b20d-49f8-8350-a52f9e63d56eobservation> ns1:mothersEducationLevel ns0:Mother_has_secondary_educ_or_below .
+
+<http://data.younglives.org.uk/data/9784904c-012f-4b9e-9fda-2cbcac8f6dcbobservation> ns1:mothersEducationLevel ns0:Mother_has_secondary_educ_or_below .
+
+<http://data.younglives.org.uk/data/dd85b5ed-4232-415c-a156-e75becb5124bobservation> ns1:mothersEducationLevel ns0:Mother_has_secondary_educ_or_below .
+
+<http://data.younglives.org.uk/data/e1c0c236-3513-469f-9f62-37c6bc117f26observation> ns1:mothersEducationLevel ns0:Mother_has_secondary_educ_or_below .
+
+<http://data.younglives.org.uk/data/345ea078-36b3-4b84-8b74-8c7530bfa3e5observation> ns1:mothersEducationLevel ns0:Mother_has_above_secondary_educ .
+
+<http://data.younglives.org.uk/data/365e208d-9bfa-4805-b9a8-3569788e8710observation> ns1:mothersEducationLevel ns0:Mother_has_above_secondary_educ .
+
+<http://data.younglives.org.uk/data/389fcafb-1ff5-40d3-b520-28439d1d1e29observation> ns1:mothersEducationLevel ns0:Mother_has_above_secondary_educ .
+
+<http://data.younglives.org.uk/data/ead432ce-50cc-4ab8-b4a8-0b68f129ed01observation> ns1:mothersEducationLevel ns0:Mother_has_above_secondary_educ .
+
+<http://data.younglives.org.uk/data/17d43c36-f6b0-4ee7-afc6-89c4533c3ba0observation> ns1:religion ns0:Hindu .
+
+<http://data.younglives.org.uk/data/3e68494e-5f96-4cb4-bbdd-e0d27a3aa0edobservation> ns1:religion ns0:Hindu .
+
+<http://data.younglives.org.uk/data/9077e15c-0bd8-4949-822c-d8f42a7e449cobservation> ns1:religion ns0:Hindu .
+
+<http://data.younglives.org.uk/data/cb7696d2-6ff6-4366-b83e-ec83dda53ac4observation> ns1:religion ns0:Hindu .
+
+<http://data.younglives.org.uk/data/19df1e19-0427-4f91-8de1-5299e868c272observation> ns1:religion ns0:Muslim .
+
+<http://data.younglives.org.uk/data/7d5dcf51-acbc-44d7-939a-72b74ea7d0f2observation> ns1:religion ns0:Muslim .
+
+<http://data.younglives.org.uk/data/d3a40d6d-7876-4fd9-bc5a-47949e8c0a7dobservation> ns1:religion ns0:Muslim .
+
+<http://data.younglives.org.uk/data/d83b013e-e729-44bb-9303-423ebd33629aobservation> ns1:religion ns0:Muslim .
+
+<http://data.younglives.org.uk/data/49412a62-d998-4309-aea3-736f63c94070observation> ns1:religion ns0:Not_Hindu_or_Muslim .
+
+<http://data.younglives.org.uk/data/5a0afe81-c4e9-4ff9-a61b-d8128ddc2f7bobservation> ns1:religion ns0:Not_Hindu_or_Muslim .
+
+<http://data.younglives.org.uk/data/71016982-d8f4-40cf-8875-dc238e3e5e85observation> ns1:religion ns0:Not_Hindu_or_Muslim .
+
+<http://data.younglives.org.uk/data/7670b50c-0372-45a3-b763-df7473439471observation> ns1:religion ns0:Not_Hindu_or_Muslim .
+
+<http://data.younglives.org.uk/data/0055a4b5-c54e-492f-8833-55cf52fad5e3observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/022f7524-3129-4edf-aecd-5ea5edb41639observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/057e5d60-6fd2-4bb3-9674-58aaf4d47fa1observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/062b19d7-75c5-487a-9987-732091ef31dbobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/078bf2ca-ef1c-42a9-ac3c-e311b679568eobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/0a391657-ad93-4ef3-83ef-1f8084808143observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/0eb29ea1-0172-4795-96d4-d1f1068d5ebfobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/11f5a980-00da-434b-b360-5eecae994cc5observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/1658ee33-ac1e-4f2b-a9f1-5527ce08916fobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/17d43c36-f6b0-4ee7-afc6-89c4533c3ba0observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/17fe3ea4-55ac-4bb1-bbaf-fb91a37b7eabobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/1840d7cb-2da7-4a43-b41e-d2067a2c2e07observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/19df1e19-0427-4f91-8de1-5299e868c272observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/20bc3aa5-704e-48f8-9a45-064dacf2760bobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/21d4b1a4-aaec-45c4-9446-8e1dd1db8e2cobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/226b4b3f-6c62-4c46-a083-c0bc23402e03observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/268044a1-b20d-49f8-8350-a52f9e63d56eobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/2ad83b60-69db-4123-bdd3-8dcdd102d46fobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/31ac66d6-c865-4090-9bdb-1b6fba883b76observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/345ea078-36b3-4b84-8b74-8c7530bfa3e5observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/35cc7f65-f841-426b-95b0-aa960b7d8783observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/365e208d-9bfa-4805-b9a8-3569788e8710observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/389fcafb-1ff5-40d3-b520-28439d1d1e29observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/397e11d4-ee1e-4d89-b94b-56645f3d93e2observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/3a7ac43b-87e7-443b-9571-8b53bfdbd228observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/3b0efcba-0e34-4d9e-8f4d-5b440ebab302observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/3cea4a09-c1bc-49f6-b8ae-fcd196418c4cobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/3e1d0a44-eb3e-4ec0-9ce3-c4c9bf27669eobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/3e68494e-5f96-4cb4-bbdd-e0d27a3aa0edobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/43a8d69e-8c95-4117-9caa-559ec18a3e01observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/454e85c9-d439-441f-addf-8849ba1d7bc5observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/46d932b3-2b4f-4be0-8a91-424c53364975observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/482d019c-b5bc-4b78-b520-37a1e14256deobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/49412a62-d998-4309-aea3-736f63c94070observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/4bb4b7d0-e52c-47a5-9452-33520e9596adobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/4c771df0-89d6-4d03-98cf-39bbabd07dacobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/4c78909a-030d-44f5-af79-3bde66a408bfobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/4fd27831-f57a-4ffa-9d44-2ec291cf1c12observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/50b991c1-f68a-4b5e-b7c2-d2c5b9a038b6observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/5291b60e-73a2-4eb4-b4fd-2ee4555f2b95observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/57fbf5f3-0e0b-41a3-9a76-464869e7d64dobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/583fa46e-8bb2-464e-b393-f0e9b74643caobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/5985d306-9f2b-499f-801c-ac183657674bobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/59ecec89-b9ec-49de-a2db-ed060b16573aobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/5a0afe81-c4e9-4ff9-a61b-d8128ddc2f7bobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/5b2a10ab-2cab-47ca-b9dc-2e19962f1369observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/5bdadab2-059d-480f-bb9e-78567c6e19bbobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/5fc44b27-c3ef-46dc-af90-a8435a831470observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/5fdf4b0a-9c60-44d7-a88b-f98cf52f3212observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/6014e3d9-de91-4bff-95fd-25defe1ae484observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/616d5991-51b8-47f7-a340-e144751a5e6dobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/6470dec7-d191-40d0-bdd6-616ed3a712f4observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/69e49994-ff7c-4161-81c8-a4c82816b7ffobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/71016982-d8f4-40cf-8875-dc238e3e5e85observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/7228be05-e519-433f-b99d-c8cc434dd1b0observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/761921c6-737f-4513-9810-e2b07dcf1a67observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/765bd941-f800-4f38-8304-0e0e80e98d70observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/7670b50c-0372-45a3-b763-df7473439471observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/77dbac77-d1c0-40cc-95d3-60147940fcb8observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/798d94f2-8a70-4854-ba4e-eeac3aef3588observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/7d5dcf51-acbc-44d7-939a-72b74ea7d0f2observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/8460f423-cfad-44c6-8617-6dbf5ff3dcb2observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/8988a945-df15-435f-809b-49ac654ae06eobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/8a3b983c-8a0d-4995-991e-1f58731487cbobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/8d1e1566-b0d1-483d-95f5-6dd1f9e3830cobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/9077e15c-0bd8-4949-822c-d8f42a7e449cobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/93b0c54e-ea1e-475a-8940-b75e86c65b1fobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/9784904c-012f-4b9e-9fda-2cbcac8f6dcbobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/9863b6d3-1cc6-4fc5-9c06-b5bb5a139089observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/9b7971b7-3296-4b1a-b5f0-5ac341fa12e8observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/a5e7a2f5-cc60-45af-9fe8-abc24b0dd64dobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/a910464f-36ea-4a98-adc8-7709cc084159observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/ab7fad5f-f9f5-4b11-a3b4-8edebfface05observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/b6830d7a-8be6-469d-8668-e8cc1ec2f0a1observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/bbc5ae80-c10b-4322-b67e-1ae682ad60c0observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/c0652ada-9ea4-4c85-82b7-6050b3689d09observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/c2c052c4-654a-4bcd-bfe6-9df4bb9d48dbobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/c85ecc6b-7b2b-4ee8-90f2-24a6e1907933observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/cb7696d2-6ff6-4366-b83e-ec83dda53ac4observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/cc9785bc-cab6-4613-a542-5cda8ced7243observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/cfcba024-3cbf-42d8-b009-3518ccb378c4observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/d25284d2-7033-4d17-bc8d-d1d32d9de4e0observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/d25fda6c-be64-4fae-97d3-1dc94ae9eb42observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/d3a40d6d-7876-4fd9-bc5a-47949e8c0a7dobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/d5bd245e-83cc-4f29-96e3-18aae7cb855aobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/d83b013e-e729-44bb-9303-423ebd33629aobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/d890976d-85cc-4405-8f6c-20b6a871a53fobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/d994a217-e2a5-4bac-96bd-49941dd7d9f3observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/dd85b5ed-4232-415c-a156-e75becb5124bobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/e1c0c236-3513-469f-9f62-37c6bc117f26observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/e900123a-430e-42a5-bb59-ffbc34fb8230observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/ead432ce-50cc-4ab8-b4a8-0b68f129ed01observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/eb445ee5-82f9-4336-8207-1230c9d4a75eobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/f23c6a2f-0394-4b8f-a7ec-0e04838d3c1aobservation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/f2ba7de8-a66c-465b-ab5a-fa39166f0806observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/f5afa9c4-aad2-454c-b631-1180997d6859observation> ns1:round ns0:roundThree .
+
+<http://data.younglives.org.uk/data/0055a4b5-c54e-492f-8833-55cf52fad5e3observation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/0a391657-ad93-4ef3-83ef-1f8084808143observation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/0eb29ea1-0172-4795-96d4-d1f1068d5ebfobservation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/17d43c36-f6b0-4ee7-afc6-89c4533c3ba0observation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/20bc3aa5-704e-48f8-9a45-064dacf2760bobservation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/268044a1-b20d-49f8-8350-a52f9e63d56eobservation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/345ea078-36b3-4b84-8b74-8c7530bfa3e5observation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/389fcafb-1ff5-40d3-b520-28439d1d1e29observation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/3a7ac43b-87e7-443b-9571-8b53bfdbd228observation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/3cea4a09-c1bc-49f6-b8ae-fcd196418c4cobservation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/46d932b3-2b4f-4be0-8a91-424c53364975observation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/50b991c1-f68a-4b5e-b7c2-d2c5b9a038b6observation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/5291b60e-73a2-4eb4-b4fd-2ee4555f2b95observation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/57fbf5f3-0e0b-41a3-9a76-464869e7d64dobservation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/59ecec89-b9ec-49de-a2db-ed060b16573aobservation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/5a0afe81-c4e9-4ff9-a61b-d8128ddc2f7bobservation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/5fc44b27-c3ef-46dc-af90-a8435a831470observation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/5fdf4b0a-9c60-44d7-a88b-f98cf52f3212observation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/6014e3d9-de91-4bff-95fd-25defe1ae484observation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/6470dec7-d191-40d0-bdd6-616ed3a712f4observation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/69e49994-ff7c-4161-81c8-a4c82816b7ffobservation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/71016982-d8f4-40cf-8875-dc238e3e5e85observation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/7228be05-e519-433f-b99d-c8cc434dd1b0observation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/761921c6-737f-4513-9810-e2b07dcf1a67observation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/798d94f2-8a70-4854-ba4e-eeac3aef3588observation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/7d5dcf51-acbc-44d7-939a-72b74ea7d0f2observation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/8d1e1566-b0d1-483d-95f5-6dd1f9e3830cobservation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/93b0c54e-ea1e-475a-8940-b75e86c65b1fobservation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/9863b6d3-1cc6-4fc5-9c06-b5bb5a139089observation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/c2c052c4-654a-4bcd-bfe6-9df4bb9d48dbobservation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/cb7696d2-6ff6-4366-b83e-ec83dda53ac4observation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/cc9785bc-cab6-4613-a542-5cda8ced7243observation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/cfcba024-3cbf-42d8-b009-3518ccb378c4observation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/d25fda6c-be64-4fae-97d3-1dc94ae9eb42observation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/d3a40d6d-7876-4fd9-bc5a-47949e8c0a7dobservation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/e1c0c236-3513-469f-9f62-37c6bc117f26observation> ns1:sampleSize "976"^^xsd:double .
+
+<http://data.younglives.org.uk/data/022f7524-3129-4edf-aecd-5ea5edb41639observation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/078bf2ca-ef1c-42a9-ac3c-e311b679568eobservation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/17fe3ea4-55ac-4bb1-bbaf-fb91a37b7eabobservation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/19df1e19-0427-4f91-8de1-5299e868c272observation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/21d4b1a4-aaec-45c4-9446-8e1dd1db8e2cobservation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/226b4b3f-6c62-4c46-a083-c0bc23402e03observation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/35cc7f65-f841-426b-95b0-aa960b7d8783observation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/365e208d-9bfa-4805-b9a8-3569788e8710observation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/397e11d4-ee1e-4d89-b94b-56645f3d93e2observation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/3e1d0a44-eb3e-4ec0-9ce3-c4c9bf27669eobservation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/3e68494e-5f96-4cb4-bbdd-e0d27a3aa0edobservation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/454e85c9-d439-441f-addf-8849ba1d7bc5observation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/482d019c-b5bc-4b78-b520-37a1e14256deobservation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/49412a62-d998-4309-aea3-736f63c94070observation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/4c78909a-030d-44f5-af79-3bde66a408bfobservation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/4fd27831-f57a-4ffa-9d44-2ec291cf1c12observation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/5b2a10ab-2cab-47ca-b9dc-2e19962f1369observation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/5bdadab2-059d-480f-bb9e-78567c6e19bbobservation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/616d5991-51b8-47f7-a340-e144751a5e6dobservation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/7670b50c-0372-45a3-b763-df7473439471observation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/77dbac77-d1c0-40cc-95d3-60147940fcb8observation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/8a3b983c-8a0d-4995-991e-1f58731487cbobservation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/9077e15c-0bd8-4949-822c-d8f42a7e449cobservation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/9784904c-012f-4b9e-9fda-2cbcac8f6dcbobservation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/9b7971b7-3296-4b1a-b5f0-5ac341fa12e8observation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/a5e7a2f5-cc60-45af-9fe8-abc24b0dd64dobservation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/a910464f-36ea-4a98-adc8-7709cc084159observation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/ab7fad5f-f9f5-4b11-a3b4-8edebfface05observation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/bbc5ae80-c10b-4322-b67e-1ae682ad60c0observation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/c0652ada-9ea4-4c85-82b7-6050b3689d09observation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/d83b013e-e729-44bb-9303-423ebd33629aobservation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/d890976d-85cc-4405-8f6c-20b6a871a53fobservation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/dd85b5ed-4232-415c-a156-e75becb5124bobservation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/ead432ce-50cc-4ab8-b4a8-0b68f129ed01observation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/eb445ee5-82f9-4336-8207-1230c9d4a75eobservation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/f5afa9c4-aad2-454c-b631-1180997d6859observation> ns1:sampleSize "1930"^^xsd:double .
+
+<http://data.younglives.org.uk/data/17fe3ea4-55ac-4bb1-bbaf-fb91a37b7eabobservation> ns1:socialGrouping ns0:Scheduled_castes .
+
+<http://data.younglives.org.uk/data/5fc44b27-c3ef-46dc-af90-a8435a831470observation> ns1:socialGrouping ns0:Scheduled_castes .
+
+<http://data.younglives.org.uk/data/5fdf4b0a-9c60-44d7-a88b-f98cf52f3212observation> ns1:socialGrouping ns0:Scheduled_castes .
+
+<http://data.younglives.org.uk/data/a5e7a2f5-cc60-45af-9fe8-abc24b0dd64dobservation> ns1:socialGrouping ns0:Scheduled_castes .
+
+<http://data.younglives.org.uk/data/482d019c-b5bc-4b78-b520-37a1e14256deobservation> ns1:socialGrouping ns0:Scheduled_tribes .
+
+<http://data.younglives.org.uk/data/761921c6-737f-4513-9810-e2b07dcf1a67observation> ns1:socialGrouping ns0:Scheduled_tribes .
+
+<http://data.younglives.org.uk/data/93b0c54e-ea1e-475a-8940-b75e86c65b1fobservation> ns1:socialGrouping ns0:Scheduled_tribes .
+
+<http://data.younglives.org.uk/data/d890976d-85cc-4405-8f6c-20b6a871a53fobservation> ns1:socialGrouping ns0:Scheduled_tribes .
+
+<http://data.younglives.org.uk/data/57fbf5f3-0e0b-41a3-9a76-464869e7d64dobservation> ns1:socialGrouping ns0:Backward_Classes .
+
+<http://data.younglives.org.uk/data/798d94f2-8a70-4854-ba4e-eeac3aef3588observation> ns1:socialGrouping ns0:Backward_Classes .
+
+<http://data.younglives.org.uk/data/8a3b983c-8a0d-4995-991e-1f58731487cbobservation> ns1:socialGrouping ns0:Backward_Classes .
+
+<http://data.younglives.org.uk/data/9b7971b7-3296-4b1a-b5f0-5ac341fa12e8observation> ns1:socialGrouping ns0:Backward_Classes .
+
+<http://data.younglives.org.uk/data/20bc3aa5-704e-48f8-9a45-064dacf2760bobservation> ns1:socialGrouping <http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Not_Scheduled_castes,_tribes_or_Backward_Classes> .
+
+<http://data.younglives.org.uk/data/21d4b1a4-aaec-45c4-9446-8e1dd1db8e2cobservation> ns1:socialGrouping <http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Not_Scheduled_castes,_tribes_or_Backward_Classes> .
+
+<http://data.younglives.org.uk/data/226b4b3f-6c62-4c46-a083-c0bc23402e03observation> ns1:socialGrouping <http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Not_Scheduled_castes,_tribes_or_Backward_Classes> .
+
+<http://data.younglives.org.uk/data/8d1e1566-b0d1-483d-95f5-6dd1f9e3830cobservation> ns1:socialGrouping <http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/Not_Scheduled_castes,_tribes_or_Backward_Classes> .
+
+<http://data.younglives.org.uk/data/0055a4b5-c54e-492f-8833-55cf52fad5e3observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/022f7524-3129-4edf-aecd-5ea5edb41639observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/057e5d60-6fd2-4bb3-9674-58aaf4d47fa1observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/078bf2ca-ef1c-42a9-ac3c-e311b679568eobservation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/0a391657-ad93-4ef3-83ef-1f8084808143observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/17fe3ea4-55ac-4bb1-bbaf-fb91a37b7eabobservation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/1840d7cb-2da7-4a43-b41e-d2067a2c2e07observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/19df1e19-0427-4f91-8de1-5299e868c272observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/20bc3aa5-704e-48f8-9a45-064dacf2760bobservation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/226b4b3f-6c62-4c46-a083-c0bc23402e03observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/31ac66d6-c865-4090-9bdb-1b6fba883b76observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/345ea078-36b3-4b84-8b74-8c7530bfa3e5observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/35cc7f65-f841-426b-95b0-aa960b7d8783observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/365e208d-9bfa-4805-b9a8-3569788e8710observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/397e11d4-ee1e-4d89-b94b-56645f3d93e2observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/3cea4a09-c1bc-49f6-b8ae-fcd196418c4cobservation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/3e68494e-5f96-4cb4-bbdd-e0d27a3aa0edobservation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/43a8d69e-8c95-4117-9caa-559ec18a3e01observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/46d932b3-2b4f-4be0-8a91-424c53364975observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/4bb4b7d0-e52c-47a5-9452-33520e9596adobservation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/4c78909a-030d-44f5-af79-3bde66a408bfobservation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/4fd27831-f57a-4ffa-9d44-2ec291cf1c12observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/5291b60e-73a2-4eb4-b4fd-2ee4555f2b95observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/583fa46e-8bb2-464e-b393-f0e9b74643caobservation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/5985d306-9f2b-499f-801c-ac183657674bobservation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/59ecec89-b9ec-49de-a2db-ed060b16573aobservation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/5a0afe81-c4e9-4ff9-a61b-d8128ddc2f7bobservation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/5b2a10ab-2cab-47ca-b9dc-2e19962f1369observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/5bdadab2-059d-480f-bb9e-78567c6e19bbobservation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/5fdf4b0a-9c60-44d7-a88b-f98cf52f3212observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/7670b50c-0372-45a3-b763-df7473439471observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/798d94f2-8a70-4854-ba4e-eeac3aef3588observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/8460f423-cfad-44c6-8617-6dbf5ff3dcb2observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/93b0c54e-ea1e-475a-8940-b75e86c65b1fobservation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/9863b6d3-1cc6-4fc5-9c06-b5bb5a139089observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/9b7971b7-3296-4b1a-b5f0-5ac341fa12e8observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/c85ecc6b-7b2b-4ee8-90f2-24a6e1907933observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/cb7696d2-6ff6-4366-b83e-ec83dda53ac4observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/cc9785bc-cab6-4613-a542-5cda8ced7243observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/cfcba024-3cbf-42d8-b009-3518ccb378c4observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/d25284d2-7033-4d17-bc8d-d1d32d9de4e0observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/d3a40d6d-7876-4fd9-bc5a-47949e8c0a7dobservation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/d890976d-85cc-4405-8f6c-20b6a871a53fobservation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/dd85b5ed-4232-415c-a156-e75becb5124bobservation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/e1c0c236-3513-469f-9f62-37c6bc117f26observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/e900123a-430e-42a5-bb59-ffbc34fb8230observation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/eb445ee5-82f9-4336-8207-1230c9d4a75eobservation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/f23c6a2f-0394-4b8f-a7ec-0e04838d3c1aobservation> ns1:timePoint ns0:January_2011 .
+
+<http://data.younglives.org.uk/data/062b19d7-75c5-487a-9987-732091ef31dbobservation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/0eb29ea1-0172-4795-96d4-d1f1068d5ebfobservation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/11f5a980-00da-434b-b360-5eecae994cc5observation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/1658ee33-ac1e-4f2b-a9f1-5527ce08916fobservation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/17d43c36-f6b0-4ee7-afc6-89c4533c3ba0observation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/21d4b1a4-aaec-45c4-9446-8e1dd1db8e2cobservation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/268044a1-b20d-49f8-8350-a52f9e63d56eobservation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/2ad83b60-69db-4123-bdd3-8dcdd102d46fobservation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/389fcafb-1ff5-40d3-b520-28439d1d1e29observation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/3a7ac43b-87e7-443b-9571-8b53bfdbd228observation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/3b0efcba-0e34-4d9e-8f4d-5b440ebab302observation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/3e1d0a44-eb3e-4ec0-9ce3-c4c9bf27669eobservation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/454e85c9-d439-441f-addf-8849ba1d7bc5observation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/482d019c-b5bc-4b78-b520-37a1e14256deobservation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/49412a62-d998-4309-aea3-736f63c94070observation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/4c771df0-89d6-4d03-98cf-39bbabd07dacobservation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/50b991c1-f68a-4b5e-b7c2-d2c5b9a038b6observation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/57fbf5f3-0e0b-41a3-9a76-464869e7d64dobservation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/5fc44b27-c3ef-46dc-af90-a8435a831470observation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/6014e3d9-de91-4bff-95fd-25defe1ae484observation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/616d5991-51b8-47f7-a340-e144751a5e6dobservation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/6470dec7-d191-40d0-bdd6-616ed3a712f4observation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/69e49994-ff7c-4161-81c8-a4c82816b7ffobservation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/71016982-d8f4-40cf-8875-dc238e3e5e85observation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/7228be05-e519-433f-b99d-c8cc434dd1b0observation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/761921c6-737f-4513-9810-e2b07dcf1a67observation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/765bd941-f800-4f38-8304-0e0e80e98d70observation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/77dbac77-d1c0-40cc-95d3-60147940fcb8observation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/7d5dcf51-acbc-44d7-939a-72b74ea7d0f2observation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/8988a945-df15-435f-809b-49ac654ae06eobservation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/8a3b983c-8a0d-4995-991e-1f58731487cbobservation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/8d1e1566-b0d1-483d-95f5-6dd1f9e3830cobservation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/9077e15c-0bd8-4949-822c-d8f42a7e449cobservation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/9784904c-012f-4b9e-9fda-2cbcac8f6dcbobservation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/a5e7a2f5-cc60-45af-9fe8-abc24b0dd64dobservation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/a910464f-36ea-4a98-adc8-7709cc084159observation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/ab7fad5f-f9f5-4b11-a3b4-8edebfface05observation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/b6830d7a-8be6-469d-8668-e8cc1ec2f0a1observation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/bbc5ae80-c10b-4322-b67e-1ae682ad60c0observation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/c0652ada-9ea4-4c85-82b7-6050b3689d09observation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/c2c052c4-654a-4bcd-bfe6-9df4bb9d48dbobservation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/d25fda6c-be64-4fae-97d3-1dc94ae9eb42observation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/d5bd245e-83cc-4f29-96e3-18aae7cb855aobservation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/d83b013e-e729-44bb-9303-423ebd33629aobservation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/d994a217-e2a5-4bac-96bd-49941dd7d9f3observation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/ead432ce-50cc-4ab8-b4a8-0b68f129ed01observation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/f2ba7de8-a66c-465b-ab5a-fa39166f0806observation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/f5afa9c4-aad2-454c-b631-1180997d6859observation> ns1:timePoint ns0:November_2010 .
+
+<http://data.younglives.org.uk/data/43a8d69e-8c95-4117-9caa-559ec18a3e01observation> ns0:measure-PercentageCrossingPovertyLine "5.18"^^xsd:double .
+
+<http://data.younglives.org.uk/data/765bd941-f800-4f38-8304-0e0e80e98d70observation> ns0:measure-PercentageCrossingPovertyLine "5.35"^^xsd:double .
+
+<http://data.younglives.org.uk/data/b6830d7a-8be6-469d-8668-e8cc1ec2f0a1observation> ns0:measure-PercentageCrossingPovertyLine "8.6"^^xsd:double .
+
+<http://data.younglives.org.uk/data/f23c6a2f-0394-4b8f-a7ec-0e04838d3c1aobservation> ns0:measure-PercentageCrossingPovertyLine "8.65"^^xsd:double .
+
+<http://data.younglives.org.uk/data/8988a945-df15-435f-809b-49ac654ae06eobservation> ns0:measure-PercentageCrossingPovertyLine "9.800000000000001"^^xsd:double .
+
+<http://data.younglives.org.uk/data/583fa46e-8bb2-464e-b393-f0e9b74643caobservation> ns0:measure-PercentageCrossingPovertyLine "9.91"^^xsd:double .
+
+<http://data.younglives.org.uk/data/1658ee33-ac1e-4f2b-a9f1-5527ce08916fobservation> ns0:measure-PercentageCrossingPovertyLine "24"^^xsd:integer .
+
+<http://data.younglives.org.uk/data/d25284d2-7033-4d17-bc8d-d1d32d9de4e0observation> ns0:measure-PercentageCrossingPovertyLine "27.34"^^xsd:double .
+
+<http://data.younglives.org.uk/data/11f5a980-00da-434b-b360-5eecae994cc5observation> ns0:measure-PercentageCrossingPovertyLine "30"^^xsd:integer .
+
+<http://data.younglives.org.uk/data/1840d7cb-2da7-4a43-b41e-d2067a2c2e07observation> ns0:measure-PercentageCrossingPovertyLine "32.22"^^xsd:double .
+
+<http://data.younglives.org.uk/data/8460f423-cfad-44c6-8617-6dbf5ff3dcb2observation> ns0:measure-PercentageCrossingPovertyLine "48.78"^^xsd:double .
+
+<http://data.younglives.org.uk/data/062b19d7-75c5-487a-9987-732091ef31dbobservation> ns0:measure-PercentageCrossingPovertyLine "50"^^xsd:integer .
+
+<http://data.younglives.org.uk/data/f2ba7de8-a66c-465b-ab5a-fa39166f0806observation> ns0:measure-PercentageCrossingPovertyLine "50"^^xsd:integer .
+
+<http://data.younglives.org.uk/data/c85ecc6b-7b2b-4ee8-90f2-24a6e1907933observation> ns0:measure-PercentageCrossingPovertyLine "51.22"^^xsd:double .
+
+<http://data.younglives.org.uk/data/e900123a-430e-42a5-bb59-ffbc34fb8230observation> ns0:measure-PercentageCrossingPovertyLine "67.78"^^xsd:double .
+
+<http://data.younglives.org.uk/data/3b0efcba-0e34-4d9e-8f4d-5b440ebab302observation> ns0:measure-PercentageCrossingPovertyLine "70"^^xsd:integer .
+
+<http://data.younglives.org.uk/data/4bb4b7d0-e52c-47a5-9452-33520e9596adobservation> ns0:measure-PercentageCrossingPovertyLine "72.66"^^xsd:double .
+
+<http://data.younglives.org.uk/data/d5bd245e-83cc-4f29-96e3-18aae7cb855aobservation> ns0:measure-PercentageCrossingPovertyLine "76"^^xsd:integer .
+
+<http://data.younglives.org.uk/data/057e5d60-6fd2-4bb3-9674-58aaf4d47fa1observation> ns0:measure-PercentageCrossingPovertyLine "90.09"^^xsd:double .
+
+<http://data.younglives.org.uk/data/2ad83b60-69db-4123-bdd3-8dcdd102d46fobservation> ns0:measure-PercentageCrossingPovertyLine "90.2"^^xsd:double .
+
+<http://data.younglives.org.uk/data/31ac66d6-c865-4090-9bdb-1b6fba883b76observation> ns0:measure-PercentageCrossingPovertyLine "91.34999999999999"^^xsd:double .
+
+<http://data.younglives.org.uk/data/4c771df0-89d6-4d03-98cf-39bbabd07dacobservation> ns0:measure-PercentageCrossingPovertyLine "91.40000000000001"^^xsd:double .
+
+<http://data.younglives.org.uk/data/d994a217-e2a5-4bac-96bd-49941dd7d9f3observation> ns0:measure-PercentageCrossingPovertyLine "94.65000000000001"^^xsd:double .
+
+<http://data.younglives.org.uk/data/5985d306-9f2b-499f-801c-ac183657674bobservation> ns0:measure-PercentageCrossingPovertyLine "94.81999999999999"^^xsd:double .
+
+<http://data.younglives.org.uk/data/3e68494e-5f96-4cb4-bbdd-e0d27a3aa0edobservation> ns0:measure-ProportionOfSample "0.01"^^xsd:double .
+
+<http://data.younglives.org.uk/data/cb7696d2-6ff6-4366-b83e-ec83dda53ac4observation> ns0:measure-ProportionOfSample "0.01"^^xsd:double .
+
+<http://data.younglives.org.uk/data/49412a62-d998-4309-aea3-736f63c94070observation> ns0:measure-ProportionOfSample "0.02"^^xsd:double .
+
+<http://data.younglives.org.uk/data/71016982-d8f4-40cf-8875-dc238e3e5e85observation> ns0:measure-ProportionOfSample "0.02"^^xsd:double .
+
+<http://data.younglives.org.uk/data/345ea078-36b3-4b84-8b74-8c7530bfa3e5observation> ns0:measure-ProportionOfSample "0.04"^^xsd:double .
+
+<http://data.younglives.org.uk/data/389fcafb-1ff5-40d3-b520-28439d1d1e29observation> ns0:measure-ProportionOfSample "0.04"^^xsd:double .
+
+<http://data.younglives.org.uk/data/365e208d-9bfa-4805-b9a8-3569788e8710observation> ns0:measure-ProportionOfSample "0.06"^^xsd:double .
+
+<http://data.younglives.org.uk/data/7d5dcf51-acbc-44d7-939a-72b74ea7d0f2observation> ns0:measure-ProportionOfSample "0.06"^^xsd:double .
+
+<http://data.younglives.org.uk/data/d3a40d6d-7876-4fd9-bc5a-47949e8c0a7dobservation> ns0:measure-ProportionOfSample "0.06"^^xsd:double .
+
+<http://data.younglives.org.uk/data/ead432ce-50cc-4ab8-b4a8-0b68f129ed01observation> ns0:measure-ProportionOfSample "0.06"^^xsd:double .
+
+<http://data.younglives.org.uk/data/19df1e19-0427-4f91-8de1-5299e868c272observation> ns0:measure-ProportionOfSample "0.07000000000000001"^^xsd:double .
+
+<http://data.younglives.org.uk/data/d83b013e-e729-44bb-9303-423ebd33629aobservation> ns0:measure-ProportionOfSample "0.07000000000000001"^^xsd:double .
+
+<http://data.younglives.org.uk/data/761921c6-737f-4513-9810-e2b07dcf1a67observation> ns0:measure-ProportionOfSample "0.1"^^xsd:double .
+
+<http://data.younglives.org.uk/data/93b0c54e-ea1e-475a-8940-b75e86c65b1fobservation> ns0:measure-ProportionOfSample "0.1"^^xsd:double .
+
+<http://data.younglives.org.uk/data/482d019c-b5bc-4b78-b520-37a1e14256deobservation> ns0:measure-ProportionOfSample "0.12"^^xsd:double .
+
+<http://data.younglives.org.uk/data/d890976d-85cc-4405-8f6c-20b6a871a53fobservation> ns0:measure-ProportionOfSample "0.12"^^xsd:double .
+
+<http://data.younglives.org.uk/data/268044a1-b20d-49f8-8350-a52f9e63d56eobservation> ns0:measure-ProportionOfSample "0.17"^^xsd:double .
+
+<http://data.younglives.org.uk/data/616d5991-51b8-47f7-a340-e144751a5e6dobservation> ns0:measure-ProportionOfSample "0.17"^^xsd:double .
+
+<http://data.younglives.org.uk/data/e1c0c236-3513-469f-9f62-37c6bc117f26observation> ns0:measure-ProportionOfSample "0.17"^^xsd:double .
+
+<http://data.younglives.org.uk/data/17fe3ea4-55ac-4bb1-bbaf-fb91a37b7eabobservation> ns0:measure-ProportionOfSample "0.18"^^xsd:double .
+
+<http://data.younglives.org.uk/data/6014e3d9-de91-4bff-95fd-25defe1ae484observation> ns0:measure-ProportionOfSample "0.18"^^xsd:double .
+
+<http://data.younglives.org.uk/data/a5e7a2f5-cc60-45af-9fe8-abc24b0dd64dobservation> ns0:measure-ProportionOfSample "0.18"^^xsd:double .
+
+<http://data.younglives.org.uk/data/cc9785bc-cab6-4613-a542-5cda8ced7243observation> ns0:measure-ProportionOfSample "0.18"^^xsd:double .
+
+<http://data.younglives.org.uk/data/eb445ee5-82f9-4336-8207-1230c9d4a75eobservation> ns0:measure-ProportionOfSample "0.18"^^xsd:double .
+
+<http://data.younglives.org.uk/data/20bc3aa5-704e-48f8-9a45-064dacf2760bobservation> ns0:measure-ProportionOfSample "0.19"^^xsd:double .
+
+<http://data.younglives.org.uk/data/8d1e1566-b0d1-483d-95f5-6dd1f9e3830cobservation> ns0:measure-ProportionOfSample "0.19"^^xsd:double .
+
+<http://data.younglives.org.uk/data/21d4b1a4-aaec-45c4-9446-8e1dd1db8e2cobservation> ns0:measure-ProportionOfSample "0.2"^^xsd:double .
+
+<http://data.younglives.org.uk/data/226b4b3f-6c62-4c46-a083-c0bc23402e03observation> ns0:measure-ProportionOfSample "0.2"^^xsd:double .
+
+<http://data.younglives.org.uk/data/5fc44b27-c3ef-46dc-af90-a8435a831470observation> ns0:measure-ProportionOfSample "0.21"^^xsd:double .
+
+<http://data.younglives.org.uk/data/5fdf4b0a-9c60-44d7-a88b-f98cf52f3212observation> ns0:measure-ProportionOfSample "0.21"^^xsd:double .
+
+<http://data.younglives.org.uk/data/9784904c-012f-4b9e-9fda-2cbcac8f6dcbobservation> ns0:measure-ProportionOfSample "0.24"^^xsd:double .
+
+<http://data.younglives.org.uk/data/50b991c1-f68a-4b5e-b7c2-d2c5b9a038b6observation> ns0:measure-ProportionOfSample "0.25"^^xsd:double .
+
+<http://data.younglives.org.uk/data/9863b6d3-1cc6-4fc5-9c06-b5bb5a139089observation> ns0:measure-ProportionOfSample "0.25"^^xsd:double .
+
+<http://data.younglives.org.uk/data/dd85b5ed-4232-415c-a156-e75becb5124bobservation> ns0:measure-ProportionOfSample "0.25"^^xsd:double .
+
+<http://data.younglives.org.uk/data/397e11d4-ee1e-4d89-b94b-56645f3d93e2observation> ns0:measure-ProportionOfSample "0.26"^^xsd:double .
+
+<http://data.younglives.org.uk/data/f5afa9c4-aad2-454c-b631-1180997d6859observation> ns0:measure-ProportionOfSample "0.26"^^xsd:double .
+
+<http://data.younglives.org.uk/data/a910464f-36ea-4a98-adc8-7709cc084159observation> ns0:measure-ProportionOfSample "0.29"^^xsd:double .
+
+<http://data.younglives.org.uk/data/022f7524-3129-4edf-aecd-5ea5edb41639observation> ns0:measure-ProportionOfSample "0.3"^^xsd:double .
+
+<http://data.younglives.org.uk/data/3a7ac43b-87e7-443b-9571-8b53bfdbd228observation> ns0:measure-ProportionOfSample "0.3"^^xsd:double .
+
+<http://data.younglives.org.uk/data/5291b60e-73a2-4eb4-b4fd-2ee4555f2b95observation> ns0:measure-ProportionOfSample "0.3"^^xsd:double .
+
+<http://data.younglives.org.uk/data/c0652ada-9ea4-4c85-82b7-6050b3689d09observation> ns0:measure-ProportionOfSample "0.34"^^xsd:double .
+
+<http://data.younglives.org.uk/data/0eb29ea1-0172-4795-96d4-d1f1068d5ebfobservation> ns0:measure-ProportionOfSample "0.35"^^xsd:double .
+
+<http://data.younglives.org.uk/data/3cea4a09-c1bc-49f6-b8ae-fcd196418c4cobservation> ns0:measure-ProportionOfSample "0.35"^^xsd:double .
+
+<http://data.younglives.org.uk/data/4fd27831-f57a-4ffa-9d44-2ec291cf1c12observation> ns0:measure-ProportionOfSample "0.35"^^xsd:double .
+
+<http://data.younglives.org.uk/data/5b2a10ab-2cab-47ca-b9dc-2e19962f1369observation> ns0:measure-ProportionOfSample "0.35"^^xsd:double .
+
+<http://data.younglives.org.uk/data/77dbac77-d1c0-40cc-95d3-60147940fcb8observation> ns0:measure-ProportionOfSample "0.35"^^xsd:double .
+
+<http://data.younglives.org.uk/data/c2c052c4-654a-4bcd-bfe6-9df4bb9d48dbobservation> ns0:measure-ProportionOfSample "0.35"^^xsd:double .
+
+<http://data.younglives.org.uk/data/cfcba024-3cbf-42d8-b009-3518ccb378c4observation> ns0:measure-ProportionOfSample "0.35"^^xsd:double .
+
+<http://data.younglives.org.uk/data/35cc7f65-f841-426b-95b0-aa960b7d8783observation> ns0:measure-ProportionOfSample "0.46"^^xsd:double .
+
+<http://data.younglives.org.uk/data/3e1d0a44-eb3e-4ec0-9ce3-c4c9bf27669eobservation> ns0:measure-ProportionOfSample "0.46"^^xsd:double .
+
+<http://data.younglives.org.uk/data/46d932b3-2b4f-4be0-8a91-424c53364975observation> ns0:measure-ProportionOfSample "0.49"^^xsd:double .
+
+<http://data.younglives.org.uk/data/69e49994-ff7c-4161-81c8-a4c82816b7ffobservation> ns0:measure-ProportionOfSample "0.49"^^xsd:double .
+
+<http://data.younglives.org.uk/data/8a3b983c-8a0d-4995-991e-1f58731487cbobservation> ns0:measure-ProportionOfSample "0.49"^^xsd:double .
+
+<http://data.younglives.org.uk/data/9b7971b7-3296-4b1a-b5f0-5ac341fa12e8observation> ns0:measure-ProportionOfSample "0.49"^^xsd:double .
+
+<http://data.younglives.org.uk/data/57fbf5f3-0e0b-41a3-9a76-464869e7d64dobservation> ns0:measure-ProportionOfSample "0.5"^^xsd:double .
+
+<http://data.younglives.org.uk/data/798d94f2-8a70-4854-ba4e-eeac3aef3588observation> ns0:measure-ProportionOfSample "0.5"^^xsd:double .
+
+<http://data.younglives.org.uk/data/078bf2ca-ef1c-42a9-ac3c-e311b679568eobservation> ns0:measure-ProportionOfSample "0.51"^^xsd:double .
+
+<http://data.younglives.org.uk/data/0a391657-ad93-4ef3-83ef-1f8084808143observation> ns0:measure-ProportionOfSample "0.51"^^xsd:double .
+
+<http://data.younglives.org.uk/data/7228be05-e519-433f-b99d-c8cc434dd1b0observation> ns0:measure-ProportionOfSample "0.51"^^xsd:double .
+
+<http://data.younglives.org.uk/data/ab7fad5f-f9f5-4b11-a3b4-8edebfface05observation> ns0:measure-ProportionOfSample "0.51"^^xsd:double .
+
+<http://data.younglives.org.uk/data/bbc5ae80-c10b-4322-b67e-1ae682ad60c0observation> ns0:measure-ProportionOfSample "0.53"^^xsd:double .
+
+<http://data.younglives.org.uk/data/5bdadab2-059d-480f-bb9e-78567c6e19bbobservation> ns0:measure-ProportionOfSample "0.54"^^xsd:double .
+
+<http://data.younglives.org.uk/data/59ecec89-b9ec-49de-a2db-ed060b16573aobservation> ns0:measure-ProportionOfSample "0.6"^^xsd:double .
+
+<http://data.younglives.org.uk/data/6470dec7-d191-40d0-bdd6-616ed3a712f4observation> ns0:measure-ProportionOfSample "0.6"^^xsd:double .
+
+<http://data.younglives.org.uk/data/454e85c9-d439-441f-addf-8849ba1d7bc5observation> ns0:measure-ProportionOfSample "0.73"^^xsd:double .
+
+<http://data.younglives.org.uk/data/4c78909a-030d-44f5-af79-3bde66a408bfobservation> ns0:measure-ProportionOfSample "0.74"^^xsd:double .
+
+<http://data.younglives.org.uk/data/0055a4b5-c54e-492f-8833-55cf52fad5e3observation> ns0:measure-ProportionOfSample "0.75"^^xsd:double .
+
+<http://data.younglives.org.uk/data/d25fda6c-be64-4fae-97d3-1dc94ae9eb42observation> ns0:measure-ProportionOfSample "0.75"^^xsd:double .
+
+<http://data.younglives.org.uk/data/9077e15c-0bd8-4949-822c-d8f42a7e449cobservation> ns0:measure-ProportionOfSample "0.91"^^xsd:double .
+
+<http://data.younglives.org.uk/data/17d43c36-f6b0-4ee7-afc6-89c4533c3ba0observation> ns0:measure-ProportionOfSample "0.92"^^xsd:double .
+
+<http://data.younglives.org.uk/data/5a0afe81-c4e9-4ff9-a61b-d8128ddc2f7bobservation> ns0:measure-ProportionOfSample "0.00"@en .
+
+<http://data.younglives.org.uk/data/7670b50c-0372-45a3-b763-df7473439471observation> ns0:measure-ProportionOfSample "0.00"@en .
+
+ns1:cohort ns2:order "1"^^xsd:double .
+
+ns1:country ns2:order "1"^^xsd:double .
+
+ns1:round ns2:order "1"^^xsd:double .
+
+ns1:affluence ns2:order "2"^^xsd:double .
+
+ns1:affluenceInPreviousRound ns2:order "2"^^xsd:double .
+
+ns1:gender ns2:order "2"^^xsd:double .
+
+ns1:geographicRegion ns2:order "2"^^xsd:double .
+
+ns1:localityType ns2:order "2"^^xsd:double .
+
+ns1:mothersEducationLevel ns2:order "2"^^xsd:double .
+
+ns1:religion ns2:order "2"^^xsd:double .
+
+ns1:sampleSize ns2:order "2"^^xsd:double .
+
+ns1:socialGrouping ns2:order "2"^^xsd:double .
+
+ns1:timePoint ns2:order "2"^^xsd:double .
+
+ns1:affluence ns2:componentRequired "0"^^xsd:integer .
+
+ns1:affluenceInPreviousRound ns2:componentRequired "0"^^xsd:integer .
+
+ns1:gender ns2:componentRequired "0"^^xsd:integer .
+
+ns1:geographicRegion ns2:componentRequired "0"^^xsd:integer .
+
+ns1:localityType ns2:componentRequired "0"^^xsd:integer .
+
+ns1:mothersEducationLevel ns2:componentRequired "0"^^xsd:integer .
+
+ns1:religion ns2:componentRequired "0"^^xsd:integer .
+
+ns1:sampleSize ns2:componentRequired "0"^^xsd:integer .
+
+ns1:socialGrouping ns2:componentRequired "0"^^xsd:integer .
+
+ns1:timePoint ns2:componentRequired "0"^^xsd:integer .
+
+ns1:cohort ns2:componentRequired "1"^^xsd:integer .
+
+ns1:country ns2:componentRequired "1"^^xsd:integer .
+
+ns1:round ns2:componentRequired "1"^^xsd:integer .
+
+ns0:dataset-1eae6a27-4753-40f7-9113-9c91b15f9254 ns2:structure <http://data.younglives.org.uk/data/summary/SumaryStatistics-204dbdc0-c90b-4bd9-9632-0dfdf0c3b51f> .
+
+ns0:dataset-2a7a0943-8728-4cda-92c1-ade9bf3a890a ns2:structure <http://data.younglives.org.uk/data/summary/SumaryStatistics-204dbdc0-c90b-4bd9-9632-0dfdf0c3b51f> .
+
+ns0:dataset-53dfbe6c-f562-4c1c-b75e-615590d55d29 ns2:structure <http://data.younglives.org.uk/data/summary/SumaryStatistics-204dbdc0-c90b-4bd9-9632-0dfdf0c3b51f> .
+
+ns0:dataset-929009ef-9fad-4aca-916a-b9656eb5b3ca ns2:structure <http://data.younglives.org.uk/data/summary/SumaryStatistics-204dbdc0-c90b-4bd9-9632-0dfdf0c3b51f> .
+
+ns0:dataset-a5b07718-0aae-4bb3-b405-126b015f4a14 ns2:structure <http://data.younglives.org.uk/data/summary/SumaryStatistics-204dbdc0-c90b-4bd9-9632-0dfdf0c3b51f> .
+
+ns0:dataset-f1306a3e-ef01-45b9-9e8f-54d59fcba1d7 ns2:structure <http://data.younglives.org.uk/data/summary/SumaryStatistics-204dbdc0-c90b-4bd9-9632-0dfdf0c3b51f> .
+
+ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d ns2:structure <http://data.younglives.org.uk/data/summary/SumaryStatistics-315ed24f-1493-44c6-84b6-816a38f1a45d> .
+
+ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 ns2:structure <http://data.younglives.org.uk/data/summary/SumaryStatistics-315ed24f-1493-44c6-84b6-816a38f1a45d> .
+
+<http://data.younglives.org.uk/data/062b19d7-75c5-487a-9987-732091ef31dbobservation> ns2:dataSet ns0:dataset-1eae6a27-4753-40f7-9113-9c91b15f9254 .
+
+<http://data.younglives.org.uk/data/765bd941-f800-4f38-8304-0e0e80e98d70observation> ns2:dataSet ns0:dataset-1eae6a27-4753-40f7-9113-9c91b15f9254 .
+
+<http://data.younglives.org.uk/data/d994a217-e2a5-4bac-96bd-49941dd7d9f3observation> ns2:dataSet ns0:dataset-1eae6a27-4753-40f7-9113-9c91b15f9254 .
+
+<http://data.younglives.org.uk/data/f2ba7de8-a66c-465b-ab5a-fa39166f0806observation> ns2:dataSet ns0:dataset-1eae6a27-4753-40f7-9113-9c91b15f9254 .
+
+<http://data.younglives.org.uk/data/11f5a980-00da-434b-b360-5eecae994cc5observation> ns2:dataSet ns0:dataset-2a7a0943-8728-4cda-92c1-ade9bf3a890a .
+
+<http://data.younglives.org.uk/data/3b0efcba-0e34-4d9e-8f4d-5b440ebab302observation> ns2:dataSet ns0:dataset-2a7a0943-8728-4cda-92c1-ade9bf3a890a .
+
+<http://data.younglives.org.uk/data/4c771df0-89d6-4d03-98cf-39bbabd07dacobservation> ns2:dataSet ns0:dataset-2a7a0943-8728-4cda-92c1-ade9bf3a890a .
+
+<http://data.younglives.org.uk/data/b6830d7a-8be6-469d-8668-e8cc1ec2f0a1observation> ns2:dataSet ns0:dataset-2a7a0943-8728-4cda-92c1-ade9bf3a890a .
+
+<http://data.younglives.org.uk/data/0eb29ea1-0172-4795-96d4-d1f1068d5ebfobservation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/17d43c36-f6b0-4ee7-afc6-89c4533c3ba0observation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/21d4b1a4-aaec-45c4-9446-8e1dd1db8e2cobservation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/268044a1-b20d-49f8-8350-a52f9e63d56eobservation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/389fcafb-1ff5-40d3-b520-28439d1d1e29observation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/3a7ac43b-87e7-443b-9571-8b53bfdbd228observation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/3e1d0a44-eb3e-4ec0-9ce3-c4c9bf27669eobservation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/454e85c9-d439-441f-addf-8849ba1d7bc5observation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/482d019c-b5bc-4b78-b520-37a1e14256deobservation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/49412a62-d998-4309-aea3-736f63c94070observation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/50b991c1-f68a-4b5e-b7c2-d2c5b9a038b6observation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/57fbf5f3-0e0b-41a3-9a76-464869e7d64dobservation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/5fc44b27-c3ef-46dc-af90-a8435a831470observation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/6014e3d9-de91-4bff-95fd-25defe1ae484observation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/616d5991-51b8-47f7-a340-e144751a5e6dobservation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/6470dec7-d191-40d0-bdd6-616ed3a712f4observation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/69e49994-ff7c-4161-81c8-a4c82816b7ffobservation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/71016982-d8f4-40cf-8875-dc238e3e5e85observation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/7228be05-e519-433f-b99d-c8cc434dd1b0observation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/761921c6-737f-4513-9810-e2b07dcf1a67observation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/77dbac77-d1c0-40cc-95d3-60147940fcb8observation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/7d5dcf51-acbc-44d7-939a-72b74ea7d0f2observation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/8a3b983c-8a0d-4995-991e-1f58731487cbobservation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/8d1e1566-b0d1-483d-95f5-6dd1f9e3830cobservation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/9077e15c-0bd8-4949-822c-d8f42a7e449cobservation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/9784904c-012f-4b9e-9fda-2cbcac8f6dcbobservation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/a5e7a2f5-cc60-45af-9fe8-abc24b0dd64dobservation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/a910464f-36ea-4a98-adc8-7709cc084159observation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/ab7fad5f-f9f5-4b11-a3b4-8edebfface05observation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/bbc5ae80-c10b-4322-b67e-1ae682ad60c0observation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/c0652ada-9ea4-4c85-82b7-6050b3689d09observation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/c2c052c4-654a-4bcd-bfe6-9df4bb9d48dbobservation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/d25fda6c-be64-4fae-97d3-1dc94ae9eb42observation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/d83b013e-e729-44bb-9303-423ebd33629aobservation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/ead432ce-50cc-4ab8-b4a8-0b68f129ed01observation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/f5afa9c4-aad2-454c-b631-1180997d6859observation> ns2:dataSet ns0:dataset-2e071585-53ef-4d17-bd66-196d80ce2c0d .
+
+<http://data.younglives.org.uk/data/0055a4b5-c54e-492f-8833-55cf52fad5e3observation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/022f7524-3129-4edf-aecd-5ea5edb41639observation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/078bf2ca-ef1c-42a9-ac3c-e311b679568eobservation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/0a391657-ad93-4ef3-83ef-1f8084808143observation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/17fe3ea4-55ac-4bb1-bbaf-fb91a37b7eabobservation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/19df1e19-0427-4f91-8de1-5299e868c272observation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/20bc3aa5-704e-48f8-9a45-064dacf2760bobservation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/226b4b3f-6c62-4c46-a083-c0bc23402e03observation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/345ea078-36b3-4b84-8b74-8c7530bfa3e5observation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/35cc7f65-f841-426b-95b0-aa960b7d8783observation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/365e208d-9bfa-4805-b9a8-3569788e8710observation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/397e11d4-ee1e-4d89-b94b-56645f3d93e2observation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/3cea4a09-c1bc-49f6-b8ae-fcd196418c4cobservation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/3e68494e-5f96-4cb4-bbdd-e0d27a3aa0edobservation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/46d932b3-2b4f-4be0-8a91-424c53364975observation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/4c78909a-030d-44f5-af79-3bde66a408bfobservation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/4fd27831-f57a-4ffa-9d44-2ec291cf1c12observation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/5291b60e-73a2-4eb4-b4fd-2ee4555f2b95observation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/59ecec89-b9ec-49de-a2db-ed060b16573aobservation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/5a0afe81-c4e9-4ff9-a61b-d8128ddc2f7bobservation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/5b2a10ab-2cab-47ca-b9dc-2e19962f1369observation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/5bdadab2-059d-480f-bb9e-78567c6e19bbobservation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/5fdf4b0a-9c60-44d7-a88b-f98cf52f3212observation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/7670b50c-0372-45a3-b763-df7473439471observation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/798d94f2-8a70-4854-ba4e-eeac3aef3588observation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/93b0c54e-ea1e-475a-8940-b75e86c65b1fobservation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/9863b6d3-1cc6-4fc5-9c06-b5bb5a139089observation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/9b7971b7-3296-4b1a-b5f0-5ac341fa12e8observation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/cb7696d2-6ff6-4366-b83e-ec83dda53ac4observation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/cc9785bc-cab6-4613-a542-5cda8ced7243observation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/cfcba024-3cbf-42d8-b009-3518ccb378c4observation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/d3a40d6d-7876-4fd9-bc5a-47949e8c0a7dobservation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/d890976d-85cc-4405-8f6c-20b6a871a53fobservation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/dd85b5ed-4232-415c-a156-e75becb5124bobservation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/e1c0c236-3513-469f-9f62-37c6bc117f26observation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/eb445ee5-82f9-4336-8207-1230c9d4a75eobservation> ns2:dataSet ns0:dataset-3537c57c-6942-4e6b-a3ea-81ab9bc85ae7 .
+
+<http://data.younglives.org.uk/data/057e5d60-6fd2-4bb3-9674-58aaf4d47fa1observation> ns2:dataSet ns0:dataset-53dfbe6c-f562-4c1c-b75e-615590d55d29 .
+
+<http://data.younglives.org.uk/data/4bb4b7d0-e52c-47a5-9452-33520e9596adobservation> ns2:dataSet ns0:dataset-53dfbe6c-f562-4c1c-b75e-615590d55d29 .
+
+<http://data.younglives.org.uk/data/583fa46e-8bb2-464e-b393-f0e9b74643caobservation> ns2:dataSet ns0:dataset-53dfbe6c-f562-4c1c-b75e-615590d55d29 .
+
+<http://data.younglives.org.uk/data/d25284d2-7033-4d17-bc8d-d1d32d9de4e0observation> ns2:dataSet ns0:dataset-53dfbe6c-f562-4c1c-b75e-615590d55d29 .
+
+<http://data.younglives.org.uk/data/1658ee33-ac1e-4f2b-a9f1-5527ce08916fobservation> ns2:dataSet ns0:dataset-929009ef-9fad-4aca-916a-b9656eb5b3ca .
+
+<http://data.younglives.org.uk/data/2ad83b60-69db-4123-bdd3-8dcdd102d46fobservation> ns2:dataSet ns0:dataset-929009ef-9fad-4aca-916a-b9656eb5b3ca .
+
+<http://data.younglives.org.uk/data/8988a945-df15-435f-809b-49ac654ae06eobservation> ns2:dataSet ns0:dataset-929009ef-9fad-4aca-916a-b9656eb5b3ca .
+
+<http://data.younglives.org.uk/data/d5bd245e-83cc-4f29-96e3-18aae7cb855aobservation> ns2:dataSet ns0:dataset-929009ef-9fad-4aca-916a-b9656eb5b3ca .
+
+<http://data.younglives.org.uk/data/43a8d69e-8c95-4117-9caa-559ec18a3e01observation> ns2:dataSet ns0:dataset-a5b07718-0aae-4bb3-b405-126b015f4a14 .
+
+<http://data.younglives.org.uk/data/5985d306-9f2b-499f-801c-ac183657674bobservation> ns2:dataSet ns0:dataset-a5b07718-0aae-4bb3-b405-126b015f4a14 .
+
+<http://data.younglives.org.uk/data/8460f423-cfad-44c6-8617-6dbf5ff3dcb2observation> ns2:dataSet ns0:dataset-a5b07718-0aae-4bb3-b405-126b015f4a14 .
+
+<http://data.younglives.org.uk/data/c85ecc6b-7b2b-4ee8-90f2-24a6e1907933observation> ns2:dataSet ns0:dataset-a5b07718-0aae-4bb3-b405-126b015f4a14 .
+
+<http://data.younglives.org.uk/data/1840d7cb-2da7-4a43-b41e-d2067a2c2e07observation> ns2:dataSet ns0:dataset-f1306a3e-ef01-45b9-9e8f-54d59fcba1d7 .
+
+<http://data.younglives.org.uk/data/31ac66d6-c865-4090-9bdb-1b6fba883b76observation> ns2:dataSet ns0:dataset-f1306a3e-ef01-45b9-9e8f-54d59fcba1d7 .
+
+<http://data.younglives.org.uk/data/e900123a-430e-42a5-bb59-ffbc34fb8230observation> ns2:dataSet ns0:dataset-f1306a3e-ef01-45b9-9e8f-54d59fcba1d7 .
+
+<http://data.younglives.org.uk/data/f23c6a2f-0394-4b8f-a7ec-0e04838d3c1aobservation> ns2:dataSet ns0:dataset-f1306a3e-ef01-45b9-9e8f-54d59fcba1d7 .

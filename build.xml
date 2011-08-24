@@ -119,7 +119,7 @@
 	<echo msg="Loading triples for example country summary stats" />
 	    <foreach param="name" absparam="absname" target="load-rdf" >
 		    <fileset dir="initial_data/">
-			    <include name="*.xml" />
+			    <include name="export2011-08-24_1442.n3" />
 		    </fileset>
 	    </foreach>
     </target> 
