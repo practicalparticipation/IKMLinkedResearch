@@ -70,7 +70,8 @@
         <delete  dir="${builddir}/extensions/csvimport"
                       includeemptydirs="true" />
         <echo msg="Link in our own version" />
-        <exec command="ln -s ${application.startdir}/ow_extensions/csvimport ${builddir}/extensions"/>    
+        <exec command="ln -s ${application.startdir}/ow_extensions/csvimport ${builddir}/extensions"/> 
+	<exec command="ln -s ${application.startdir}/ow_extensions/younglives ${builddir}/extensions"/>
         <mkdir dir="${builddir}/extensions/csvimport/logs"/>
         <chmod file="${builddir}/extensions/csvimport/logs" mode="0777"/>
         <mkdir dir="${builddir}/extensions/csvimport/configs"/>
