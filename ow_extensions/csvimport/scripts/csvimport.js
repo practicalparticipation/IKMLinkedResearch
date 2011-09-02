@@ -1001,7 +1001,9 @@ $(document).ready(function () {
 		dimensions_raw['Cohort'] = {};
 		//if fixed cohort is being used set it's value
 		if ($("input[name='cohort_choice']:checked").val() === 'fixed') {
-			cohort_dim_object[$("input[name='which_cohort']:checked").val()] =  get_coords(top_left, bottom_right);
+			var _cohort_dim_object_constructor = {};
+			_cohort_dim_object_constructor[$("input[name='which_cohort']:checked").val()] =  get_coords(top_left, bottom_right);
+			cohort_dim_object.push(_cohort_dim_object_constructor);
 		} else  {
 			
 			//collect values from the dimensions object where they should be
@@ -1216,6 +1218,11 @@ $(document).ready(function () {
 													//ok our point is in this dimension, easy and very readable uh.
 													//TODO confirm name spaces here
 													observation[obid][ylcomp + dim.uncapitalize()] = [make_rdf_object(key, yls)];
+
+													//ok lets try making a label for each dimension value here too
+													labels[yls +  key.replace(/ /g, '_')] = {};
+													labels[yls +  key.replace(/ /g, '_')][rdfs + 'label'] =  make_rdf_label(key);
+
 													//stop loop now
 													break;
 												}
