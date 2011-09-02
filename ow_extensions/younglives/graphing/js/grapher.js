@@ -303,16 +303,15 @@ LIMIT 20
         * Draw the selected visualisation
         */
         Grapher.drawVis = function(){
-            // Set up chart options
-            var options = {'title': 'The Title',
-                                    'height': 400,
-                                    'width': 600};
+            // Set up chart options defaults
+            var options = {'height': 400,
+                                     'width': 600};
             
             // Prepare using the selected plugin
             if (Grapher.availablePlugins[Grapher.visType] !== undefined) {
                 var prepped_vis = Grapher.availablePlugins[Grapher.visType].prepare(Grapher);
                 // Draw the chart
-                prepped_vis.chart.draw(prepped_vis.table, options);
+                prepped_vis.chart.draw(prepped_vis.table, $.extend(options, prepped_vis.options));
             } else {
                 $.error('No Grapher plugin has been registered with an id of ' + Grapher.visType);
             }
@@ -402,7 +401,7 @@ LIMIT 20
         * Build html in target element
         */
         Grapher.init = function( options ){  
-        
+            window.Grapher = Grapher;
             if (options) {
                 $.extend(Grapher, $.fn.yl_grapher.defaults, options);
             }
@@ -411,7 +410,7 @@ LIMIT 20
             
             // Build our main layout
 
-	    var markup = $($.View('templates/init.ejs', Grapher));
+	        var markup = $($.View('templates/init.ejs', Grapher));
             // Fancify the vis selector
             $('#grapher-vis-type-switch', markup).multiselect(
                         {header: "Select a visualisation",
@@ -421,12 +420,16 @@ LIMIT 20
                           click: function(event, ui){ Grapher.changeVisType(ui.value); }
                          });
             //tabify the interface
-            markup.tabs();
+            Grapher.tabs = markup.tabs();
             
             Grapher.vis = markup.find('#grapher-vis');
             Grapher.configui = markup.find('#grapher-configui');
             
             Grapher.target.append(markup);
+            
+            // Have we enough configuration data to draw an initial graph?
+            var graphable = Boolean((Grapher.selectedMeasure  && Grapher.selectedDimension ));
+            
             
             /** Volatile config actions:
              * Fetch the DSD and the data
@@ -447,14 +450,18 @@ LIMIT 20
                 //Get the graphable data
                 $.Deferred(
                     function(deferred){
-                        Grapher.getData(
-                            Grapher.selectedMeasure,
-                            Grapher.selectedDimension,
-                            function(data){
-                                Grapher.updateData(data);
-                                deferred.resolve();
-                            }
-                        );
+                        if (graphable) {
+                            Grapher.getData(
+                                Grapher.selectedMeasure,
+                                Grapher.selectedDimension,
+                                function(data){
+                                    Grapher.updateData(data);
+                                    deferred.resolve();
+                                }
+                            );
+                        } else {
+                            deferred.resolve();
+                        }
                 }),
                 
                 // Get the configuration data
@@ -474,9 +481,14 @@ LIMIT 20
              // Once contingent events have all finished we can do the last bits and bobs
              fetches.done(
                 function(){
-                    Grapher.drawVis();
+                    if (graphable) {
+                        Grapher.drawVis();
+                    }
                     Grapher.drawConfig(); // Draw the config screen
                     Grapher.initBindings(); // Set up the bindings
+                    if (!graphable) {
+                        Grapher.tabs.tabs('select', 1);// switch to the config screen
+                    }
                 }
              );
         };
@@ -497,9 +509,11 @@ LIMIT 20
         $.fn.yl_grapher.defaults = {  // Config object and api
             'useFixtures':false, //Use static data from the fixtures folder
             'sparql_endpoint': 'http://localhost/IKMLinkedResearch/build/service/sparql', // Sparql Endpoint
-            'activeDSD': 'http://data.younglives.org.uk/data/summary/SummaryStatistics', //URI of the DSD to graph
-            'selectedMeasure':'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/measure-ProportionOfSample',
-            'selectedDimension':'http://data.younglives.org.uk/component#localityType',
+            //'activeDSD': 'http://data.younglives.org.uk/data/summary/SummaryStatistics', //URI of the DSD to graph
+            //'selectedMeasure':'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/measure-ProportionOfSample',
+            //'selectedDimension':'http://data.younglives.org.uk/component#localityType',
+            'selectedDimension': false,
+            'selectedMeasure': false,
             'groupbyDimension':'http://data.younglives.org.uk/component#country', // Dimension to group along the x axis
             'includeDimensions':['http://data.younglives.org.uk/component#cohort'],
             'visType': 'columnchart', // Set default visualization
@@ -511,7 +525,7 @@ LIMIT 20
                                     'standard':[ // Dimensions to render as standard options
                                         'http://data.younglives.org.uk/component#cohort',
                                         'http://data.younglives.org.uk/component#country',
-                                        'http://data.younglives.org.uk/component#round'
+                                        'http://data.younglives.org.uk/component#round',
                                     ] 
                                   },
              'measures': { 'ignore':[] // Measures to ignore from the ui

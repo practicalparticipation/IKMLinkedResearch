@@ -116,7 +116,14 @@
                         table.addRow(row);
                     });
                     
-                    return {'chart':chart, 'table':table};
+                    // Create Options for display
+                    var options = {};
+                    options.title = Grapher.dsd.get_dimension(Grapher.selectedDimension).label;
+                    options.legend = 'none';
+                    options.hAxis = {title: Grapher.dsd.get_dimension(Grapher.groupbyDimension).label};
+                    options.vAxis = {title: Grapher.dsd.get_measure(Grapher.selectedMeasure).label};
+                    
+                    return {'chart':chart, 'table':table, 'options':options};
         };
         
         $.fn.yl_grapher.registerPlugin(vis);

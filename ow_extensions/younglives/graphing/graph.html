@@ -14,9 +14,9 @@
       <script type="text/javascript" src="js/underscore-min.js"></script>
       <script type="text/javascript" src="js/classy.js"></script>
       <script type="text/javascript" src="js/jquery.view.ejs.js"></script>
-      <script type="text/javascript" src="js/jquery.geturlvars.js"></script>      
-      <!--<script type="text/javascript" src="js/jquery-ui-1.8.14.custom/js/jquery-ui-1.8.14.custom.min.js"></script>-->
-      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js"></script>       
+      <script type="text/javascript" src="js/jquery.ba-bbq.js"></script>      
+      <!--<script type="text/javascript" src="js/jquery-ui-1.8.14.custom/js/jquery-ui-1.8.14.custom.min.js"></script>--> 
+      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js"></script> 
       <script type="text/javascript" src="js/jquery.multiselect.min.js"></script>
       <script type="text/javascript" src="js/iphone-checkbox/iphone-style-checkboxes.js"></script>
       
@@ -31,27 +31,10 @@
       <script type="text/javascript" src="js/ejs_fulljslint.js"></script>
       
       <script type="text/javascript">
-        // URL parsing examples - get them all as an object
-	var urlVars = $.getUrlVars();
-        // get a specifiv var by name (you'll get null if it's not in the request
-        var opts = {'sparql_endpoint': $.getUrlVar('sparql_endpoint'), 
-			'activeDSD' : $.getUrlVar('activeDSD')};
-	if ($.getUrlVar('useFixtures')){
-		opts['useFixtures'] = $.getUrlVar('useFixtures');
-	}
-	if ($.getUrlVar('selectedMeasure')){
-		opts['selectedMeasure'] = $.getUrlVar('selectedMeasure');
-	}
-	if ($.getUrlVar('selectedDimension')){
-		opts['selectedDimension'] = $.getUrlVar('selectedDimension');
-	}
-	if ($.getUrlVar('groupbyDimension')){
-		opts['groupbyDimension'] = $.getUrlVar('groupbyDimension');
-	}
-	if ($.getUrlVar('visType')){
-		opts['visType'] = $.getUrlVar('visType');
-	}
-        $('#grapher').yl_grapher(opts);
+        var params = jQuery.deparam.querystring();
+        var opts = {}; //override/supplement url vars here if needed
+	    $.extend(params, opts);
+        $('#grapher').yl_grapher(params);
       </script>
   </body>
 </html>
