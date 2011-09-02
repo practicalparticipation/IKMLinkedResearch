@@ -95,7 +95,7 @@ LIMIT 20
 			.prefix('qb', Grapher.qb)
 			.prefix('rdfs', Grapher.rdfs)
 			.prefix('rdf', Grapher.rdf)
-			.select(['?dsdlabel', '?dimlabel', '?dimension', '?mealabel'])
+			.select(['?dsdlabel', '?dimlabel', '?dimension', '?measure', '?mealabel'])
 				.where('<' + uri + '>', 'rdfs:label' , '?dsdlabel')
 				.where('<' + uri + '>', 'qb:ComponentProperty', '?dimension')
 				.where('?dimension', 'rdf:type', 'qb:DimensionProperty')
@@ -118,68 +118,70 @@ LIMIT 20
          * Process and store a dsd
          */
         Grapher.updateDSD = function(data){
-            //Building a structure by hand for now
+            
             var dsd = {
                 label : data[0]['dsdlabel']['value'], 
-		dimensions: [], //populate these later when we can loop
-		get_dimension: function(uri) {
+		        dimensions: [], //populate these later when we can loop
+		        measures: [],
+		        get_dimension: function(uri) {
                     var dimension =  _.detect(this.dimensions, function(dim){ 
                         return dim.uri === uri; 
                     });
                     return dimension;
                 },
-		get_measure: function(uri) {
-                    return _.detect(this.measures, function(mea){ return mea.uri === uri; });
-                },
-		measures: [
-                    {uri:Grapher.selectedMeasure,
-                    label: data[0]['mealabel']['value']
-                     }
-                ]
-		/*
-		label: 'A Structure for Summary Statistics from Young Lives',
-                dimensions: [
-                    {uri:'http://data.younglives.org.uk/component#localityType',
-                     label:'Urban or Rural living location'},
-                    {uri:'http://data.younglives.org.uk/component#mothersEducation',
-                     label:"Mother's level of education"},
-                    {uri:'http://data.younglives.org.uk/component#region',
-                     label:"Region in Country"},
-                    {uri:'http://data.younglives.org.uk/component#gender',
-                     label:"Gender of respondant"},
-                    {uri:'http://data.younglives.org.uk/component#cohort',
-                     label:'The Young Lives study Cohort'},
-                    {uri:'http://data.younglives.org.uk/component#country',
-                     label:'The Country'},
-                    {uri:'http://data.younglives.org.uk/component#round',
-                     label:'The Young Lives study round'}   
-                ],
-                get_dimension: function(uri) {
-                    var dimension =  _.detect(this.dimensions, function(dim){ 
-                        return dim.uri === uri; 
-                    });
-                    return dimension;
-                },
-                measures: [
-                    {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/measure-ProportionOfSample',
-                    label: 'The proportion of the sample in the categories noted'
-                     }
-                ],
-                get_measure: function(uri) {
+		        get_measure: function(uri) {
                     return _.detect(this.measures, function(mea){ return mea.uri === uri; });
                 }
-		*/
+		        
+		        /*
+		        label: 'A Structure for Summary Statistics from Young Lives',
+                        dimensions: [
+                            {uri:'http://data.younglives.org.uk/component#localityType',
+                             label:'Urban or Rural living location'},
+                            {uri:'http://data.younglives.org.uk/component#mothersEducation',
+                             label:"Mother's level of education"},
+                            {uri:'http://data.younglives.org.uk/component#region',
+                             label:"Region in Country"},
+                            {uri:'http://data.younglives.org.uk/component#gender',
+                             label:"Gender of respondant"},
+                            {uri:'http://data.younglives.org.uk/component#cohort',
+                             label:'The Young Lives study Cohort'},
+                            {uri:'http://data.younglives.org.uk/component#country',
+                             label:'The Country'},
+                            {uri:'http://data.younglives.org.uk/component#round',
+                             label:'The Young Lives study round'}   
+                        ],
+                        get_dimension: function(uri) {
+                            var dimension =  _.detect(this.dimensions, function(dim){ 
+                                return dim.uri === uri; 
+                            });
+                            return dimension;
+                        },
+                        measures: [
+                            {uri:'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/measure-ProportionOfSample',
+                            label: 'The proportion of the sample in the categories noted'
+                             }
+                        ],
+                        get_measure: function(uri) {
+                            return _.detect(this.measures, function(mea){ return mea.uri === uri; });
+                        }
+		        */
             };
-	    for (var dsd_dim in data) {
-		if (data.hasOwnProperty(dsd_dim)) {
-			var a_dim = {};
-			a_dim.uri = data[dsd_dim]['dimension']['value'];
-			a_dim.label = data[dsd_dim]['dimlabel']['value'];
-			dsd['dimensions'].push(a_dim);
-		}
-	    }
-	    
             
+            var _meas = {}; // temp store for measure deduplication
+            // Extract the Dimension and measure from each result group
+            $.each(data, function(k, res) {
+                var dim = {uri: res['dimension']['value'],
+                                   label: res['dimlabel']['value']};
+                dsd.dimensions.push(dim);
+                
+                var mea = {uri: res['measure']['value'],
+                                    label: res['mealabel']['value']};
+                _meas[mea.uri] = mea;
+            });
+	        // Deduplicate the measures
+	        dsd.measures = _.values(_meas);
+	    
             dsd.chooseable_dimensions = _.select(dsd.dimensions, function(v){
                     var ignore =  _.include(Grapher.dimensions.ignore, v.uri);
                     var standard = _.include(Grapher.dimensions.standard, v.uri);
@@ -254,7 +256,7 @@ LIMIT 20
                 // Data conversion
                 $.each(v, function(key, val){
                     // Sort type and find labels
-                    if ( val.type === 'typed-literal' && parseFloat(val.value) ) {
+                    if ( val.type === 'typed-literal' && !isNaN(parseFloat(val.value)) ) {
                         val.value = parseFloat(val.value);
                         val.label = val.value.toString();
                         val.coltype = 'number';
@@ -278,13 +280,16 @@ LIMIT 20
          * includeDimensionsFilters
          */
         Grapher.filterData = function(){
-            var fd = _.reject(Grapher.data.slice(0), function(obs){
-                var filter = false;
+            var fd = _.select(Grapher.data.slice(0), function(obs){
+                var filter = true;
                 _.each(Grapher.includeDimensionFilters, function(values, dim){
-                    var token = Grapher.tokenizeURI(dim);
-                    if (obs.hasOwnProperty(token)) {
-                        if (_.include(values, obs[token].value)) {
-                            filter = true;
+                    // Only filter if filters are selected
+                    if (values.length > 0) {
+                        var token = Grapher.tokenizeURI(dim);
+                        if (obs.hasOwnProperty(token)) {
+                            if (!_.include(values, obs[token].value)) {
+                                filter = false;
+                            }
                         }
                     }
                 });
