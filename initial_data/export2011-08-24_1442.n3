@@ -1691,9 +1691,9 @@ ns0:measure-ProportionOfSample <http://www.w3.org/2000/01/rdf-schema#subProperty
 
 <http://data.younglives.org.uk/data/17d43c36-f6b0-4ee7-afc6-89c4533c3ba0observation> ns0:measure-ProportionOfSample "0.92"^^xsd:double .
 
-<http://data.younglives.org.uk/data/5a0afe81-c4e9-4ff9-a61b-d8128ddc2f7bobservation> ns0:measure-ProportionOfSample "0.00"@en .
+<http://data.younglives.org.uk/data/5a0afe81-c4e9-4ff9-a61b-d8128ddc2f7bobservation> ns0:measure-ProportionOfSample "0.00"^^xsd:double .
 
-<http://data.younglives.org.uk/data/7670b50c-0372-45a3-b763-df7473439471observation> ns0:measure-ProportionOfSample "0.00"@en .
+<http://data.younglives.org.uk/data/7670b50c-0372-45a3-b763-df7473439471observation> ns0:measure-ProportionOfSample "0.00"^^xsd:double .
 
 ns1:cohort ns2:order "1"^^xsd:double .
 
