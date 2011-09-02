@@ -752,7 +752,10 @@ $(document).ready(function () {
 				//val_str's cannot contain spaces ?ontowiki limitation, they are replaced here with underscroes
 				val_str = val_str.replace(/ /g, '_');
 				if (!isNaN(parseInt(val_str, 10))) { //not this a good test as '1fish' tests true.. but it will have to do
-					return {"type": "literal", "value": val_str, "datatype" : "http://www.w3.org/2001/XMLSchema#decimal" };
+				    var type = (parseFloat(val_str) % 1 == 0)?'integer':'decimal';
+			        return {"type": "literal", 
+					            "value": parseFloat(val_str), 
+					            "datatype" : "http://www.w3.org/2001/XMLSchema#" + type };
 				} else if (val_str.toLowerCase() === 'false' || val_str.toLowerCase() === 'true'){
 					return {"type": "literal", "value": val_str.toLowerCase(), "datatype" : "http://www.w3.org/2001/XMLSchema#boolean" };
 				} else 	{
@@ -771,17 +774,17 @@ $(document).ready(function () {
 		
 		var make_rdf_Observation_object = function (val) {
 			//this takes  very like make_rdf_object, but will always return a literal, of integer decimal boolean, or lang en
-			if (parseFloat(val)) {
-			var type = (parseFloat(val) % 1 == 0)?'integer':'decimal';
-			return {"type": "literal", 
-					"value": parseFloat(val), 
-					"datatype" : "http://www.w3.org/2001/XMLSchema#" + type };
+			if (!isNaN(parseFloat(val))) {
+			    var type = (parseFloat(val) % 1 == 0)?'integer':'decimal';
+			    return {"type": "literal", 
+					    "value": parseFloat(val), 
+					    "datatype" : "http://www.w3.org/2001/XMLSchema#" + type };
 			} else if (val.toLowerCase() === 'false' || val.toLowerCase() === 'true'){
 				return {"type": "literal", 
 						"value": val.toLowerCase(), 
 						"datatype" : "http://www.w3.org/2001/XMLSchema#boolean" };
 			} else {
-			return {"type": "literal", "value": val, "lang" : "en"  };
+			    return {"type": "literal", "value": val, "lang" : "en"  };
 			}
 		};
 	
