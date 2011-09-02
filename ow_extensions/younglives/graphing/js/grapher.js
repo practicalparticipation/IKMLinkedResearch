@@ -263,8 +263,9 @@ LIMIT 20
                     }  
                     if ( val.type === 'uri' ) {
                         val.coltype = 'string';
+                        // Try to extract a label from the result set, if none transform the uri
                         val.label = this.hasOwnProperty(key + '_label')
-                            ?this[key + '_label']:val.value.slice(val.value.lastIndexOf('/')+1);
+                            ?this[key + '_label']:val.value.slice(val.value.lastIndexOf('/')+1).replace(/_/g, ' ');
                     }                
                 });
                 items.push(Grapher.Observation.$withData(v));
