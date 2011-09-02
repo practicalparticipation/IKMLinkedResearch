@@ -1505,51 +1505,99 @@ ns0:measure-ProportionOfSample <http://www.w3.org/2000/01/rdf-schema#subProperty
 
 <http://data.younglives.org.uk/data/43a8d69e-8c95-4117-9caa-559ec18a3e01observation> ns0:measure-PercentageCrossingPovertyLine "5.18"^^xsd:double .
 
+<http://data.younglives.org.uk/data/43a8d69e-8c95-4117-9caa-559ec18a3e01observation> ns1:cohort ns0:OC .
+
 <http://data.younglives.org.uk/data/765bd941-f800-4f38-8304-0e0e80e98d70observation> ns0:measure-PercentageCrossingPovertyLine "5.35"^^xsd:double .
+
+<http://data.younglives.org.uk/data/765bd941-f800-4f38-8304-0e0e80e98d70observation> ns1:cohort ns0:OC .
 
 <http://data.younglives.org.uk/data/b6830d7a-8be6-469d-8668-e8cc1ec2f0a1observation> ns0:measure-PercentageCrossingPovertyLine "8.6"^^xsd:double .
 
+<http://data.younglives.org.uk/data/b6830d7a-8be6-469d-8668-e8cc1ec2f0a1observation> ns1:cohort ns0:OC .
+
 <http://data.younglives.org.uk/data/f23c6a2f-0394-4b8f-a7ec-0e04838d3c1aobservation> ns0:measure-PercentageCrossingPovertyLine "8.65"^^xsd:double .
+
+<http://data.younglives.org.uk/data/f23c6a2f-0394-4b8f-a7ec-0e04838d3c1aobservation> ns1:cohort ns0:OC .
 
 <http://data.younglives.org.uk/data/8988a945-df15-435f-809b-49ac654ae06eobservation> ns0:measure-PercentageCrossingPovertyLine "9.800000000000001"^^xsd:double .
 
+<http://data.younglives.org.uk/data/8988a945-df15-435f-809b-49ac654ae06eobservation> ns1:cohort ns0:OC .
+
 <http://data.younglives.org.uk/data/583fa46e-8bb2-464e-b393-f0e9b74643caobservation> ns0:measure-PercentageCrossingPovertyLine "9.91"^^xsd:double .
+
+<http://data.younglives.org.uk/data/583fa46e-8bb2-464e-b393-f0e9b74643caobservation> ns1:cohort ns0:OC .
 
 <http://data.younglives.org.uk/data/1658ee33-ac1e-4f2b-a9f1-5527ce08916fobservation> ns0:measure-PercentageCrossingPovertyLine "24"^^xsd:integer .
 
+<http://data.younglives.org.uk/data/1658ee33-ac1e-4f2b-a9f1-5527ce08916fobservation> ns1:cohort ns0:OC .
+
 <http://data.younglives.org.uk/data/d25284d2-7033-4d17-bc8d-d1d32d9de4e0observation> ns0:measure-PercentageCrossingPovertyLine "27.34"^^xsd:double .
+
+<http://data.younglives.org.uk/data/d25284d2-7033-4d17-bc8d-d1d32d9de4e0observation> ns1:cohort ns0:OC .
 
 <http://data.younglives.org.uk/data/11f5a980-00da-434b-b360-5eecae994cc5observation> ns0:measure-PercentageCrossingPovertyLine "30"^^xsd:integer .
 
+<http://data.younglives.org.uk/data/11f5a980-00da-434b-b360-5eecae994cc5observation> ns1:cohort ns0:OC .
+
 <http://data.younglives.org.uk/data/1840d7cb-2da7-4a43-b41e-d2067a2c2e07observation> ns0:measure-PercentageCrossingPovertyLine "32.22"^^xsd:double .
+
+<http://data.younglives.org.uk/data/1840d7cb-2da7-4a43-b41e-d2067a2c2e07observation> ns1:cohort ns0:OC .
 
 <http://data.younglives.org.uk/data/8460f423-cfad-44c6-8617-6dbf5ff3dcb2observation> ns0:measure-PercentageCrossingPovertyLine "48.78"^^xsd:double .
 
+<http://data.younglives.org.uk/data/8460f423-cfad-44c6-8617-6dbf5ff3dcb2observation> ns1:cohort ns0:OC .
+
 <http://data.younglives.org.uk/data/062b19d7-75c5-487a-9987-732091ef31dbobservation> ns0:measure-PercentageCrossingPovertyLine "50"^^xsd:integer .
+
+<http://data.younglives.org.uk/data/062b19d7-75c5-487a-9987-732091ef31dbobservation> ns1:cohort ns0:OC .
 
 <http://data.younglives.org.uk/data/f2ba7de8-a66c-465b-ab5a-fa39166f0806observation> ns0:measure-PercentageCrossingPovertyLine "50"^^xsd:integer .
 
+<http://data.younglives.org.uk/data/f2ba7de8-a66c-465b-ab5a-fa39166f0806observation> ns1:cohort ns0:OC .
+
 <http://data.younglives.org.uk/data/c85ecc6b-7b2b-4ee8-90f2-24a6e1907933observation> ns0:measure-PercentageCrossingPovertyLine "51.22"^^xsd:double .
+
+<http://data.younglives.org.uk/data/c85ecc6b-7b2b-4ee8-90f2-24a6e1907933observation> ns1:cohort ns0:OC .
 
 <http://data.younglives.org.uk/data/e900123a-430e-42a5-bb59-ffbc34fb8230observation> ns0:measure-PercentageCrossingPovertyLine "67.78"^^xsd:double .
 
+<http://data.younglives.org.uk/data/e900123a-430e-42a5-bb59-ffbc34fb8230observation> ns1:cohort ns0:OC .
+
 <http://data.younglives.org.uk/data/3b0efcba-0e34-4d9e-8f4d-5b440ebab302observation> ns0:measure-PercentageCrossingPovertyLine "70"^^xsd:integer .
+
+<http://data.younglives.org.uk/data/3b0efcba-0e34-4d9e-8f4d-5b440ebab302observation> ns1:cohort ns0:OC .
 
 <http://data.younglives.org.uk/data/4bb4b7d0-e52c-47a5-9452-33520e9596adobservation> ns0:measure-PercentageCrossingPovertyLine "72.66"^^xsd:double .
 
+<http://data.younglives.org.uk/data/4bb4b7d0-e52c-47a5-9452-33520e9596adobservation> ns1:cohort ns0:OC .
+
 <http://data.younglives.org.uk/data/d5bd245e-83cc-4f29-96e3-18aae7cb855aobservation> ns0:measure-PercentageCrossingPovertyLine "76"^^xsd:integer .
+
+<http://data.younglives.org.uk/data/d5bd245e-83cc-4f29-96e3-18aae7cb855aobservation> ns1:cohort ns0:OC .
 
 <http://data.younglives.org.uk/data/057e5d60-6fd2-4bb3-9674-58aaf4d47fa1observation> ns0:measure-PercentageCrossingPovertyLine "90.09"^^xsd:double .
 
+<http://data.younglives.org.uk/data/057e5d60-6fd2-4bb3-9674-58aaf4d47fa1observation> ns1:cohort ns0:OC .
+
 <http://data.younglives.org.uk/data/2ad83b60-69db-4123-bdd3-8dcdd102d46fobservation> ns0:measure-PercentageCrossingPovertyLine "90.2"^^xsd:double .
+
+<http://data.younglives.org.uk/data/2ad83b60-69db-4123-bdd3-8dcdd102d46fobservation> ns1:cohort ns0:OC .
 
 <http://data.younglives.org.uk/data/31ac66d6-c865-4090-9bdb-1b6fba883b76observation> ns0:measure-PercentageCrossingPovertyLine "91.34999999999999"^^xsd:double .
 
+<http://data.younglives.org.uk/data/31ac66d6-c865-4090-9bdb-1b6fba883b76observation> ns1:cohort ns0:OC .
+
 <http://data.younglives.org.uk/data/4c771df0-89d6-4d03-98cf-39bbabd07dacobservation> ns0:measure-PercentageCrossingPovertyLine "91.40000000000001"^^xsd:double .
+
+<http://data.younglives.org.uk/data/4c771df0-89d6-4d03-98cf-39bbabd07dacobservation> ns1:cohort ns0:OC .
 
 <http://data.younglives.org.uk/data/d994a217-e2a5-4bac-96bd-49941dd7d9f3observation> ns0:measure-PercentageCrossingPovertyLine "94.65000000000001"^^xsd:double .
 
+<http://data.younglives.org.uk/data/d994a217-e2a5-4bac-96bd-49941dd7d9f3observation> ns1:cohort ns0:OC .
+
 <http://data.younglives.org.uk/data/5985d306-9f2b-499f-801c-ac183657674bobservation> ns0:measure-PercentageCrossingPovertyLine "94.81999999999999"^^xsd:double .
+
+<http://data.younglives.org.uk/data/5985d306-9f2b-499f-801c-ac183657674bobservation> ns1:cohort ns0:OC .
 
 <http://data.younglives.org.uk/data/3e68494e-5f96-4cb4-bbdd-e0d27a3aa0edobservation> ns0:measure-ProportionOfSample "0.01"^^xsd:double .
 
