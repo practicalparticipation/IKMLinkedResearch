@@ -37,7 +37,7 @@
         </input>
         <copy file="./conf/config.ini.${owConfigFile}" 
                    tofile="./${builddir}/config.ini" overwrite="true"  />  
-                 
+	<phingcall target="jsonrpc_bug_fix_overwrite"/>         
         <phingcall target="overwrite-sysont"/>
         <phingcall target="dev-csvimport"/>
     </target>
@@ -48,6 +48,13 @@
     	<phingcall target="load-studystructure-triples"/>  
     	<phingcall target="load-test_country_summary_stats"/>
 	<phingcall target="copy_theme" />
+    </target>
+    
+    <target name="jsonrpc_bug_fix_overwrite">
+	    <echo msg="changing default export format to rdf/json in jsonrpc. copying new modelJsonrpcAdapter.php over current one" />
+	    <copy file="./jsonrpc/modelJsonrpcAdapter.php" 
+		  tofile="./${builddir}/extensions/jsonrpc/modelJsonrpcAdapter.php"
+		  overwrite="true" />
     </target>
     
     <target name="overwrite-sysont">

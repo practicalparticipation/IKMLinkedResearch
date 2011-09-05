@@ -1,5 +1,5 @@
 [default] 
-baseuri = "http://localhost/IKMLinkedResearch/build/"
+baseuri = "http://neil/~neil/IKMLinkedResearch/build/"
 user = "Admin"
 password = "admin"
 

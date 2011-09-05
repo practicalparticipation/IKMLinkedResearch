@@ -1,0 +1,4 @@
+Neontribe jsonrpc override
+
+relpace the file extenstions/jsonrpc/modelJsonrpcAdapter.php in ontowiki 0.9.6 with this one. this changes the default export form from rdf/xml to rdf/json as rdf/xml export is bugged in this version of ontowiki.
+
