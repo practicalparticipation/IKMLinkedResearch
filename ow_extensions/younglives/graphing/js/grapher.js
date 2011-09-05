@@ -263,8 +263,9 @@ LIMIT 20
                     }  
                     if ( val.type === 'uri' ) {
                         val.coltype = 'string';
+                        // Try to extract a label from the result set, if none transform the uri
                         val.label = this.hasOwnProperty(key + '_label')
-                            ?this[key + '_label']:val.value.slice(val.value.lastIndexOf('/')+1);
+                            ?this[key + '_label']:val.value.slice(val.value.lastIndexOf('/')+1).replace(/_/g, ' ');
                     }                
                 });
                 items.push(Grapher.Observation.$withData(v));
@@ -302,16 +303,17 @@ LIMIT 20
         * Draw the selected visualisation
         */
         Grapher.drawVis = function(){
-            // Set up chart options
-            var options = {'title': 'The Title',
-                                    'height': 400,
-                                    'width': 600};
+            // Set up chart options defaults
+            var options = {'height': 400,
+                                     'width': 600};
             
             // Prepare using the selected plugin
             if (Grapher.availablePlugins[Grapher.visType] !== undefined) {
                 var prepped_vis = Grapher.availablePlugins[Grapher.visType].prepare(Grapher);
                 // Draw the chart
-                prepped_vis.chart.draw(prepped_vis.table, options);
+                prepped_vis.chart.draw(prepped_vis.table, $.extend(options, prepped_vis.options));
+                Grapher.tabs.tabs('enable', 0);
+                Grapher.tabs.tabs('select',0);
             } else {
                 $.error('No Grapher plugin has been registered with an id of ' + Grapher.visType);
             }
@@ -368,6 +370,9 @@ LIMIT 20
                     Grapher.includeDimensionFilters = filters;
                     
                     Grapher.getData(Grapher.selectedMeasure, Grapher.selectedDimension, Grapher.updateData);
+                    
+                    // A choice as been made - enable the sharing tab
+                    Grapher.tabs.tabs('enable', 1);
                 });
             
             Grapher.configui.append(ui); 
@@ -385,6 +390,22 @@ LIMIT 20
             this.target.find('#grapher-vis-type-switch').bind('change', function(evt, el){
                 Grapher.changeVisType($(this).val());
             });
+            
+            // Bindings for sharing dialog
+            this.target.find('button.share-link').bind('click', function(evt, el){
+                var opts = {
+                    title: 'Sharable Graph Link',
+                    code: Grapher.sharingURL()
+                };
+                Grapher.displayCode(opts);
+            });
+            this.target.find('button.embed-code').bind('click', function(evt, el){
+                var opts = {
+                    title: 'Embeddabe Graph Code',
+                    code: Grapher.embedCode()
+                };
+                Grapher.displayCode(opts);
+            });
         };
         
         /**
@@ -394,6 +415,57 @@ LIMIT 20
             Grapher.visType = visType;
             Grapher.target.trigger('grapherVisTypeChanged');
         };
+        
+        /**
+         * Create a shareable url for the current graph config
+         */
+        Grapher.sharingURL = function(){
+            var settings = $.deparam.querystring();
+            var base = 'http://' + settings.http_host + settings.host_path;
+            
+            var params = {r: Grapher.activeDSD, //Set the ontowiki resource
+                                     selectedMeasure:Grapher.selectedMeasure,
+                                     selectedDimension:Grapher.selectedDimension};
+            var share_url = $.param.querystring(base, params);
+            return share_url;
+        };
+        
+        /**
+         *  Generate an embed code using either javascript or iframe
+         *
+         * @param embed_type {String} iframe, js
+         */
+        Grapher.embedCode = function(embed_type){
+            // Build a sharing url and pass it to our iframe template
+            var iframe = $.View('templates/iframe_embed.ejs', {url:Grapher.sharingURL()});
+            return iframe;
+        };
+        
+        /**
+         * Display a sharing string in a popup
+         */
+        Grapher.displayCode = function(opts){
+            var settings = {
+                resizeable: true,
+                minWidth: 400,
+                autoOpen: true,
+                show: 'fade',
+                hide:'fade',
+                dialogClass: 'sharing',
+                buttons: {
+                    'Close': function() {
+                        $(this).dialog('close');
+                    }
+                },
+                open: function () {
+                    $('button.ui-button').blur();
+                }
+            };
+            
+            this.sharing_popup = $($.View('templates/sharing_popup.ejs', opts)).dialog($.extend(settings, opts));
+   
+        };
+         
    
         /**
         * Initialise
@@ -401,16 +473,19 @@ LIMIT 20
         * Build html in target element
         */
         Grapher.init = function( options ){  
-        
+            window.Grapher = Grapher;
             if (options) {
                 $.extend(Grapher, $.fn.yl_grapher.defaults, options);
             }
             
             Grapher.target = this;
             
+            // Have we enough configuration data to draw an initial graph?
+            var graphable = Boolean((Grapher.selectedMeasure  && Grapher.selectedDimension ));
+            
             // Build our main layout
 
-	    var markup = $($.View('templates/init.ejs', Grapher));
+	        var markup = $($.View('templates/init.ejs', Grapher));
             // Fancify the vis selector
             $('#grapher-vis-type-switch', markup).multiselect(
                         {header: "Select a visualisation",
@@ -419,14 +494,19 @@ LIMIT 20
                           multiple:false,
                           click: function(event, ui){ Grapher.changeVisType(ui.value); }
                          });
-            //tabify the interface
-            markup.tabs();
+            //tabify the interface 
+            // Disable the sharing and graph tabs if we're not yet graphable
+            var tabopts = {};
+            if (!graphable) { 
+                $.extend(tabopts, {selected:2, disabled:[0,1]});
+            }       
+            Grapher.tabs = markup.tabs(tabopts);
             
             Grapher.vis = markup.find('#grapher-vis');
             Grapher.configui = markup.find('#grapher-configui');
             
             Grapher.target.append(markup);
-            
+
             /** Volatile config actions:
              * Fetch the DSD and the data
              * Once we've got the data we can draw the inital graph
@@ -446,14 +526,18 @@ LIMIT 20
                 //Get the graphable data
                 $.Deferred(
                     function(deferred){
-                        Grapher.getData(
-                            Grapher.selectedMeasure,
-                            Grapher.selectedDimension,
-                            function(data){
-                                Grapher.updateData(data);
-                                deferred.resolve();
-                            }
-                        );
+                        if (graphable) {
+                            Grapher.getData(
+                                Grapher.selectedMeasure,
+                                Grapher.selectedDimension,
+                                function(data){
+                                    Grapher.updateData(data);
+                                    deferred.resolve();
+                                }
+                            );
+                        } else {
+                            deferred.resolve();
+                        }
                 }),
                 
                 // Get the configuration data
@@ -473,9 +557,14 @@ LIMIT 20
              // Once contingent events have all finished we can do the last bits and bobs
              fetches.done(
                 function(){
-                    Grapher.drawVis();
+                    if (graphable) {
+                        Grapher.drawVis();
+                    }
                     Grapher.drawConfig(); // Draw the config screen
                     Grapher.initBindings(); // Set up the bindings
+                    if (!graphable) {
+                        Grapher.tabs.tabs('select', 2);// switch to the config screen
+                    }
                 }
              );
         };
@@ -496,9 +585,11 @@ LIMIT 20
         $.fn.yl_grapher.defaults = {  // Config object and api
             'useFixtures':false, //Use static data from the fixtures folder
             'sparql_endpoint': 'http://localhost/IKMLinkedResearch/build/service/sparql', // Sparql Endpoint
-            'activeDSD': 'http://data.younglives.org.uk/data/summary/SummaryStatistics', //URI of the DSD to graph
-            'selectedMeasure':'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/measure-ProportionOfSample',
-            'selectedDimension':'http://data.younglives.org.uk/component#localityType',
+            //'activeDSD': 'http://data.younglives.org.uk/data/summary/SummaryStatistics', //URI of the DSD to graph
+            //'selectedMeasure':'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/measure-ProportionOfSample',
+            //'selectedDimension':'http://data.younglives.org.uk/component#localityType',
+            'selectedDimension': false,
+            'selectedMeasure': false,
             'groupbyDimension':'http://data.younglives.org.uk/component#country', // Dimension to group along the x axis
             'includeDimensions':['http://data.younglives.org.uk/component#cohort'],
             'visType': 'columnchart', // Set default visualization
@@ -510,7 +601,7 @@ LIMIT 20
                                     'standard':[ // Dimensions to render as standard options
                                         'http://data.younglives.org.uk/component#cohort',
                                         'http://data.younglives.org.uk/component#country',
-                                        'http://data.younglives.org.uk/component#round'
+                                        'http://data.younglives.org.uk/component#round',
                                     ] 
                                   },
              'measures': { 'ignore':[] // Measures to ignore from the ui
