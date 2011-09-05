@@ -312,6 +312,8 @@ LIMIT 20
                 var prepped_vis = Grapher.availablePlugins[Grapher.visType].prepare(Grapher);
                 // Draw the chart
                 prepped_vis.chart.draw(prepped_vis.table, $.extend(options, prepped_vis.options));
+                Grapher.tabs.tabs('enable', 0);
+                Grapher.tabs.tabs('select',0);
             } else {
                 $.error('No Grapher plugin has been registered with an id of ' + Grapher.visType);
             }
@@ -368,6 +370,9 @@ LIMIT 20
                     Grapher.includeDimensionFilters = filters;
                     
                     Grapher.getData(Grapher.selectedMeasure, Grapher.selectedDimension, Grapher.updateData);
+                    
+                    // A choice as been made - enable the sharing tab
+                    Grapher.tabs.tabs('enable', 1);
                 });
             
             Grapher.configui.append(ui); 
@@ -385,6 +390,22 @@ LIMIT 20
             this.target.find('#grapher-vis-type-switch').bind('change', function(evt, el){
                 Grapher.changeVisType($(this).val());
             });
+            
+            // Bindings for sharing dialog
+            this.target.find('button.share-link').bind('click', function(evt, el){
+                var opts = {
+                    title: 'Sharable Graph Link',
+                    code: Grapher.sharingURL()
+                };
+                Grapher.displayCode(opts);
+            });
+            this.target.find('button.embed-code').bind('click', function(evt, el){
+                var opts = {
+                    title: 'Embeddabe Graph Code',
+                    code: Grapher.embedCode()
+                };
+                Grapher.displayCode(opts);
+            });
         };
         
         /**
@@ -394,6 +415,54 @@ LIMIT 20
             Grapher.visType = visType;
             Grapher.target.trigger('grapherVisTypeChanged');
         };
+        
+        /**
+         * Create a shareable url for the current graph config
+         */
+        Grapher.sharingURL = function(){
+            var base = window.location.href;
+            var params = {selectedMeasure:Grapher.selectedMeasure,
+                                     selectedDimension:Grapher.selectedDimension};
+            var share_url = $.param.querystring(base, params);
+            return share_url;
+        };
+        
+        /**
+         *  Generate an embed code using either javascript or iframe
+         *
+         * @param embed_type {String} iframe, js
+         */
+        Grapher.embedCode = function(embed_type){
+            // Build a sharing url and pass it to our iframe template
+            var iframe = $.View('templates/iframe_embed.ejs', {url:Grapher.sharingURL()});
+            return iframe;
+        };
+        
+        /**
+         * Display a sharing string in a popup
+         */
+        Grapher.displayCode = function(opts){
+            var settings = {
+                resizeable: true,
+                minWidth: 400,
+                autoOpen: true,
+                show: 'fade',
+                hide:'fade',
+                dialogClass: 'sharing',
+                buttons: {
+                    'Close': function() {
+                        $(this).dialog('close');
+                    }
+                },
+                open: function () {
+                    $('button.ui-button').blur();
+                }
+            };
+            
+            this.sharing_popup = $($.View('templates/sharing_popup.ejs', opts)).dialog($.extend(settings, opts));
+   
+        };
+         
    
         /**
         * Initialise
@@ -408,6 +477,9 @@ LIMIT 20
             
             Grapher.target = this;
             
+            // Have we enough configuration data to draw an initial graph?
+            var graphable = Boolean((Grapher.selectedMeasure  && Grapher.selectedDimension ));
+            
             // Build our main layout
 
 	        var markup = $($.View('templates/init.ejs', Grapher));
@@ -419,18 +491,19 @@ LIMIT 20
                           multiple:false,
                           click: function(event, ui){ Grapher.changeVisType(ui.value); }
                          });
-            //tabify the interface
-            Grapher.tabs = markup.tabs();
+            //tabify the interface 
+            // Disable the sharing and graph tabs if we're not yet graphable
+            var tabopts = {};
+            if (!graphable) { 
+                $.extend(tabopts, {selected:2, disabled:[0,1]});
+            }       
+            Grapher.tabs = markup.tabs(tabopts);
             
             Grapher.vis = markup.find('#grapher-vis');
             Grapher.configui = markup.find('#grapher-configui');
             
             Grapher.target.append(markup);
-            
-            // Have we enough configuration data to draw an initial graph?
-            var graphable = Boolean((Grapher.selectedMeasure  && Grapher.selectedDimension ));
-            
-            
+
             /** Volatile config actions:
              * Fetch the DSD and the data
              * Once we've got the data we can draw the inital graph
@@ -487,7 +560,7 @@ LIMIT 20
                     Grapher.drawConfig(); // Draw the config screen
                     Grapher.initBindings(); // Set up the bindings
                     if (!graphable) {
-                        Grapher.tabs.tabs('select', 1);// switch to the config screen
+                        Grapher.tabs.tabs('select', 2);// switch to the config screen
                     }
                 }
              );
