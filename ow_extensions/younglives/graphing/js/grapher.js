@@ -420,8 +420,11 @@ LIMIT 20
          * Create a shareable url for the current graph config
          */
         Grapher.sharingURL = function(){
-            var base = window.location.href;
-            var params = {selectedMeasure:Grapher.selectedMeasure,
+            var settings = $.deparam.querystring();
+            var base = 'http://' + settings.http_host + settings.host_path;
+            
+            var params = {r: Grapher.activeDSD, //Set the ontowiki resource
+                                     selectedMeasure:Grapher.selectedMeasure,
                                      selectedDimension:Grapher.selectedDimension};
             var share_url = $.param.querystring(base, params);
             return share_url;
