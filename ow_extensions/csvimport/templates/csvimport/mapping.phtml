@@ -52,7 +52,7 @@
 		<option value="Vietnam">Vietnam</option>
 	</select>
 </div>
-<div id="select_round_container">
+<!--<div id="select_round_container">
 	<label for="select_round">Select round:</label>
 	<select id="select_round" name="select_round" >
 		<option value="roundOne">round one</option>
@@ -61,7 +61,7 @@
 		<option value="roundFour">round four</option>
 		<option value="roundFive">round five</option>
 	</select>
-</div>
+</div>-->
 <div id="select_cohort_container">
 	<fieldset>
 		<legend>Choose fixed cohort or dynamic cohort values from spread sheet</legend>
@@ -73,10 +73,12 @@
 	<div style="display:none" id="fixed_cohort">
 		<fieldset>
 			<legend>Choose a cohort</legend>
-			<input id="chort_choice-young" type="radio" name="which_cohort" value="YC"/>
+			<input id="chort_choice-young" type="radio" name="which_cohort" value="YoungCohort"/>
 				<label for="chort_choice-young">Young Cohort</label>
-			<input id="chort_choice-old" type="radio" name="which_cohort" value="OC"/>
+			<input id="chort_choice-old" type="radio" name="which_cohort" value="OlderCohort"/>
 				<label for="chort_choice-old">Old Cohort</label>
+			<input id="chort_choice-all" type="radio" name="which_cohort" value="AllCohorts"/>
+				<label for="chort_choice-all">All Cohorts</label>
 		</fieldset>
 	</div>
 	<div style="display:none" id="sheet_cohort">

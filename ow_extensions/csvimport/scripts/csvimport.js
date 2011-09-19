@@ -8,10 +8,19 @@ var conceptModel   = "http://localhost/ontowiki/sdmx-concept";
 var dimensionModel = "http://localhost/ontowiki/sdmx-dimension";
 
 //some namespaces:
-var yld =  'http://data.younglives.org.uk/data/';
-var ylcs =  'http://data.younglives.org.uk/data/summary/';
-var yls = 'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/';
-var ylcomp =  'http://data.younglives.org.uk/component#';
+/*old name spaces
+*var yld =  'http://data.younglives.org.uk/data/';
+*var ylcs =  'http://data.younglives.org.uk/data/summary/';
+*var yls = 'http://data.younglives.org.uk/data/vocab/younglivesStudyStructure/';
+*var ylcomp =  'http://data.younglives.org.uk/component#';done
+*/
+//new name spaces
+var ylstudy = 'http://data.younglives.org.uk/data/studyStructure/';
+var ylstats = 'http://data.younglives.org.uk/data/statistics/';
+var ylmeta = 'http://data.younglives.org.uk/data/metadata/';
+var yldsd = 'http://data.younglives.org.uk/data/statistics/structure/components/';
+var ylvar  = 'http://data.younglives.org.uk/data/variables/';
+
 var qb = 'http://purl.org/linked-data/cube#';
 var rdf = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
 var rdfs = 'http://www.w3.org/2000/01/rdf-schema#';
@@ -356,7 +365,7 @@ $(document).ready(function () {
 		  '<input id="resuse_input_dimension_no_' + dimcount + '" type="radio" value="No" name="resuse_input_dimension_' + dimcount + '"/>' +
   		  '<label for="resuse_input_dimension_no_' + dimcount + '">No</label></fieldset></div>' +
 		  '<div style="display:none" id="sheet_dim_new_' + dimcount + '" >' +
-		  '<span class="uri">http://data.younglives.org.uk/component#</span><input type="text" value="" name="sheet_dimension_input_' + dimcount + '" />' +
+		  '<span class="uri">http://data.younglives.org.uk/data/statistics/structure/components/</span><input type="text" value="" name="sheet_dimension_input_' + dimcount + '" />' +
 		  '<br /><label for="sheet_dimension_label_' + dimcount + '">Dimension label:</label>' +
 		  '<input type="text" name="sheet_dimension_label_' + dimcount + '" id="sheet_dimension_label_' + dimcount + '" value=""/>' +
 		  '</div></fieldset>' +
@@ -803,11 +812,12 @@ $(document).ready(function () {
 		
 		var components =       [['cohort', 'Younglives Cohort'],
 					['country', 'Country'],
-					['round', 'Younglives Round']]; 
+					//['round', 'Younglives Round']
+					]; 
 		//NOTE sample size is nolonger considered core
 	
 		//alwways need this
-		dsd[ylcs + dsd_name] = {"http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [{"type": "uri", "value": qb + "DataStructureDefinition" }]};
+		dsd[ylstats + dsd_name] = {"http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [{"type": "uri", "value": qb + "DataStructureDefinition" }]};
 		//loop to add. 
 		var dsd_components = [];
 		var comp;
@@ -815,22 +825,22 @@ $(document).ready(function () {
 		//ok try this without using blank nodes 
 		for (comp in components) {
 			if  ( components.hasOwnProperty(comp) ) {
-				dsd_components.push(make_rdf_object(components[comp][0], ylcomp));
+				dsd_components.push(make_rdf_object(components[comp][0], yldsd));
 				if (components[comp][1]){
-					labels[ylcomp + components[comp][0]] = {};
+					labels[yldsd + components[comp][0]] = {};
 					//add a label to this component
-					labels[ylcomp + components[comp][0]][rdfs + 'label'] = make_rdf_label(components[comp][1]);
+					labels[yldsd + components[comp][0]][rdfs + 'label'] = make_rdf_label(components[comp][1]);
 					//add dimension difinitions	#
-					dimensions[ylcomp + components[comp][0]] = {};
-					dimensions[ylcomp + components[comp][0]]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] = [make_rdf_object('DimensionProperty', qb), make_rdf_object('ComponentProperty', qb)];
-					dimensions[ylcomp + components[comp][0]][qb + 'order'] = [make_rdf_object('1')];
-					dimensions[ylcomp + components[comp][0]][qb + 'componentRequired'] = [make_rdf_object("true")];
+					dimensions[yldsd + components[comp][0]] = {};
+					dimensions[yldsd + components[comp][0]]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] = [make_rdf_object('DimensionProperty', qb), make_rdf_object('ComponentProperty', qb)];
+					dimensions[yldsd + components[comp][0]][qb + 'order'] = [make_rdf_object('1')];
+					dimensions[yldsd + components[comp][0]][qb + 'componentRequired'] = [make_rdf_object("true")];
 				}
 			}
 		}
 		
 		//add the component triple
-		dsd[ylcs + dsd_name][qb + "ComponentProperty"] = dsd_components;
+		dsd[ylstats + dsd_name][qb + "ComponentProperty"] = dsd_components;
 	
 	
 		//PROMPT USER FOR THESE VALUES
@@ -838,7 +848,7 @@ $(document).ready(function () {
 		var yl_country = $('#select_country').val().uncapitalize();
 
 		//var yl_round = ['RoundOne', 'RoundTwo', 'RoundThree', 'RoundFour', 'RoundFive'][2];
-		var yl_round = $('#select_round').val().uncapitalize();		
+		//var yl_round = $('#select_round').val().uncapitalize();		
 
 
 		//new plan
@@ -876,13 +886,13 @@ $(document).ready(function () {
 		
 			var measure = {};
 			//make the measure triples if required
-			measure[yls + measure_name] = { };
-			labels[yls + measure_name] = {};
-			labels[yls + measure_name][rdfs + 'label'] =  make_rdf_label(measure_label);
-			measure[yls + measure_name][rdfs + "subPropertyOf"] = [make_rdf_object("obsValue", sdmx_measure)];
-			measure[yls + measure_name][rdfs + "range"] =  [make_rdf_object(measure_type)]; 
-			measure[yls + measure_name][rdf + "Property"] = [make_rdf_object("MeasureProperty", qb)];
-			measure[yls + measure_name]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] = [make_rdf_object('MeasureProperty', qb), make_rdf_object('ComponentProperty', qb)];
+			measure[yldsd + measure_name] = { };
+			labels[yldsd + measure_name] = {};
+			labels[yldsd + measure_name][rdfs + 'label'] =  make_rdf_label(measure_label);
+			measure[yldsd + measure_name][rdfs + "subPropertyOf"] = [make_rdf_object("obsValue", sdmx_measure)];
+			measure[yldsd + measure_name][rdfs + "range"] =  [make_rdf_object(measure_type)]; 
+			measure[yldsd + measure_name][rdf + "Property"] = [make_rdf_object("MeasureProperty", qb)];
+			measure[yldsd + measure_name]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] = [make_rdf_object('MeasureProperty', qb), make_rdf_object('ComponentProperty', qb)];
 
 		} else {
 			measure_label = $('#existing_measure_select option:selected').text();
@@ -892,7 +902,7 @@ $(document).ready(function () {
 
 		
 		//add the measure triple to the dsd 
-		dsd[ylcs + dsd_name][qb + "ComponentProperty"].push(make_rdf_object(measure_name, yls));
+		dsd[ylstats + dsd_name][qb + "ComponentProperty"].push(make_rdf_object(measure_name, yldsd));
 		
 	/*
 	first we will provide a helper function to return a list of coordinates based on a rectangular range or an range and a potential row or column cordinate,
@@ -1025,11 +1035,11 @@ $(document).ready(function () {
 		var country_dim_object = {};
 		country_dim_object[$('#select_country').val()] =  get_coords(top_left, bottom_right);
 		dimensions_raw['Country']['values'] = [country_dim_object];
-		dimensions_raw['Round'] = {};
+		/*dimensions_raw['Round'] = {};
 		var round_dim_object = {};
 		round_dim_object[$('#select_round').val()] =  get_coords(top_left, bottom_right);
 		dimensions_raw['Round']['values'] = [round_dim_object];
-		
+		*/
 		/*this should make something like this
 		dimensions_raw['Cohort'] = {'values' : [{'YC' : get_coords(make_point('1','3'), make_point('1','20'))}, 
 						{'OC' : get_coords(make_point('2','3'), make_point('2','20'))}]};
@@ -1133,20 +1143,20 @@ $(document).ready(function () {
 			if (dimensions_raw.hasOwnProperty(dim)) {
 				//check to see if we have a new dimension or one defined in the dsd, we can tell by looking for the 'dimension_uri' key
 				if (dimensions_raw[dim].hasOwnProperty('dimension_uri')) {
-					dimensions[ylcomp + dim.uncapitalize()] = {};
+					dimensions[yldsd + dim.uncapitalize()] = {};
 					//add dimension to dsd these will need to be optional!
-					var dim_object = make_rdf_object(dimensions_raw[dim]['dimension_uri'].uncapitalize(), ylcomp);
-					dsd[ylcs + dsd_name][qb + "ComponentProperty"].push(dim_object);
+					var dim_object = make_rdf_object(dimensions_raw[dim]['dimension_uri'].uncapitalize(), yldsd);
+					dsd[ylstats + dsd_name][qb + "ComponentProperty"].push(dim_object);
 					//ok now add the extra key to make this optional
-					dimensions[ylcomp + dim.uncapitalize()][qb + 'componentRequired'] = [make_rdf_object("false")];
-					dimensions[ylcomp + dim.uncapitalize()][qb + 'order'] = [make_rdf_object('2')];
+					dimensions[yldsd + dim.uncapitalize()][qb + 'componentRequired'] = [make_rdf_object("false")];
+					dimensions[yldsd + dim.uncapitalize()][qb + 'order'] = [make_rdf_object('2')];
 					//add dimension defintion code , like for a measure
-					dimensions[ylcomp + dim.uncapitalize()]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] = [make_rdf_object('DimensionProperty', qb), make_rdf_object('ComponentProperty', qb)];
+					dimensions[yldsd + dim.uncapitalize()]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] = [make_rdf_object('DimensionProperty', qb), make_rdf_object('ComponentProperty', qb)];
 				} 
 				if (dimensions_raw[dim].hasOwnProperty('dim_label')) {
 					//add a label for the dimension
-					labels[ylcomp + dim.uncapitalize()] = {};
-					labels[ylcomp + dim.uncapitalize()][rdfs + 'label'] =  make_rdf_label(dimensions_raw[dim]['dim_label']);
+					labels[yldsd + dim.uncapitalize()] = {};
+					labels[yldsd + dim.uncapitalize()][rdfs + 'label'] =  make_rdf_label(dimensions_raw[dim]['dim_label']);
 				}
 			}
 		}
@@ -1154,9 +1164,9 @@ $(document).ready(function () {
 	
 		//add the dataset so we can add observations to it later.
 		var dataset = {};
-		dataset[yls + dataset_name] = {};
-		dataset[yls + dataset_name] = {"http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [make_rdf_object("DataSet", qb)]};
-		dataset[yls + dataset_name][qb + "structure"] = [make_rdf_object(dsd_name , ylcs)];
+		dataset[ylstats + dataset_name] = {};
+		dataset[ylstats + dataset_name] = {"http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [make_rdf_object("DataSet", qb)]};
+		dataset[ylstats + dataset_name][qb + "structure"] = [make_rdf_object(dsd_name , ylstats)];
 	
 	
 	/*
@@ -1194,7 +1204,7 @@ $(document).ready(function () {
 		//loop through all these points looking for which dimensions are usd
 		for (obs_point in observation_points) {
 			if(observation_points.hasOwnProperty(obs_point)){
-				var obid = yld + uuid() + 'observation';
+				var obid = ylstats + uuid() + 'observation';
 				//begin constructing the observation
 				//TODO set obsvalue from sheet here
 				loc_str = 'r' + observation_points[obs_point].row.toString() + '-c' + observation_points[obs_point].col.toString() ;
@@ -1203,8 +1213,8 @@ $(document).ready(function () {
 				observation[obid] = {};
 				observation[obid]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] = [make_rdf_object("Observation", qb)];
 				// Attatch the observation to the appropriate dataset
-				observation[obid][qb + 'dataSet'] = [make_rdf_object(dataset_name, yls)];
-				observation[obid][yls + measure_name] = [make_rdf_Observation_object(obs_value)];
+				observation[obid][qb + 'dataSet'] = [make_rdf_object(dataset_name, ylstats)];
+				observation[obid][yldsd + measure_name] = [make_rdf_Observation_object(obs_value)];
 				//now we need to find which dimension this point is in.
 				for (dim in dimensions_raw) { //for each dimension
 					if (dimensions_raw.hasOwnProperty(dim)) {
@@ -1217,11 +1227,11 @@ $(document).ready(function () {
 												if (compare_points(observation_points[obs_point], dimensions_raw[dim]['values'][dim_value][key][dim_point])) {
 													//ok our point is in this dimension, easy and very readable uh.
 													//TODO confirm name spaces here
-													observation[obid][ylcomp + dim.uncapitalize()] = [make_rdf_object(key, yls)];
+													observation[obid][yldsd + dim.uncapitalize()] = [make_rdf_object(key, ylstats)];
 
 													//ok lets try making a label for each dimension value here too
-													labels[yls +  key.replace(/ /g, '_')] = {};
-													labels[yls +  key.replace(/ /g, '_')][rdfs + 'label'] =  make_rdf_label(key);
+													labels[ylstats +  key.replace(/ /g, '_')] = {};
+													labels[ylstats +  key.replace(/ /g, '_')][rdfs + 'label'] =  make_rdf_label(key);
 
 													//stop loop now
 													break;
@@ -1248,23 +1258,23 @@ $(document).ready(function () {
 		//build sparql to return the dsd's and thier labels that match the dimensions we use
 	
 		var sparql_q = $.sparql(sparql_endpoint)
-			.prefix('ylcomp', ylcomp)
+			.prefix('yldsd', yldsd)
 			.prefix('qb', qb)
 			.prefix('rdfs', rdfs)
-			.prefix('yls', yls)
+			.prefix('ylstats', ylstats)
 			.select(['?dsd', '?label'])
 				.where('?dsd', 'a', 'qb:DataStructureDefinition')
 				.where('?dsd', 'rdfs:label', '?label')
-				.where('?dsd', 'qb:ComponentProperty', 'ylcomp:cohort' )
-				.where('?dsd', 'qb:ComponentProperty', 'ylcomp:round' )
-				.where('?dsd', 'qb:ComponentProperty', 'ylcomp:country');
+				//.where('?dsd', 'qb:ComponentProperty', 'yldsd:cohort' )//this are no longer special
+				//.where('?dsd', 'qb:ComponentProperty', 'yldsd:round' )//this are no longer special
+				.where('?dsd', 'qb:ComponentProperty', 'yldsd:country');
 		//now add our measure 
-		sparql_q = sparql_q.where('?dsd', 'qb:ComponentProperty', 'yls:' + measure_name )
+		sparql_q = sparql_q.where('?dsd', 'qb:ComponentProperty', 'yldsd:' + measure_name )
 		//now loop over our dimensions
 		for (var dim in dimensions_raw) {
 			if (dimensions_raw.hasOwnProperty(dim)) {
-				if (dimensions_raw[dim].hasOwnProperty('dimension_uri') && dimensions_raw[dim]['dimension_uri'].uncapitalize() !== 'cohort') {
-					sparql_q = sparql_q.where('?dsd', 'qb:ComponentProperty', 'ylcomp:' + dimensions_raw[dim]['dimension_uri'].uncapitalize() )
+				if (dimensions_raw[dim].hasOwnProperty('dimension_uri')) {//no longer required && dimensions_raw[dim]['dimension_uri'].uncapitalize() !== 'cohort'
+					sparql_q = sparql_q.where('?dsd', 'qb:ComponentProperty', 'yldsd:' + dimensions_raw[dim]['dimension_uri'].uncapitalize() )
 				}
 			}	
 		}
@@ -1311,7 +1321,7 @@ $(document).ready(function () {
 						if (dsd_label === dsd_data[existing_dsd]['label']['value']) {
 							//using existing dsd
 							have_dsd = true;
-							dataset[yls + dataset_name][qb + "structure"] = [make_rdf_object(dsd_data[existing_dsd]['dsd']['value'])];
+							dataset[ylstats + dataset_name][qb + "structure"] = [make_rdf_object(dsd_data[existing_dsd]['dsd']['value'])];
 						} 
 					}
 				}
@@ -1319,8 +1329,8 @@ $(document).ready(function () {
 					jQuery.extend(true, triples, labels, measure, dimensions, dataset, observations)
 				} else {
 					//making a new dsd with a label
-					labels[ylcs + dsd_name] = {};
-					labels[ylcs + dsd_name][rdfs + 'label'] = make_rdf_label(dsd_label);
+					labels[ylstats + dsd_name] = {};
+					labels[ylstats + dsd_name][rdfs + 'label'] = make_rdf_label(dsd_label);
 					jQuery.extend(true, triples, labels, dsd, measure, dimensions, dataset, observations);
 				}
 			
