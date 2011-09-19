@@ -1205,45 +1205,49 @@ $(document).ready(function () {
 		for (obs_point in observation_points) {
 			if(observation_points.hasOwnProperty(obs_point)){
 				var obid = ylstats + uuid() + 'observation';
-				//begin constructing the observation
+				//before making an observation ensure there is a value. there may not be if the data set contains fixed val;ues and a sparse data set with blank lines for headings etc.
 				//TODO set obsvalue from sheet here
 				loc_str = 'r' + observation_points[obs_point].row.toString() + '-c' + observation_points[obs_point].col.toString() ;
 				obs_value = $('#' + loc_str).text();
-				observation = {}; //clear this var
-				observation[obid] = {};
-				observation[obid]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] = [make_rdf_object("Observation", qb)];
-				// Attatch the observation to the appropriate dataset
-				observation[obid][qb + 'dataSet'] = [make_rdf_object(dataset_name, ylstats)];
-				observation[obid][yldsd + measure_name] = [make_rdf_Observation_object(obs_value)];
-				//now we need to find which dimension this point is in.
-				for (dim in dimensions_raw) { //for each dimension
-					if (dimensions_raw.hasOwnProperty(dim)) {
-						for (dim_value in dimensions_raw[dim]['values']) { //for each value add all points
-							if (dimensions_raw[dim]['values'].hasOwnProperty(dim_value)) {
-								for (key in dimensions_raw[dim]['values'][dim_value]) {
-									if (dimensions_raw[dim]['values'][dim_value].hasOwnProperty(key)) {
-										for (dim_point in dimensions_raw[dim]['values'][dim_value][key]) {
-											if (dimensions_raw[dim]['values'][dim_value][key].hasOwnProperty(dim_point)) {
-												if (compare_points(observation_points[obs_point], dimensions_raw[dim]['values'][dim_value][key][dim_point])) {
-													//ok our point is in this dimension, easy and very readable uh.
-													//TODO confirm name spaces here
-													observation[obid][yldsd + dim.uncapitalize()] = [make_rdf_object(key, ylstats)];
-
-													//ok lets try making a label for each dimension value here too
-													labels[ylstats +  key.replace(/ /g, '_')] = {};
-													labels[ylstats +  key.replace(/ /g, '_')][rdfs + 'label'] =  make_rdf_label(key);
-
-													//stop loop now
-													break;
-												}
+				if (obs_value) {
+					//begin constructing the observation
+					
+					observation = {}; //clear this var
+					observation[obid] = {};
+					observation[obid]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] = [make_rdf_object("Observation", qb)];
+					// Attatch the observation to the appropriate dataset
+					observation[obid][qb + 'dataSet'] = [make_rdf_object(dataset_name, ylstats)];
+					observation[obid][yldsd + measure_name] = [make_rdf_Observation_object(obs_value)];
+					//now we need to find which dimension this point is in.
+					for (dim in dimensions_raw) { //for each dimension
+						if (dimensions_raw.hasOwnProperty(dim)) {
+							for (dim_value in dimensions_raw[dim]['values']) { //for each value add all points
+								if (dimensions_raw[dim]['values'].hasOwnProperty(dim_value)) {
+									for (key in dimensions_raw[dim]['values'][dim_value]) {
+										if (dimensions_raw[dim]['values'][dim_value].hasOwnProperty(key)) {
+											for (dim_point in dimensions_raw[dim]['values'][dim_value][key]) {
+												if (dimensions_raw[dim]['values'][dim_value][key].hasOwnProperty(dim_point)) {
+													if (compare_points(observation_points[obs_point], dimensions_raw[dim]['values'][dim_value][key][dim_point])) {
+														//ok our point is in this dimension, easy and very readable uh.
+														//TODO confirm name spaces here
+														observation[obid][yldsd + dim.uncapitalize()] = [make_rdf_object(key, ylstats)];
+	
+														//ok lets try making a label for each dimension value here too
+														labels[ylstats +  key.replace(/ /g, '_')] = {};
+														labels[ylstats +  key.replace(/ /g, '_')][rdfs + 'label'] =  make_rdf_label(key);
+	
+														//stop loop now
+														break;
+													}//end if
+												}//end if
 											}
-										}
+										}//end if
 									}
-								}
+								}//end if
 							}
-						}
+						}//end if
 					}
-				}
+				} //end if
 				//ok at this point we should have an observation
 				observations[obid] = observation[obid];
 			}
@@ -1274,7 +1278,7 @@ $(document).ready(function () {
 		for (var dim in dimensions_raw) {
 			if (dimensions_raw.hasOwnProperty(dim)) {
 				if (dimensions_raw[dim].hasOwnProperty('dimension_uri')) {//no longer required && dimensions_raw[dim]['dimension_uri'].uncapitalize() !== 'cohort'
-					sparql_q = sparql_q.where('?dsd', 'qb:ComponentProperty', 'yldsd:' + dimensions_raw[dim]['dimension_uri'].uncapitalize() )
+					sparql_q = sparql_q.where('?dsd', 'qb:ComponentProperty', 'yldsd:' + dimensions_raw[dim]['dimension_uri'].split(yldsd).pop().uncapitalize() )
 				}
 			}	
 		}
