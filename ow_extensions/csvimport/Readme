@@ -206,4 +206,40 @@ now change for importing the fifth table
 21. Change dimensions. First change the value of localityType from "Rural" to "Both Urban and Rural". Next click on the 'Select Sheet Values' button for  "affluenceInPreviousRound" and click on cells (0,7) Poor in R2, (0,8) Non-poor in R2 to clear them, and then on (0,3) Poor in R2, (0,4) Non-poor in R2 to select them.
 22. Click 'Extract Triples' button at the top of the page. The 'choose dsd label' dialogue will now appear in a popup box. This time 'Crossing poverty line' should be in the list. Cut and paste this value into the text entry box, and click the 'Extract triples' button under the input box in the popout window. Again you should now see an alert dialog with the following text 'Data submited to ontowiki', click on the 'OK' button to return to the speadsheet.
 
+Example 3
 
+Import eth_comsumption.csv this into the Young lives csv importer (see start of this file).
+
+overview:
+this sheet contains one table of data. 
+
+1. Click 'Select Measure'. Click 'make a new measure then type 'Ethiopia: Monthly real consumption per adult in 2006 birr' in the Measure Label box. Now type 'ethiopia-MonthlyRealConsumption' in the Name for Measure box.
+2. Check 'Ethiopia' is the country.
+3. Click the 'use fixed value' button under 'Choose fixed cohort or dynamic cohort values from spread sheet'.
+4. Check 'All Cohorts'. Note we could edit the sheet and change the values of 'All' on the cohort line to 'AllCohorts' and then use 'use spreadsheet values' if we wished. 
+5. Add data range. Choose 'Select Data Range'. Click 'OK', Click on cell(1,5) with the value 187.8, then cell(2,19) with the value 162.3 . Near the top of the page the text should now read: Data Range: (1,5) to (2,19)
+6. Adding dimensions, 
+	
+a.	http://data.younglives.org.uk/data/statistics/structure/components/ =  "youngLivesDataYear"
+	Dimension label: = "Year in which survay data originated"
+	Use 'use speadsheet values'
+	Select the cells: (0,1) 2006 and (0,2) 2009
+
+b.	http://data.younglives.org.uk/data/statistics/structure/components/ =  "location"
+	Dimension label: = "Location"   
+***TIM please include a better description here, and quite possibly a better name, I made up 'localityType' and 'Characteristic of participants location eg. Urban or Rural' last time
+	Use 'use speadsheet values'
+	Select the cells: (0,5) Urban and (0,6) Rural
+
+c.	http://data.younglives.org.uk/data/statistics/structure/components/ =  "ethnicityIndicator"
+	Dimension label: = "Ethnicity as an indicator"
+	Use 'use speadsheet values'
+	Select the cells: (0,9) Addis ababa, (0,10) Amhara, (0,11) Oromia, (0,12) SNNP and (0,13) Tigray
+***TIM are acronyms like SNNP wise and/or consisitantly used?
+
+d.	http://data.younglives.org.uk/data/statistics/structure/components/ =  "mothersEducationLevel"
+	Dimension label: = "Educational level of the mother""
+	Use 'use speadsheet values'
+	Select the cells: (0,16) No education, (0,17) Lower primary, (0,18) Upper primary and (0,19) More than 8 grade
+
+7. Click 'Extract Triples' button at the top of the page. The choose dsd label dialogue will now appear in a popup box. A list of label (if any) will be shown with a text entry box underneath. Either cut and paste into the text input box or type 'Ethiopia: Monthly real consumption per adult ' (without the quotes, or spaces before or after it). Now click the 'Extract triples' button under the input box in the popout window. You should now see an alert dialog with the following text 'Data submited to ontowiki', click on the 'OK' button to return to the speadsheet page ready to enter the second set of data in the sheet to ontowiki.
