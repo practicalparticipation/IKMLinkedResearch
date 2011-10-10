@@ -436,7 +436,9 @@ $(document).ready(function () {
 				for (var a_dimension in existing_dimensions) {
 					if (existing_dimensions.hasOwnProperty(a_dimension)) {
 						//populate url box
-						$('#ylscomp_components_' +  $(this).data()['dimcount']).append('<option value="' + existing_dimensions[a_dimension]['dim']['value'] + '">' + existing_dimensions[a_dimension]['dim']['value'] + '</option>');
+						//find the value to submit as if we send the whole url we add a name space to it later and it all starts to double up
+						var option_value_of_dim = existing_dimensions[a_dimension]['dim']['value'].split(yldsd).pop();
+						$('#ylscomp_components_' +  $(this).data()['dimcount']).append('<option value="' + option_value_of_dim + '">' + existing_dimensions[a_dimension]['dim']['value'] + '</option>');
 						//add data comp of label
 						$('#ylscomp_components_' +  $(this).data()['dimcount'] +' option:last').data('label', existing_dimensions[a_dimension]['label']['value']);
 						//populate labels box
