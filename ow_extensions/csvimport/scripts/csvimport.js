@@ -461,7 +461,7 @@ $(document).ready(function () {
 					var selected_dim_uri_value = $('#' + this.id + ' option:selected').data('uri');
 					var dimension_number = this.id.split('_').pop();
 					//get the element and set it selected
-					$('#ylscomp_components_' + dimension_number + ' option[value="' + selected_dim_uri_value + '"]').attr("selected","selected");	
+					$('#ylscomp_components_' + dimension_number + ' option[value="' + selected_dim_uri_value.split(yldsd).pop() + '"]').attr("selected","selected");	
 				});
 				//show forms
 				$('#sheet_dim_existing_' + $(this).data()['dimcount']).show();
