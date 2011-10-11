@@ -1,0 +1,96 @@
+<html>
+    <head>
+        <title>YoungLives Graphing Sabot Test</title>
+        <style>
+            /* the overlayed element */
+            .apple_overlay {
+                /* initially overlay is hidden */
+                display:none;
+                /* growing background image */
+                background-image:url(./img/overlay/white.png);
+                /* 
+                    width after the growing animation finishes
+                    height is automatically calculated
+                */
+                width:605px;		
+                /* some padding to layout nested elements nicely  */
+                padding:35px;
+                /* a little styling */	
+                font-size:11px;
+            }
+            
+            /* default close button positioned on upper right corner */
+            .apple_overlay .close {
+                background-image:url(./img/overlay/close.png);
+                position:absolute; right:5px; top:5px;
+                cursor:pointer;
+                height:35px;
+                width:35px;
+            }
+            
+            /* use a semi-transparent image for the overlay 
+            #overlay {
+                background-image:url(http://static.flowplayer.org/img/overlay/transparent.png);
+                color:#efefef;
+                
+            } */
+            
+            
+        </style>
+        <script src="./js/jquery.tools.overlay_apple.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                // Grab sabot links
+                $('a.sabot').overlay({
+                    mask: 'darkred',
+                    effect: 'apple',
+                    onBeforeLoad: function(){
+                        var grapher_params = {
+                            activeDSD: this.getTrigger().data('dsd'),
+                            sparql_endpoint: 'http://localhost/IKMLinkedResearch/build/service/sparql',
+                            http_host: 'localhost',
+                            host_path: '/IKMLinkedResearch/build/younglives/display/r/ylstats?SumaryStatistics-e55f586a-b105-4ee4-ad75-ab87cb97e21e'
+                        };
+                        
+                        var grapher_url = 'http://localhost/IKMLinkedResearch/build/extensions/younglives/graphing/graph.html';
+                    
+                        var iframe_url = grapher_url + '?' + $.param(grapher_params);
+                        
+                        var iframe = $('<iframe/>')
+                            .attr('src', iframe_url)
+                            .width(600)
+                            .height(480);
+                        
+                        // grab wrapper element inside content
+                        var wrap = this.getOverlay().find(".contentWrap");
+                        // load the page specified in the trigger
+                        wrap.html(iframe);
+                    }
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <!-- overlayed element -->
+        <div class="apple_overlay" id="overlay">
+
+            <!-- the external content is loaded inside this tag -->
+            <div class="contentWrap"></div>
+
+        </div>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi aliquam, mi fringilla rhoncus malesuada, purus nisi vehicula orci, ac dictum massa risus quis tortor. Curabitur convallis, magna a accumsan tristique, enim mi luctus nulla, in congue est est sit amet tortor. In aliquet congue nisl in dapibus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Morbi laoreet sem nec mi aliquam posuere consectetur dolor luctus. Vestibulum sagittis fringilla ullamcorper. Vivamus elit lectus, iaculis ut vehicula ac, iaculis sit amet dolor. Duis sagittis dui eget risus lobortis tempor. Praesent sed turpis odio. Nunc nisi nulla, pretium ut posuere eget, ornare sed erat. Pellentesque tellus eros, commodo eu iaculis at, elementum ut eros. Vivamus consequat imperdiet nisl, vitae mollis nisi suscipit a. Pellentesque tincidunt, nunc vel dignissim fringilla, orci dolor ultrices arcu, in ultricies diam neque ac diam. Etiam laoreet tortor vitae diam lobortis sit amet suscipit lacus aliquam. Vestibulum nec risus urna, vel rutrum tellus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+
+        <p>Donec eget nibh leo.
+                <a rel="#overlay"
+                      data-dsd="http://data.younglives.org.uk/data/statistics/SumaryStatistics-e55f586a-b105-4ee4-ad75-ab87cb97e21e"
+                      href="http://localhost/IKMLinkedResearch/build/younglives/display/r/ylstats%3ASumaryStatistics-e55f586a-b105-4ee4-ad75-ab87cb97e21e"
+                      class="sabot">Access to Improved Water Interactive Graph</a>
+                inar viverra. Duis pretium porttitor nulla in luctus. Curabitur faucibus vulputate sem, et interdum dui imperdiet id. Curabitur ultrices neque eleifend lorem egestas vehicula. Quisque auctor faucibus vestibulum. Praesent tincidunt varius tempus. Donec sodales ultricies mi, et pretium enim gravida sed. Fusce condimentum porta nisi vel sollicitudin. Ut elementum, nibh in tincidunt rutrum, leo est varius diam, sed tempor metus quam fermentum justo. Fusce dignissim mauris in mauris venenatis sit amet scelerisque arcu adipiscing. Nulla id orci non est faucibus fringilla at pharetra elit.</p>
+
+        <p>Morbi lectus est, sodales tincidunt congue rutrum, convallis id arcu. Duis odio quam, congue quis aliquam vel, fermentum euismod ante. Quisque dapibus iaculis augue. Curabitur ut risus non augue vestibulum ultrices. Integer id augue eu ipsum vehicula tincidunt et vel nulla. Maecenas fringilla, eros in consequat sollicitudin, elit mauris aliquet lacus, eu eleifend diam sem vitae lectus. Aenean vulputate purus vitae magna ultricies tempus.</p>
+
+        <p>Sed pharetra eleifend lectus nec venenatis. Aliquam sit amet magna sit amet arcu mattis ullamcorper et lobortis neque. Nam ac leo eros, sed accumsan diam. Praesent porttitor orci quis erat congue accumsan. Proin facilisis nisi eget ante rhoncus vitae blandit orci mattis. Praesent ipsum neque, tristique id auctor vel, scelerisque id tellus. Mauris sodales lectus ipsum, eget aliquam urna. Nulla congue suscipit ante, sit amet convallis sem tincidunt eu.</p>
+
+        <p>Proin eu ipsum et tellus elementum vestibulum non vel urna. Integer tincidunt iaculis elit, sed dignissim est porta in. Sed non vestibulum arcu. Maecenas tellus justo, tincidunt eget egestas vel, congue vitae magna. Integer euismod mattis tellus, quis convallis diam auctor vitae. Aliquam ullamcorper hendrerit porttitor. Aliquam a metus urna, id tincidunt est. Nam lectus orci, pulvinar at convallis et, tincidunt eu ligula. Proin lobortis vehicula viverra. Aenean non molestie libero. Sed nibh odio, ultrices eget suscipit sed, ultricies et neque. Quisque interdum, nisi sed varius congue, purus nisi mattis nibh, sed porttitor sapien lorem non nisl. Donec laoreet felis sit amet metus rutrum id molestie felis tempus. Vivamus orci ipsum, tempor quis eleifend at, porttitor eget diam. Morbi sapien mauris, posuere quis molestie quis, eleifend ac orci. Curabitur et purus in diam faucibus tincidunt. </p>
+    </body>
+</html>
