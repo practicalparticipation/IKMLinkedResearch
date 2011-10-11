@@ -827,22 +827,27 @@ $(document).ready(function () {
 		//ok try this without using blank nodes 
 		for (comp in components) {
 			if  ( components.hasOwnProperty(comp) ) {
-				dsd_components.push(make_rdf_object(components[comp][0], yldsd));
+				dsd_components.push(make_rdf_object("component/component-" + components[comp][0], yldsd));
 				if (components[comp][1]){
+					//make the qb:component
+					dimensions[yldsd + "component/component-" + components[comp][0]] = {};
+					dimensions[yldsd + "component/component-" + components[comp][0]][qb + 'order'] = [make_rdf_object('1')];
+					dimensions[yldsd + "component/component-" + components[comp][0]][qb + 'componentRequired'] = [make_rdf_object("true")];
+					//make the qb:dimension
+					dimensions[yldsd + components[comp][0]] = {};
 					labels[yldsd + components[comp][0]] = {};
 					//add a label to this component
 					labels[yldsd + components[comp][0]][rdfs + 'label'] = make_rdf_label(components[comp][1]);
 					//add dimension difinitions	#
-					dimensions[yldsd + components[comp][0]] = {};
 					dimensions[yldsd + components[comp][0]]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] = [make_rdf_object('DimensionProperty', qb), make_rdf_object('ComponentProperty', qb)];
-					dimensions[yldsd + components[comp][0]][qb + 'order'] = [make_rdf_object('1')];
-					dimensions[yldsd + components[comp][0]][qb + 'componentRequired'] = [make_rdf_object("true")];
+					dimensions[yldsd + "component/component-" + components[comp][0]][qb + "dimension"] = [make_rdf_object(components[comp][0], yldsd)];
+					
 				}
 			}
 		}
 		
 		//add the component triple
-		dsd[ylstats + dsd_name][qb + "ComponentProperty"] = dsd_components;
+		dsd[ylstats + dsd_name][qb + "component"] = dsd_components;
 	
 	
 		//PROMPT USER FOR THESE VALUES
@@ -861,18 +866,12 @@ $(document).ready(function () {
 	stage 2 
 	add the measure property needs to make triples as below 
 	*/
-	/*yls:measure-ProportionOfSample a rdf:Property, qb:MeasureProperty;
+	/*
+	TODO update this it is out of date
+	yls:measure-ProportionOfSample a rdf:Property, qb:MeasureProperty;
 		rdfs:label "The proportion of the total sample that belong in all the categories noted"@en;
 		rdfs:subPropertyOf sdmx-measure:obsValue;
 		rdfs:range xsd:decimal .
-	
-	triples[yls + "measure-ProportionOfSample"] = { };
-	triples[yls + "measure-ProportionOfSample"][rdfs + "label"] = [{ "type": "literal", 
-				"value" : "The proportion of the total sample that belong in all the categories noted", 
-				"lang" : "en"}];
-	triples[yls + "measure-ProportionOfSample"][rdfs + "subPropertyOf"] = [{"type": "uri", "value" : sdmx_measure + "obsValue"}];
-	triples[yls + "measure-ProportionOfSample"][rdfs + "range"] =  [{"type": "uri", "value" : xsd + "decimal"}]; 
-	triples[yls + "measure-ProportionOfSample"][rdf + "Property"] = [{"type": "uri", "value" : qb + "MeasureProperty"}];
 	*/
 	
 		var input_measure_name = '';
@@ -887,14 +886,22 @@ $(document).ready(function () {
 			var measure_type = xsd + measure_type_input;
 		
 			var measure = {};
-			//make the measure triples if required
-			measure[yldsd + measure_name] = { };
+
+			//make the qb:component
+			measure[yldsd + "component/component-" + measure_name] = {};
+			measure[yldsd + "component/component-" + measure_name][qb + 'order'] = [make_rdf_object('1')];
+			measure[yldsd + "component/component-" + measure_name][qb + 'componentRequired'] = [make_rdf_object("true")];
+
+
+			//make the measure triples 
+			measure[yldsd + measure_name] = {};
 			labels[yldsd + measure_name] = {};
 			labels[yldsd + measure_name][rdfs + 'label'] =  make_rdf_label(measure_label);
 			measure[yldsd + measure_name][rdfs + "subPropertyOf"] = [make_rdf_object("obsValue", sdmx_measure)];
 			measure[yldsd + measure_name][rdfs + "range"] =  [make_rdf_object(measure_type)]; 
-			measure[yldsd + measure_name][rdf + "Property"] = [make_rdf_object("MeasureProperty", qb)];
 			measure[yldsd + measure_name]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] = [make_rdf_object('MeasureProperty', qb), make_rdf_object('ComponentProperty', qb)];
+			measure[yldsd + "component/component-" + measure_name][qb + "measure"] = [make_rdf_object(measure_name, yldsd)];
+
 
 		} else {
 			measure_label = $('#existing_measure_select option:selected').text();
@@ -904,7 +911,7 @@ $(document).ready(function () {
 
 		
 		//add the measure triple to the dsd 
-		dsd[ylstats + dsd_name][qb + "ComponentProperty"].push(make_rdf_object(measure_name, yldsd));
+		dsd[ylstats + dsd_name][qb + "component"].push(make_rdf_object("component/component-" + measure_name, yldsd));
 		
 	/*
 	first we will provide a helper function to return a list of coordinates based on a rectangular range or an range and a potential row or column cordinate,
@@ -1146,14 +1153,14 @@ $(document).ready(function () {
 				//check to see if we have a new dimension or one defined in the dsd, we can tell by looking for the 'dimension_uri' key
 				if (dimensions_raw[dim].hasOwnProperty('dimension_uri')) {
 					dimensions[yldsd + dim.uncapitalize()] = {};
-					//add dimension to dsd these will need to be optional!
-					var dim_object = make_rdf_object(dimensions_raw[dim]['dimension_uri'].uncapitalize(), yldsd);
-					dsd[ylstats + dsd_name][qb + "ComponentProperty"].push(dim_object);
-					//ok now add the extra key to make this optional
-					dimensions[yldsd + dim.uncapitalize()][qb + 'componentRequired'] = [make_rdf_object("false")];
-					dimensions[yldsd + dim.uncapitalize()][qb + 'order'] = [make_rdf_object('2')];
-					//add dimension defintion code , like for a measure
-					dimensions[yldsd + dim.uncapitalize()]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] = [make_rdf_object('DimensionProperty', qb), make_rdf_object('ComponentProperty', qb)];
+					dimensions[yldsd + dim.uncapitalize()]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"] = [make_rdf_object('DimensionProperty', qb), make_rdf_object('ComponentProperty', qb)]; 
+					//need to make the qb:component and then attach the dim_object to it.
+					dimensions[yldsd + 'component/component-' + dim.uncapitalize()] = {};
+					dimensions[yldsd + 'component/component-' + dim.uncapitalize()][qb + 'order'] = [make_rdf_object('2')];
+					dimensions[yldsd + 'component/component-' + dim.uncapitalize()][qb + 'componentRequired'] = [make_rdf_object("false")];
+					dimensions[yldsd + 'component/component-' + dim.uncapitalize()][qb + 'dimension'] = [make_rdf_object(dim.uncapitalize(), yldsd)];
+					//attach this to the dsd
+					dsd[ylstats + dsd_name][qb + "component"].push(make_rdf_object('component/component-' + dim.uncapitalize(), yldsd));
 				} 
 				if (dimensions_raw[dim].hasOwnProperty('dim_label')) {
 					//add a label for the dimension
