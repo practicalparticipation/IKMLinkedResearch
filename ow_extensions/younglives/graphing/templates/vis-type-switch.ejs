@@ -1,9 +1,0 @@
-<select id="grapher-vis-type-switch">
-    <% $.each(availablePlugins, function(i, vis){ %>
-        <option value="<%= i %>"
-                      <% if (i == visType) { %>selected="selected"<% } %>>
-               <%= vis.title %>
-         </option>
-    <% }) %>
-</select>
-
