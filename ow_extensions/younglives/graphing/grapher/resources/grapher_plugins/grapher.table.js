@@ -10,25 +10,17 @@
         vis.google_packages = ['table'];
         vis.options = {};
         vis.prepare = function(data) {
-                    var observations = [];
+            
                     var chart = new google.visualization.Table(data.graph_target);
                     var table = new google.visualization.DataTable();
+                    var dsd = data.dsd_components;
                     
-                    var rowspec = [];
-                    var components = data.dsd_components.getSortedComponents(data.settings.measureType);
-                    components = components.concat(data.dsd_components.getSortedComponents(data.settings.dimensionType));
-                    $.each(
-                        components,
-                        function(i, comp){
-                            rowspec.push(comp);
-                        }
-                    );
-                    
+                    var rowspec = dsd.sortType(data.settings.measureType);
+                    rowspec = rowspec.concat(dsd.sortType(data.settings.dimensionType));
                     $.each(rowspec, function(i,v){
                         table.addColumn(v.type, v.label?v.label:v.uri);    
                     });
                    
-
                     $.each(data.observations, function(i,obs) {
                         var row = [];
                         $.each(rowspec, function(i,spec){
@@ -40,9 +32,7 @@
                         });
                         table.addRow(row);
                     });
-                    
-                    
-                    //table.addRow(['VALUE']);
+
                     return {'chart':chart, 'table':table, 'options':vis.options};
         };
 

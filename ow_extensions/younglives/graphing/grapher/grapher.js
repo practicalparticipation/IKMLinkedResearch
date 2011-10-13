@@ -26,13 +26,14 @@ steal(
         var plugins = {};
         // Registered via $.fn.yl_grapher.registerPlugin
 
+        
 
         var settings = {
             dsd: 'http://data.younglives.org.uk/data/statistics/SumaryStatistics-e55f586a-b105-4ee4-ad75-ab87cb97e21e',
             sparql_endpoint: 'http://localhost/IKMLinkedResearch/build/service/sparql',
             http_host:'localhost',
             host_path: '/IKMLinkedResearch/build/younglives/display/r/ylstats?SumaryStatistics-e55f586a-b105-4ee4-ad75-ab87cb97e21e',
-            graph_type: 'table',
+            graph_type: 'columnchart',
             chart_options: {'height': 400,
                                      'width': 600},
             measureType: "MeasureProperty",
@@ -180,7 +181,7 @@ steal(
                         });
                         
                         // Enhance dsd_comps with utility functions
-                        dsd_comps.getSortedComponents = function(type){
+                        dsd_comps.sortType = function(type){
                             return _.sortBy(
                                             _.values(this[ns.qb + type]),
                                             function(comp){ return comp.label?comp.label:comp.uri; }
@@ -256,9 +257,12 @@ steal(
             }
         };
 
+    
+ 
     })(jQuery, google);
 })
 .then(
     // Load any Plugins we want included by default
-    'resources/grapher_plugins/grapher.table.js' // Data Table Vis Plugin
+    'resources/grapher_plugins/grapher.table.js', // Data Table Plugin
+    'resources/grapher_plugins/grapher.columnchart.js' // Column Chart Plugin
 );

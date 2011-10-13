@@ -5,16 +5,17 @@
  */
  (function($, google){
         var vis = {};
-        
         vis.id = 'columnchart';
         vis.title = "Column Chart";
         vis.google_components = ['corechart'];
-        vis.prepare = function(Grapher) {
-                    var observations = Grapher.filterData();
-                    var vis_el = Grapher.vis[0]
-                    var chart = new google.visualization.ColumnChart(vis_el);
+        vis.options = {};
+        vis.prepare = function(data) {
+                    var chart = new google.visualization.ColumnChart(data.graph_target);
                     var table = new google.visualization.DataTable();
+                    var options = {};
+                    var dsd = data.dsd_components;
                     
+                    /**
                     // We need unique values for our selectedDimension groupbyDimension and the includeDimensions
                     var groupbyDimensionValues = _.uniq(_.map(observations, function(obs){ 
                         return obs[Grapher.tokenizeURI(Grapher.groupbyDimension)].label;
@@ -122,8 +123,8 @@
                     options.legend = 'none';
                     options.hAxis = {title: Grapher.dsd.get_dimension(Grapher.groupbyDimension).label};
                     options.vAxis = {title: Grapher.dsd.get_measure(Grapher.selectedMeasure).label};
-                    
-                    return {'chart':chart, 'table':table, 'options':options};
+                    **/
+                    return {'chart':chart, 'table':table, 'options':$.extend(vis.options, options, true)};
         };
         
         $.fn.yl_grapher.registerPlugin(vis);
