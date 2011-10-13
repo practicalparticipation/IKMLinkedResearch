@@ -1,10 +1,13 @@
 steal(
     {path:'https://www.google.com/jsapi'}, //Google JS Api
     'resources/jquery-1.6.4.js', // Use jQuery
+    'resources/underscore.js', // Underscore.js
     'resources/jquery.view.ejs', // EJS View Templates
     'resources/jquerytools/src/tabs/tabs.js', //jquery.tools Tabs
     'resources/jquery.sparql.js', // SPARQL Query Generation
-    'resources/urlEncode.js' // URLEncoding Utility
+    'resources/urlEncode.js', // URLEncoding Utility
+    {path:'resources/jquery.fixture.js',
+     ignore:true} // Add fixtures in development mode
 )
 .css(
     'styles/grapher',   // Use our own CSS
@@ -31,7 +34,9 @@ steal(
             host_path: '/IKMLinkedResearch/build/younglives/display/r/ylstats?SumaryStatistics-e55f586a-b105-4ee4-ad75-ab87cb97e21e',
             graph_type: 'table',
             chart_options: {'height': 400,
-                                     'width': 600}
+                                     'width': 600},
+            measureType: "MeasureProperty",
+            dimensionType: "DimensionProperty"
         };
 
         var methods = {
@@ -60,6 +65,8 @@ steal(
                         // Store a reference to the place we ant the chart drawn
                         // Mostly for Google's convenience
                         data.graph_target = $("#grapher-vis", ui)[0];
+                        // Store a reference to our settings
+                        data.settings = settings;
 
                         // Store our state
                         $this.data('grapher', data);
@@ -125,11 +132,12 @@ steal(
                         $.ajax({
                             url: qurl,
                             dataType: 'json',
-                            methos:'GET',
+                            method:'GET',
                             success: function(observations){
                                 data.raw_observations = observations;
                                 deferred.resolve();
-                            }
+                            },
+                            fixture: 'fixtures/sparql_result.json'
                         });
                     })
                 );
@@ -145,9 +153,10 @@ steal(
                             if (!obs[ob.obs.value]) {
                                 obs[ob.obs.value] = {};
                             }
+                            var cast_val = $.fn.yl_grapher.sparqlCaster(ob.value);
                             obs[ob.obs.value].dataset = ob.dataset.value;
                             obs[ob.obs.value][ob.property.value] = {
-                                value:ob.value.value,
+                                value:cast_val,
                                 label:ob.valueLabel?ob.valueLabel.value:null
                             };
                             // Ensure we've got the measure or dimension stores
@@ -160,14 +169,24 @@ steal(
                             if(!entry) {
                                 entry = dsd_comps[ob.propertyType.value][ob.property.value] = {
                                    label:ob.propertyLabel.value,
-                                   order:ob.propertyOrder.value,
+                                   order:ob.propertyOrder?ob.propertyOrder.value:null,
                                    uri:ob.property.value,
+                                   type: typeof(cast_val),
                                    values:{}
                                 };
                             }
                             // Now add to its known values
-                            entry.values[ob.value.value] = ob.valueLabel?ob.valueLabel.value:null;
+                            entry.values[cast_val] = ob.valueLabel?ob.valueLabel.value:null;
                         });
+                        
+                        // Enhance dsd_comps with utility functions
+                        dsd_comps.getSortedComponents = function(type){
+                            return _.sortBy(
+                                            _.values(this[ns.qb + type]),
+                                            function(comp){ return comp.label?comp.label:comp.uri; }
+                                        );
+                        };
+                            
                         // Store parsed observations and dsd componetry
                         data.observations = obs;
                         data.dsd_components = dsd_comps;
@@ -215,6 +234,26 @@ steal(
         // Plugin registration
         $.fn.yl_grapher.registerPlugin = function(plugin){
             plugins[plugin.id] = plugin;
+        };
+        
+        /**
+         *Cast sparql result values to js types
+         *
+         *@param {Object} item A sparql result value
+         *@returns {Object} the cast value
+         */
+        $.fn.yl_grapher.sparqlCaster = function(item){
+            var datatypes = {
+                "http://www.w3.org/2001/XMLSchema#integer": parseInt,
+                "http://www.w3.org/2001/XMLSchema#double":parseFloat
+            }
+            if (item.type === "typed-literal") {
+                return datatypes[item.datatype](item.value);
+            } else if (item.type === "literal") {
+                return item.value.toString();
+            } else {
+                return item.value.toString();
+            }
         };
 
     })(jQuery, google);

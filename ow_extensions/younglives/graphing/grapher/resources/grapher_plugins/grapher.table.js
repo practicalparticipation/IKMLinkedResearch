@@ -13,33 +13,36 @@
                     var observations = [];
                     var chart = new google.visualization.Table(data.graph_target);
                     var table = new google.visualization.DataTable();
-                    /**
+                    
                     var rowspec = [];
-                    rowspec.push(['dimension', Grapher.groupbyDimension, 'string']);
-                    $.each(data.dsd_components, function(i,v){
-                         rowspec.push(['dimension', v, 'string']);
-                    });
-                    rowspec.push(['dimension', Grapher.selectedDimension, 'string']);
-                    rowspec.push(['measure', Grapher.selectedMeasure, 'number']);
-
-                    // Add a columns as per rowspec
+                    var components = data.dsd_components.getSortedComponents(data.settings.measureType);
+                    components = components.concat(data.dsd_components.getSortedComponents(data.settings.dimensionType));
+                    $.each(
+                        components,
+                        function(i, comp){
+                            rowspec.push(comp);
+                        }
+                    );
+                    
                     $.each(rowspec, function(i,v){
-                        // use the first item in the rowspec tuple to arbitrate between get+_dimension and get_measure
-                        table.addColumn(v[2], Grapher.dsd['get_'+v[0]](v[1]).label);
+                        table.addColumn(v.type, v.label?v.label:v.uri);    
                     });
+                   
 
-                    $.each(observations, function(i,obs) {
-                        var observation = obs;
+                    $.each(data.observations, function(i,obs) {
                         var row = [];
                         $.each(rowspec, function(i,spec){
-                            var data = observation[Grapher.tokenizeURI(spec[1])];
-                            row.push(data[(data.type === 'uri')?'label':'value']);
+                            var cell = null;
+                            if (obs[spec.uri]) {
+                                cell = obs[spec.uri].label?obs[spec.uri].label:obs[spec.uri].value;
+                            }
+                            row.push(cell);
                         });
                         table.addRow(row);
                     });
-                    **/
-                    table.addColumn('string', 'Data');
-                    table.addRow(['VALUE']);
+                    
+                    
+                    //table.addRow(['VALUE']);
                     return {'chart':chart, 'table':table, 'options':vis.options};
         };
 
