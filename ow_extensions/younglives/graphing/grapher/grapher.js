@@ -11,7 +11,7 @@ steal(
 )
 .css(
     'styles/grapher',   // Use our own CSS
-    'styles/tabs'   // Tab styling
+    'styles/tabs-accordion'   // Tab styling
 )
 .then( function(){
     (function($){
@@ -26,14 +26,14 @@ steal(
         var plugins = {};
         // Registered via $.fn.yl_grapher.registerPlugin
 
-        
+
 
         var settings = {
             dsd: 'http://data.younglives.org.uk/data/statistics/SumaryStatistics-e55f586a-b105-4ee4-ad75-ab87cb97e21e',
             sparql_endpoint: 'http://localhost/IKMLinkedResearch/build/service/sparql',
             http_host:'localhost',
             host_path: '/IKMLinkedResearch/build/younglives/display/r/ylstats?SumaryStatistics-e55f586a-b105-4ee4-ad75-ab87cb97e21e',
-            graph_type: 'columnchart',
+            graph_type: 'table',
             chart_options: {'height': 400,
                                      'width': 600},
             measureType: "MeasureProperty",
@@ -60,9 +60,14 @@ steal(
                             $.extend(settings, options, true);
                         }
                         // Build UI
-                        var ui = $($.View('views/init.ejs'));
-                        $("ul.tabs", ui).tabs("div.panes > div");
+                        var ui = $($.View('views/init-accordion.ejs'));
+
                         $this.html(ui);
+                        $(".accordion", $this).tabs(".accordion div.pane",
+                                                        {tabs:'h2',
+                                                          effect:'slide',
+                                                          initialIndex: null
+                                                        });
                         // Store a reference to the place we ant the chart drawn
                         // Mostly for Google's convenience
                         data.graph_target = $("#grapher-vis", ui)[0];
@@ -173,21 +178,41 @@ steal(
                                    order:ob.propertyOrder?ob.propertyOrder.value:null,
                                    uri:ob.property.value,
                                    type: typeof(cast_val),
-                                   values:{}
+                                   observations:[]
                                 };
                             }
                             // Now add to its known values
-                            entry.values[cast_val] = ob.valueLabel?ob.valueLabel.value:null;
+                            entry.observations.push(ob);
                         });
-                        
+
                         // Enhance dsd_comps with utility functions
+                        /**
+                         * Return a sorted list of dsd components
+                         * of the supplied type
+                         * The sort order is Alpahbetical by component label
+                         */
                         dsd_comps.sortType = function(type){
                             return _.sortBy(
                                             _.values(this[ns.qb + type]),
                                             function(comp){ return comp.label?comp.label:comp.uri; }
                                         );
                         };
-                            
+
+                        /**
+                         * Return an array of unique values for a dsd component
+                         */
+                        dsd_comps.uniqueValuesFor = function(componentURI) {
+                            // Locate the component scan all our subobjects
+                            var comp = _.detect.(
+                                    Array.prototype.concat.apply([], _.values(this)),
+                                    function(val){ return val.uri == componentURI;}
+                            );
+                            return _.map(comp.observations, function(ob){
+                                var obcomp = ob[componentURI];
+                                return obcomp.label?obcomp.label:obcomp.value;
+                            });
+                        }
+
                         // Store parsed observations and dsd componetry
                         data.observations = obs;
                         data.dsd_components = dsd_comps;
@@ -236,7 +261,7 @@ steal(
         $.fn.yl_grapher.registerPlugin = function(plugin){
             plugins[plugin.id] = plugin;
         };
-        
+
         /**
          *Cast sparql result values to js types
          *
@@ -257,8 +282,8 @@ steal(
             }
         };
 
-    
- 
+
+
     })(jQuery, google);
 })
 .then(
