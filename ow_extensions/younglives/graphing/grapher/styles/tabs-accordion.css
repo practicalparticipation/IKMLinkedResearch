@@ -2,7 +2,7 @@
 /* root element for accordion. decorated with rounded borders and gradient background image */
 .accordion {
 	background:#333;
-	width: 600px;
+	width: 700px;
 	border:1px solid #333;
 	-background:#666;
 }

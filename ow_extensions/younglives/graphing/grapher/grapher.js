@@ -33,9 +33,9 @@ steal(
             sparql_endpoint: 'http://localhost/IKMLinkedResearch/build/service/sparql',
             http_host:'localhost',
             host_path: '/IKMLinkedResearch/build/younglives/display/r/ylstats?SumaryStatistics-e55f586a-b105-4ee4-ad75-ab87cb97e21e',
-            graph_type: 'table',
+            graph_type: 'columnchart',
             chart_options: {'height': 400,
-                                     'width': 600},
+                                     'width': 700},
             measureType: "MeasureProperty",
             dimensionType: "DimensionProperty"
         };
@@ -161,6 +161,7 @@ steal(
                             }
                             var cast_val = $.fn.yl_grapher.sparqlCaster(ob.value);
                             obs[ob.obs.value].dataset = ob.dataset.value;
+                            obs[ob.obs.value].uri = ob.obs.value;
                             obs[ob.obs.value][ob.property.value] = {
                                 value:cast_val,
                                 label:ob.valueLabel?ob.valueLabel.value:null
@@ -199,18 +200,53 @@ steal(
                         };
 
                         /**
-                         * Return an array of unique values for a dsd component
+                         * Retrieve a component specification by URI
+                         */
+                        dsd_comps.getComponent = function(componentURI){
+                            // Locate the component scan all our subobjects
+                            var comps = Array.prototype.concat.apply([], _.map(this, function(v){
+                                        return _.values(v);
+                                })
+                            );
+                            // Find the coponent object we're looking for
+                            var comp = _.detect(
+                                    comps,
+                                    function(val){
+                                        return val.uri == componentURI;
+                                    }
+                            );
+                            return comp;
+                        }
+
+                        /**
+                         * Return an array of values for a dsd component
+                         */
+                        dsd_comps.valuesFor = function(componentURI) {
+                            var comp = this.getComponent(componentURI);
+                            // Map out its values
+                            var compvalues = _.map(comp.observations, function(ob){
+                                return {label:ob.valueLabel?ob.valueLabel.value:null,
+                                             value: ob.value.value};
+                            });
+                            return compvalues;
+                        }
+
+                        /**
+                         * Return an array of uniqe values for a dsd component
                          */
                         dsd_comps.uniqueValuesFor = function(componentURI) {
-                            // Locate the component scan all our subobjects
-                            var comp = _.detect.(
-                                    Array.prototype.concat.apply([], _.values(this)),
-                                    function(val){ return val.uri == componentURI;}
-                            );
-                            return _.map(comp.observations, function(ob){
-                                var obcomp = ob[componentURI];
-                                return obcomp.label?obcomp.label:obcomp.value;
-                            });
+                            return _.uniq(
+                                this.valuesFor(componentURI),
+                                false,
+                                function(val){return val.value; }
+                            ).sort();
+                        }
+
+                        /**
+                         * Returns true if all observations in the set have a value for the componets
+                         */
+                        dsd_comps.isCoreComponent = function(componentURI) {
+                            return (this.valuesFor(componentURI).length === _.keys(obs).length);
                         }
 
                         // Store parsed observations and dsd componetry
