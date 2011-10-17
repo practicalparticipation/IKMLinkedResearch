@@ -1,0 +1,15 @@
+<?php
+/**
+ * Nav helper. builds a query for the nav controller and for the resource controller
+ * @category   OntoWiki
+ * @package    OntoWiki_extensions_components_navigation
+ */
+class YlnavigationHelper extends OntoWiki_Component_Helper
+{
+    
+    public static function canWriteHelperFunctionsHere(){
+
+    }
+        
+}
+

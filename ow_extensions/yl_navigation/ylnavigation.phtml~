@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * Young Lives Countries box template
+ *
+ */
+
+var_dump($this->data);
+?>
+
+<div id="yl-navigation-content" class="width99 init-me-please">
+Hello Neil
+<?php 
+/*php can go here
+*/ 
+?>    
+</div>
