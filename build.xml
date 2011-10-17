@@ -80,6 +80,8 @@
         <exec command="ln -s ${application.startdir}/ow_extensions/csvimport ${builddir}/extensions"/> 
 	<exec command="ln -s ${application.startdir}/ow_extensions/younglives ${builddir}/extensions"/>
 	<exec command="ln -s ${application.startdir}/ow_extensions/yl_navigation ${builddir}/extensions"/>
+	<exec command="cp -f ${application.startdir}/ow_extensions/front_page_override/IndexController.php ${builddir}/application/controllers/"/>
+	<exec command="cp -f ${application.startdir}/ow_extensions/front_page_override/news.phtml ${builddir}/application/views/templates/index/"/>
         <mkdir dir="${builddir}/extensions/csvimport/logs"/>
         <chmod file="${builddir}/extensions/csvimport/logs" mode="0777"/>
         <mkdir dir="${builddir}/extensions/csvimport/configs"/>
