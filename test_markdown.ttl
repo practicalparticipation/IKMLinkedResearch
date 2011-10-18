@@ -1,0 +1,27 @@
+@base <http://data.younglives.org.uk> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ylclass: <http://data.younglives.org.uk/data/classes/> .
+@prefix ylpages: <http://data.younglives.org.uk/data/pages/> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+
+
+<http://data.younglives.org.uk/data/pages/Ethiopia> 	a 	ylclass:Country ;
+	ylpages:countryMarkdown "Mark down goes here
+this should be a title
+======================
+
+### and this is a smaller heading
+
+>Block quote me!
+
+    this may be code
+    10 print \"I win\"
+    20 goto 10
+
+and this might just be writing"@en .	
+
+<http://data.younglives.org.uk/data/pages/Ethiopia> rdfs:label "Ethiopa test Label"@en ;
+	dc:description "dublin core description also shold be markdown
+#title"@en .
+	
