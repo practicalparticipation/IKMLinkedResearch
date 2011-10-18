@@ -76,12 +76,12 @@
                     );
                     // Transform the list of ids into a list of objects
                     var obs = _.map(obs_uris, function(v){ return data.observations[v]; });
-
+                    var table_cols = table.getNumberOfColumns();
                     function guardAddRow(entries) {
                         // Check that we've the right number of entries for the row
                         // If not something's wrong - probably with the data.
                         // Squeal about it.
-                        if (entries.length === 9) {
+                        if (entries.length === table_cols) {
                             table.addRow(entries);
                         } else {
                             alert("Suspect duplicated data - table mode recovery not yet implemented.");
