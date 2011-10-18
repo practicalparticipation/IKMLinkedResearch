@@ -232,7 +232,7 @@ steal(
                         }
 
                         /**
-                         * Return an array of uniqe values for a dsd component
+                         * Return an array of unique values for a dsd component
                          */
                         dsd_comps.uniqueValuesFor = function(componentURI) {
                             return _.uniq(
@@ -240,6 +240,18 @@ steal(
                                 false,
                                 function(val){return val.value; }
                             ).sort();
+                        }
+
+                        /**
+                         *Get the Label for a value for a component
+                         *
+                         *@param valuri {String} Value URI
+                         *@param componentURI {String} Component URI
+                         */
+                        dsd_comps.getValueLabel = function(valuri, componentURI) {
+                            var values = this.valuesFor(componentURI);
+                            return _.detect(values, function(val){return val.value === valuri;})
+                                .label;
                         }
 
                         /**

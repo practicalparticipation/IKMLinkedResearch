@@ -31,12 +31,15 @@
                         "http://data.younglives.org.uk/data/statistics/AllCohorts"
                         };
                     function getXLabelFromFixed(){
+
                         var label = xDimension.label;
                         if (xGroup) {
                             label += ' grouped by ' + xGroup.label;
                         }
                         label += ' for ';
-                        label += _.map(fixed, function(v,i){return v}).join(', ');
+                        label += _.map(fixed, function(v,i){
+                            return dsd.getValueLabel(v, i);
+                        }).join(', ');
                         return label;
                     };
 
