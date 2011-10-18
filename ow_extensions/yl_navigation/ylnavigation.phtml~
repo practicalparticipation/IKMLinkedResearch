@@ -5,13 +5,16 @@
  *
  */
 
-var_dump($this->data);
+#var_dump($this->data);
 ?>
 
 <div id="yl-navigation-content" class="width99 init-me-please">
-Hello Neil
+<p>Hello Neil</p>
+<p><a href="<?php echo($this->urlBase);?>view/r/ylpages%3AEthiopia">Go to Ethiopia!</a> If you have imported the test_markdown.ttl
+</p>
 <?php 
 /*php can go here
 */ 
+var_dump($this->urlBase);
 ?>    
 </div>
