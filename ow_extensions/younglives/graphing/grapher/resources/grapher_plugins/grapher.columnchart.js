@@ -77,6 +77,16 @@
                     // Transform the list of ids into a list of objects
                     var obs = _.map(obs_uris, function(v){ return data.observations[v]; });
 
+                    function guardAddRow(entries) {
+                        // Check that we've the right number of entries for the row
+                        // If not something's wrong - probably with the data.
+                        // Squeal about it.
+                        if (entries.length === 9) {
+                            table.addRow(entries);
+                        } else {
+                            alert("Suspect duplicated data - table mode recovery not yet implemented.");
+                        }
+                    }
 
                     if (xGroup){
                         // Sort the observation list into a tree based on the value of the xGroup component
@@ -93,7 +103,7 @@
                                                     _.sortBy(grouped_obs[v], function(ob){ return ob[xDimension.uri].value; }),
                                                     function(ob) { return ob[yMeasure.uri].value }
                                                );
-                            table.addRow(row.concat(entries));
+                            guardAddRow(row.concat(entries));
                         });
                     } else {
 
@@ -102,9 +112,10 @@
                                                     _.sortBy(obs, function(ob){ return ob[xDimension.uri].value; }),
                                                     function(ob) { return ob[yMeasure.uri].value }
                                                );
-                            table.addRow(entries);
+                            guardAddRow(entries);
 
                     }
+
 
 
 

@@ -35,7 +35,7 @@ steal(
             sparql_endpoint: null,
             http_host:'localhost',
             host_path: '/IKMLinkedResearch/build/younglives/display/r/ylstats?SumaryStatistics-e55f586a-b105-4ee4-ad75-ab87cb97e21e',
-            graph_type: 'table',
+            graph_type: 'columnchart',
             chart_options: {'height': 400,
                                      'width': 630,
                                      'chartArea': {left:40,top:35,width:"440",height:"300"}
