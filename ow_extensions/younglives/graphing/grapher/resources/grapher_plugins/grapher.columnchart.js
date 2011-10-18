@@ -15,21 +15,15 @@
                     var options = {};
                     var dsd = data.dsd_components;
 
+                    var config = data.config?data.config:dsd.getDefaultConfig();
+
+
                     //Chosen Measure for the Y axis
-                    var yMeasure = dsd.getComponent("http://data.younglives.org.uk/data/statistics/structure/components/measure-EthiopiaAccessToImprovedWaterAsPercentage");
-                    var xDimension = dsd.getComponent("http://data.younglives.org.uk/data/statistics/structure/components/mothersEducationLevel");
+                    var yMeasure = dsd.getComponent(config.yMeasure);
+                    var xDimension = dsd.getComponent(config.xDimension);
+                    var xGroup = config.xGroup?dsd.getComponent(config.xGroup):config.xGroup;
+                    var fixed = config.fixed;
 
-                    var xGroup = dsd.getComponent("http://data.younglives.org.uk/data/statistics/structure/components/year");
-                    //var xGroup = null;
-
-                    // Fixed Values or other core Dimensions
-                    var fixed = {"http://data.younglives.org.uk/data/statistics/structure/components/country":
-                        "http://data.younglives.org.uk/data/statistics/Ethiopia",
-                      //"http://data.younglives.org.uk/data/statistics/structure/components/year":
-                      // 2002,
-                      "http://data.younglives.org.uk/data/statistics/structure/components/cohort":
-                        "http://data.younglives.org.uk/data/statistics/AllCohorts"
-                        };
                     function getXLabelFromFixed(){
 
                         var label = xDimension.label;
@@ -116,10 +110,11 @@
 
                     // Create Options for display
                     var options = {};
-                    options.title = '';
+                    options.title = 'Bodged Title Element';
                     //options.legend = 'none';
                     options.hAxis = {title: getXLabelFromFixed()};
-                    options.vAxis = {title: yMeasure.label};
+                    options.vAxis = {title: yMeasure.label,
+                                              baseline:0};
 
                     return {'chart':chart, 'table':table, 'options':$.extend(vis.options, options, true)};
         };

@@ -1,13 +1,15 @@
 steal(
     {path:'https://www.google.com/jsapi'}, //Google JS Api
     'resources/jquery-1.6.4.js', // Use jQuery
+    'resources/jquery.ba-bbq.js', // Ben Allmans back button and query parser
     'resources/underscore.js', // Underscore.js
     'resources/jquery.view.ejs', // EJS View Templates
     'resources/jquerytools/src/tabs/tabs.js', //jquery.tools Tabs
     'resources/jquery.sparql.js', // SPARQL Query Generation
-    'resources/urlEncode.js', // URLEncoding Utility
-    {path:'resources/jquery.fixture.js',
-     ignore:true} // Add fixtures in development mode
+    //{path:'resources/jquery.fixture.js',
+     //ignore:true}, // Add fixtures in development mode
+    'resources/urlEncode.js' // URLEncoding Utility
+
 )
 .css(
     'styles/grapher',   // Use our own CSS
@@ -29,13 +31,15 @@ steal(
 
 
         var settings = {
-            dsd: 'http://data.younglives.org.uk/data/statistics/SumaryStatistics-e55f586a-b105-4ee4-ad75-ab87cb97e21e',
-            sparql_endpoint: 'http://localhost/IKMLinkedResearch/build/service/sparql',
+            dsd: null,
+            sparql_endpoint: null,
             http_host:'localhost',
             host_path: '/IKMLinkedResearch/build/younglives/display/r/ylstats?SumaryStatistics-e55f586a-b105-4ee4-ad75-ab87cb97e21e',
-            graph_type: 'columnchart',
+            graph_type: 'table',
             chart_options: {'height': 400,
-                                     'width': 700},
+                                     'width': 630,
+                                     'chartArea': {left:40,top:35,width:"440",height:"300"}
+                                    },
             measureType: "MeasureProperty",
             dimensionType: "DimensionProperty"
         };
@@ -226,7 +230,7 @@ steal(
                             // Map out its values
                             var compvalues = _.map(comp.observations, function(ob){
                                 return {label:ob.valueLabel?ob.valueLabel.value:null,
-                                             value: ob.value.value};
+                                             value: $.fn.yl_grapher.sparqlCaster(ob.value)};
                             });
                             return compvalues;
                         }
@@ -235,11 +239,14 @@ steal(
                          * Return an array of unique values for a dsd component
                          */
                         dsd_comps.uniqueValuesFor = function(componentURI) {
-                            return _.uniq(
-                                this.valuesFor(componentURI),
-                                false,
-                                function(val){return val.value; }
-                            ).sort();
+                            return _.sortBy(
+                                _.uniq(
+                                    this.valuesFor(componentURI),
+                                    false,
+                                   function(val){return val.value; }
+                                ),
+                                function(val) {return val.label?val.label:val.value;}
+                            );
                         }
 
                         /**
@@ -248,10 +255,14 @@ steal(
                          *@param valuri {String} Value URI
                          *@param componentURI {String} Component URI
                          */
-                        dsd_comps.getValueLabel = function(valuri, componentURI) {
+                        dsd_comps.getValueLabel = function(val, componentURI) {
                             var values = this.valuesFor(componentURI);
-                            return _.detect(values, function(val){return val.value === valuri;})
-                                .label;
+                            var obj =  _.detect(values, function(item){return item.value === val;});
+                            if (obj.label) { return obj.label; }
+                            else {
+                                // Get the component label and append the val to it
+                                return this.getComponent(componentURI).label + ':' + val.toString();
+                            }
                         }
 
                         /**
@@ -259,6 +270,63 @@ steal(
                          */
                         dsd_comps.isCoreComponent = function(componentURI) {
                             return (this.valuesFor(componentURI).length === _.keys(obs).length);
+                        }
+
+                        /**
+                         * getDefaultConfig
+                         *
+                         * Analyses the dsd and attempts  a set of sensible grapher values
+                         */
+                        dsd_comps.getDefaultConfig = function(){
+                            var config = {
+                                yMeasure: null,
+                                xDimension: null,
+                                xGroup: null,
+                                fixed: {}//{"http://data.younglives.org.uk/data/statistics/structure/components/country":
+                                         //       "http://data.younglives.org.uk/data/statistics/Ethiopia",
+                                            //"http://data.younglives.org.uk/data/statistics/structure/components/year":
+                                            //     2002,
+                                         //   "http://data.younglives.org.uk/data/statistics/structure/components/cohort":
+                                         //       "http://data.younglives.org.uk/data/statistics/AllCohorts"
+                                //}
+                            };
+
+                            //Sort all the measures by order and grab the first
+                             config.yMeasure =  _.sortBy(
+                                    this["http://purl.org/linked-data/cube#MeasureProperty"],
+                                    function(comp){ return comp.order; }
+                                )[0].uri;
+
+                             // sort dimensions into core c omponents and others
+                            var dim_map = _.groupBy(
+                                this["http://purl.org/linked-data/cube#DimensionProperty"],
+                                function(comp, uri){ return dsd_comps.isCoreComponent(uri)?'core':'optional'; }
+                            );
+
+                            // sort the required components - group by the one with the largest range of values
+                            // fix the rest to the first of their unique values
+                            _.each(
+                                _.sortBy(
+                                    dim_map.core,
+                                    function(item){
+                                        return dsd_comps.uniqueValuesFor(item.uri).length;
+                                    }
+                                ).reverse(),
+                                function(v,i){
+                                    if (i === 0) {
+                                        //group by the first item
+                                        config.xGroup = v.uri;
+                                    } else {
+                                        // Fix the dimension to the first of its values
+                                        config.fixed[v.uri] = dsd_comps.uniqueValuesFor(v.uri)[0].value;
+                                    }
+                                }
+                            );
+
+                            // Choose a dimension to graph! RANDOMLY
+                            config.xDimension = dim_map.optional[Math.floor(Math.random()*dim_map.optional.length)].uri;
+                            return config;
+
                         }
 
                         // Store parsed observations and dsd componetry

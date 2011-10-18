@@ -3,13 +3,21 @@
 <html lang="en">
   <head>
 	<title>Young Lives Grapher</title>
+    <style>
+        body {
+            margin: 0px;
+        }
+    </style>
   </head>
   <body>
 	<div id="grapher"></div>
 	<script type='text/javascript'
         src='../steal/steal.js?grapher,development'></script>
 	<script type="text/javascript">
-        $('#grapher').yl_grapher();
+        var params = jQuery.deparam.querystring();
+        var opts = {}; //override/supplement url vars here if needed
+	    $.extend(params, opts);
+        $('#grapher').yl_grapher(params);
 	</script>
   </body>
 </html>
