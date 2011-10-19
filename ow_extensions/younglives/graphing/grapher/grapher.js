@@ -6,8 +6,8 @@ steal(
     'resources/jquery.view.ejs', // EJS View Templates
     'resources/jquerytools/src/tabs/tabs.js', //jquery.tools Tabs
     'resources/jquery.sparql.js', // SPARQL Query Generation
-    //{path:'resources/jquery.fixture.js',
-     //ignore:true}, // Add fixtures in development mode
+    {path:'resources/jquery.fixture.js',
+     ignore:true}, // Add fixtures in development mode
     'resources/urlEncode.js' // URLEncoding Utility
 
 )
@@ -425,13 +425,26 @@ steal(
                         link_url = iframe_url;
                     }
                     
+                    // calculate the url to the sabot script:
+                    // take our grapher html pge and traverse to resources
+                    var sabot_script_url = iframe_url.substr(0, iframe_url.lastIndexOf('/'));
+                    sabot_script_url += '/resources/sabot-jqt.js';
+                    
                     var share_data = {link: $.param.querystring(link_url, req_params),
                                                  iframe_src: $.param.querystring(iframe_url, req_params),
+                                                 sabot_script_url: sabot_script_url,
                                                  params: req_params};
                     
                     $('.share_output', shareui).val($.View('views/sharing-' + share_type, share_data));
                     
                 });
+                
+                // Lastly - if we've just been called
+                // check to see if we've something in our config
+                // if so get on with it...
+                if (data.settings.config) {
+                    $this.trigger('grapherUpdateSharing');
+                }
             } //END initSharing
         }
 
