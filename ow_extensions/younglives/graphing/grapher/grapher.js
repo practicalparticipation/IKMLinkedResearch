@@ -225,14 +225,19 @@ steal(
                         /**
                          * Return an array of values for a dsd component
                          */
+                        var _cacheValuesFor = {};
                         dsd_comps.valuesFor = function(componentURI) {
-                            var comp = this.getComponent(componentURI);
-                            // Map out its values
-                            var compvalues = _.map(comp.observations, function(ob){
-                                return {label:ob.valueLabel?ob.valueLabel.value:null,
-                                             value: $.fn.yl_grapher.sparqlCaster(ob.value)};
-                            });
-                            return compvalues;
+                            if (!_cacheValuesFor[componentURI]) {
+                                var comp = this.getComponent(componentURI);
+                                // Map out its values into the cache
+                                _cacheValuesFor[componentURI] = _.map(comp.observations, function(ob){
+                                    return {label:ob.valueLabel?ob.valueLabel.value:null,
+                                                    value: $.fn.yl_grapher.sparqlCaster(ob.value)};
+                                });
+                            }
+                            // Return a copy of the cached values array
+                            return _cacheValuesFor[componentURI].slice(0);
+
                         }
 
                         /**
