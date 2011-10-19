@@ -5,127 +5,128 @@
  */
  (function($, google){
         var vis = {};
-        
         vis.id = 'columnchart';
         vis.title = "Column Chart";
         vis.google_components = ['corechart'];
-        vis.prepare = function(Grapher) {
-                    var observations = Grapher.filterData();
-                    var vis_el = Grapher.vis[0]
-                    var chart = new google.visualization.ColumnChart(vis_el);
+        vis.options = {};
+        vis.prepare = function(data) {
+                    var chart = new google.visualization.ColumnChart(data.graph_target);
                     var table = new google.visualization.DataTable();
+                    var options = {};
+                    var dsd = data.dsd_components;
                     
-                    // We need unique values for our selectedDimension groupbyDimension and the includeDimensions
-                    var groupbyDimensionValues = _.uniq(_.map(observations, function(obs){ 
-                        return obs[Grapher.tokenizeURI(Grapher.groupbyDimension)].label;
-                    }));
-                    var selectedDimensionValues = _.uniq(_.map(observations, function(obs){ 
-                        return obs[Grapher.tokenizeURI(Grapher.selectedDimension)].label;
-                    }));
-                    var includeDimensionsValues = [];
-                    $.each(Grapher.includeDimensions, function(i, dimuri){
-                       includeDimensionsValues.push([dimuri, _.uniq(_.map(observations, function(obs){
-                            return obs[Grapher.tokenizeURI(dimuri)].label;
-                        }))]);
+
+                    //Chosen Measure for the Y axis
+                    var yMeasure = dsd.getComponent(data.settings.config.yMeasure);
+                    var xDimension = dsd.getComponent(data.settings.config.xDimension);
+                    var xGroup = data.settings.config.xGroup?
+                                            dsd.getComponent(data.settings.config.xGroup):
+                                            data.settings.config.xGroup;
+                    var fixed = data.settings.config.fixed;
+
+                    function getXLabelFromFixed(){
+
+                        var label = xDimension.label;
+                        if (xGroup) {
+                            label += ' grouped by ' + xGroup.label;
+                        }
+                        label += ' for ';
+                        label += _.map(fixed, function(v,i){
+                            return dsd.getValueLabel(v, i);
+                        }).join(', ');
+                        return label;
+                    };
+
+                    // Group Column is first
+                    // Force this to a string type to support grouping
+                    if (xGroup) {
+                        table.addColumn('string', xGroup.label);
+                    }
+
+                    // Now a column for each unique value of the selected xDimension
+                    $.each(dsd.uniqueValuesFor(xDimension.uri), function(i, spec){
+                        table.addColumn(yMeasure.type, spec.label);
                     });
-                    
-                    // Draw a column for the grouping dimension
-                    table.addColumn('string', Grapher.dsd.get_dimension(Grapher.groupbyDimension).label);
-                    
-                    // Now add a column for each combination of each unique value from
-                    // the selectedDimension and each includedDimensions
-                    var colspec = [];
-                    var dimension_loop = function(dimensions,dimdex, valstack, specs) {
-                        if (dimdex === (dimensions.length -1)) {
-                            // We're at the end of the stack run over the last set of values making specs
-                            $.each(dimensions[dimdex][1], function(i, value) {
-                                var spec = {};
-                                spec.type = 'number';
-                                spec.path = valstack.slice(0);// put a full copy of valstack into path
-                                spec.path.push(value)
-                                spec.label = spec.path.join(' / ');
-                                specs.push(spec);
+
+                    // Sort out our data
+                    // Get an array of observation objects which have values for all of our requested
+                    // components
+                    // Do this by getting lists of observation uris out of the components'
+                    // observation stores then intersecting them.
+                    var filtered_observation_uris =  _.map(
+                        _.select(data.observations, function(ob){
+                            var select = true;
+                            $.each(fixed, function(comp,val){
+                                if (ob[comp].value != val) {
+                                    select = false;
+                                }
                             });
+                            return select;
+                        }),
+                        function(selected_obs){
+                            return selected_obs.uri;
+                        }
+                    );
+
+                    var obs_uris = _.intersect(
+                        _.map(yMeasure.observations, function(v){return v.obs.value;}),
+                        _.map(xDimension.observations, function(v){return v.obs.value;}),
+                        //_.map(xGroup.observations, function(v){return v.obs.value;}),
+                        filtered_observation_uris
+                    );
+                    // Transform the list of ids into a list of objects
+                    var obs = _.map(obs_uris, function(v){ return data.observations[v]; });
+                    var table_cols = table.getNumberOfColumns();
+                    
+                    /**
+                     *Check the number of entries in a row
+                     *against the data table's expectations
+                     *Squeal if they don't match
+                     */
+                    function guardAddRow(entries) {
+                        if (entries.length === table_cols) {
+                            table.addRow(entries);
                         } else {
-                            $.each(dimensions[dimdex][1], function(i, value) {
-                                var newstack = valstack.slice(0);
-                                newstack.push(value);
-                                dimension_loop(dimensions, dimdex +1, newstack, specs);
-                            });
-                            
+                            alert("Suspect duplicated data - table mode recovery not yet implemented.");
                         }
                     }
-                    
-                    $.each(selectedDimensionValues, function(i, sdv){
-                        if (includeDimensionsValues.length > 0) {
-                            dimension_loop(includeDimensionsValues, 0, [sdv], colspec);
-                        } else {
-                            var spec = {};
-                             spec.type = 'number';
-                             spec.label = sdv;
-                             spec.path = [sdv];
-                             colspec.push(spec);
-                        }
-                    });
-                    $.each(colspec, function(i,v){
-                        table.addColumn(v.type, v.label);
-                    });
 
-                    // Prepare a data structure by agressive use of _.groupBy
-                    var bucket_stack = [Grapher.tokenizeURI(Grapher.groupbyDimension),
-                                                    Grapher.tokenizeURI(Grapher.selectedDimension)];
-                    $.each(Grapher.includeDimensions, function(i, dim){
-                        bucket_stack.push(Grapher.tokenizeURI(dim));
-                    });
-                    
-                    // We'd like a tree which has as many levels as there are items in bucket_stack
-                    // 1. a recusive function which takes a list of observations, a list of dimension
-                    // tokens, and the current position in that list.
-                    //  It'll convert the supplied list into a bucketed object, then recurse into each bucket
-                    
-                    var paths = [];
-                    var bucketeer = function(observations, keys, key_index) {
-                        if (key_index < (keys.length)) {
-                                observations = _.groupBy(observations, function(obs)  { return obs[keys[key_index]].label; });
-                                $.each(observations, function(i, v) {
-                                    observations[i] = bucketeer(v, keys, key_index +1);
-                                });
-                        } 
-                        return observations;
-                    };
-                    var tree_data = bucketeer(observations, bucket_stack, 0);          
-
-                    $.each(tree_data, function(i,v){
-                        // For this data table each top level key in tree_data will build a row
-                        // According to the column spec
-                        var row = [i];
-                        $.each(colspec, function(coldex, spec){
-                            var val = 0;
-                            var cur = v;
-                            try {
-                                $.each(spec.path, function(i, key) { //slice the rowspec to omit the first key which
-                                                                                       // is handled by our outer iterator
-                                    cur = cur[key];
-                                });
-                                row.push(cur[0][Grapher.tokenizeURI(Grapher.selectedMeasure)].value);
-                            } catch (e) {
-                                // If there's no data along this path put in a blank column
-                                row.push(0);
-                            }
+                    if (xGroup){
+                        // Sort the observation list into a tree based on the value of the xGroup component
+                        var grouped_obs = _.groupBy(obs, function(item){
+                            return item[xGroup.uri].label?item[xGroup.uri].label:item[xGroup.uri].value;
                         });
-                        table.addRow(row);
-                    });
-                    
+                        // Iterate through the grouped observations writing rows into the table
+                        // Be sure to apply yhr same sort to the list as we did to get the column titles
+                        _.each(_.keys(grouped_obs).sort(), function(v,i){
+                            // Start the row with the grouping value we'll need to
+                            // cast this to match the column type
+                            var row = [v];
+                            var entries = _.map(
+                                                    _.sortBy(grouped_obs[v], function(ob){ return ob[xDimension.uri].value; }),
+                                                    function(ob) { return ob[yMeasure.uri].value }
+                                               );
+                            guardAddRow(row.concat(entries));
+                        });
+                    } else {
+                            var entries = _.map(
+                                                    _.sortBy(obs, function(ob){ return ob[xDimension.uri].value; }),
+                                                    function(ob) { return ob[yMeasure.uri].value }
+                                               );
+                            guardAddRow(entries);
+                    }
+
                     // Create Options for display
                     var options = {};
-                    options.title = Grapher.dsd.get_dimension(Grapher.selectedDimension).label;
-                    options.legend = 'none';
-                    options.hAxis = {title: Grapher.dsd.get_dimension(Grapher.groupbyDimension).label};
-                    options.vAxis = {title: Grapher.dsd.get_measure(Grapher.selectedMeasure).label};
-                    
-                    return {'chart':chart, 'table':table, 'options':options};
+                    options.title = data.settings.config.title?data.settings.config.title:'';
+                    //options.legend = 'none';
+                    options.hAxis = {title: getXLabelFromFixed()};
+                    options.vAxis = {title: yMeasure.label,
+                                              baseline:0};
+
+                    return {'chart':chart, 'table':table, 'options':$.extend(vis.options, options, true)};
         };
-        
+
         $.fn.yl_grapher.registerPlugin(vis);
-           
+
  })(jQuery, google);

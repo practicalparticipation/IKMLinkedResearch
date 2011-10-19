@@ -5,43 +5,37 @@
  */
  (function($, google){
         var vis = {};
-        
         vis.id = 'table';
         vis.title = "Data Table";
         vis.google_packages = ['table'];
-        vis.prepare = function(Grapher) {
-                    var observations = Grapher.filterData();
-                    var vis_el = Grapher.vis[0]
-                    var chart = new google.visualization.Table(vis_el);
+        vis.options = {};
+        vis.prepare = function(data) {
+            
+                    var chart = new google.visualization.Table(data.graph_target);
                     var table = new google.visualization.DataTable();
+                    var dsd = data.dsd_components;
                     
-                    var rowspec = [];
-                    rowspec.push(['dimension', Grapher.groupbyDimension, 'string']);
-                    $.each(Grapher.includeDimensions, function(i,v){
-                         rowspec.push(['dimension', v, 'string']);
-                    });
-                    rowspec.push(['dimension', Grapher.selectedDimension, 'string']);
-                    rowspec.push(['measure', Grapher.selectedMeasure, 'number']);
-                    
-                    // Add a columns as per rowspec
+                    var rowspec = dsd.sortType(data.settings.measureType);
+                    rowspec = rowspec.concat(dsd.sortType(data.settings.dimensionType));
                     $.each(rowspec, function(i,v){
-                        // use the first item in the rowspec tuple to arbitrate between get+_dimension and get_measure
-                        table.addColumn(v[2], Grapher.dsd['get_'+v[0]](v[1]).label);
+                        table.addColumn(v.type, v.label?v.label:v.uri);    
                     });
-                    
-                    $.each(observations, function(i,obs) { 
-                        var observation = obs;
+                   
+                    $.each(data.observations, function(i,obs) {
                         var row = [];
                         $.each(rowspec, function(i,spec){
-                            var data = observation[Grapher.tokenizeURI(spec[1])];
-                            row.push(data[(data.type === 'uri')?'label':'value']);
+                            var cell = null;
+                            if (obs[spec.uri]) {
+                                cell = obs[spec.uri].label?obs[spec.uri].label:obs[spec.uri].value;
+                            }
+                            row.push(cell);
                         });
                         table.addRow(row);
                     });
-                    
-                    return {'chart':chart, 'table':table};
+
+                    return {'chart':chart, 'table':table, 'options':vis.options};
         };
-        
+
         $.fn.yl_grapher.registerPlugin(vis);
-           
+
  })(jQuery, google);

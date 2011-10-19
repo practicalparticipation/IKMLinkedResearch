@@ -1,0 +1,29 @@
+<?php
+/**
+ * Controller for OntoWiki Navigation Module
+ *
+ * @category   OntoWiki
+ * @package    extensions_components_navigation
+ * @author     Sebastian Tramp <tramp@informatik.uni-leipzig.de>
+ * @copyright  Copyright (c) 2009, {@link http://aksw.org AKSW}
+ * @license    http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
+ */
+ 
+//require_once 'Erfurt/Sparql/Query2.php';
+
+class YlnavigationController extends OntoWiki_Controller_Component
+{
+   
+    /*
+     * Initializes Naviagation Controller,
+     * creates class vars for current store, session and model
+     */
+    public function init()
+    {
+        parent::init();
+        // create title helper
+        $this->titleHelper = new OntoWiki_Model_TitleHelper($this->model);
+        
+        
+    }
+

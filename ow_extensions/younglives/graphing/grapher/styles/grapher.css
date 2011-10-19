@@ -9,4 +9,13 @@ p {
 	margin: 10px;
 }
 
+/* Sharing Interface */
+#share {
+    text-align: center;
+}
+#share textarea {
+    width: 80%;
+    height: 50%;
+}
+
 

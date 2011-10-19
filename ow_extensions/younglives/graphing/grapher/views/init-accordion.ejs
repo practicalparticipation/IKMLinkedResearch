@@ -1,0 +1,11 @@
+<div class="grapher-ui accordion">
+    <h2 class="current">Chart</h2>
+    <div id="grapher-vis" class="pane" style="display:block;"></div>
+    <% if (shareable) { %>
+        <%= $.View('views/sharing.ejs', this) %>
+    <% } %>
+    <% if (configurable) { %>
+        <h2>Configure</h2>
+        <div id="configui" class="pane"></div>
+    <% } %>
+</div>
