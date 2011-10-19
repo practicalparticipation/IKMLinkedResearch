@@ -6,8 +6,8 @@ steal(
     'resources/jquery.view.ejs', // EJS View Templates
     'resources/jquerytools/src/tabs/tabs.js', //jquery.tools Tabs
     'resources/jquery.sparql.js', // SPARQL Query Generation
-    {path:'resources/jquery.fixture.js',
-     ignore:true}, // Add fixtures in development mode
+    //{path:'resources/jquery.fixture.js',
+     //ignore:true}, // Add fixtures in development mode
     'resources/urlEncode.js' // URLEncoding Utility
 
 )
@@ -412,7 +412,7 @@ steal(
                     
                     var base = 'http://' + data.settings.grapher_host;
                     var link_url = base;
-                    var iframe_url = base + data.settings.grapher_path;
+                    var iframe_url = data.settings.grapher_path;
                     
                     if (data.settings.ontowiki_path) {
                         // inside an ontowiki deployment
