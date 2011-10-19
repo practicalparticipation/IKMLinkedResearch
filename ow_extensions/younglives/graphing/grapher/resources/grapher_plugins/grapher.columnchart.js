@@ -14,15 +14,15 @@
                     var table = new google.visualization.DataTable();
                     var options = {};
                     var dsd = data.dsd_components;
-
-                    var config = data.config?data.config:dsd.getDefaultConfig();
-
+                    
 
                     //Chosen Measure for the Y axis
-                    var yMeasure = dsd.getComponent(config.yMeasure);
-                    var xDimension = dsd.getComponent(config.xDimension);
-                    var xGroup = config.xGroup?dsd.getComponent(config.xGroup):config.xGroup;
-                    var fixed = config.fixed;
+                    var yMeasure = dsd.getComponent(data.settings.config.yMeasure);
+                    var xDimension = dsd.getComponent(data.settings.config.xDimension);
+                    var xGroup = data.settings.config.xGroup?
+                                            dsd.getComponent(data.settings.config.xGroup):
+                                            data.settings.config.xGroup;
+                    var fixed = data.settings.config.fixed;
 
                     function getXLabelFromFixed(){
 
@@ -77,10 +77,13 @@
                     // Transform the list of ids into a list of objects
                     var obs = _.map(obs_uris, function(v){ return data.observations[v]; });
                     var table_cols = table.getNumberOfColumns();
+                    
+                    /**
+                     *Check the number of entries in a row
+                     *against the data table's expectations
+                     *Squeal if they don't match
+                     */
                     function guardAddRow(entries) {
-                        // Check that we've the right number of entries for the row
-                        // If not something's wrong - probably with the data.
-                        // Squeal about it.
                         if (entries.length === table_cols) {
                             table.addRow(entries);
                         } else {
@@ -106,22 +109,16 @@
                             guardAddRow(row.concat(entries));
                         });
                     } else {
-
-
                             var entries = _.map(
                                                     _.sortBy(obs, function(ob){ return ob[xDimension.uri].value; }),
                                                     function(ob) { return ob[yMeasure.uri].value }
                                                );
                             guardAddRow(entries);
-
                     }
-
-
-
 
                     // Create Options for display
                     var options = {};
-                    options.title = config.title?config.title:'';
+                    options.title = data.settings.config.title?data.settings.config.title:'';
                     //options.legend = 'none';
                     options.hAxis = {title: getXLabelFromFixed()};
                     options.vAxis = {title: yMeasure.label,

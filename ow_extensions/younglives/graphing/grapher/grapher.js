@@ -28,14 +28,15 @@ steal(
         var plugins = {};
         // Registered via $.fn.yl_grapher.registerPlugin
 
-
-
         var settings = {
             dsd: null,
             sparql_endpoint: null,
-            http_host:'localhost',
-            host_path: '/IKMLinkedResearch/build/younglives/display/r/ylstats?SumaryStatistics-e55f586a-b105-4ee4-ad75-ab87cb97e21e',
+            grapher_host:'localhost',
+            ontowiki_path: null,
+            grapher_path: '/~rupert/IKMLinkedResearch/ow_extensions/younglives/graphing/grapher/grapher.html',
             graph_type: 'columnchart',
+            shareable: true,
+            configurable: false,
             chart_options: {'height': 400,
                                      'width': 630,
                                      'chartArea': {left:40,top:35,width:"440",height:"300"}
@@ -43,6 +44,9 @@ steal(
             measureType: "MeasureProperty",
             dimensionType: "DimensionProperty"
         };
+        
+        // Settings items which are exportable via the sharing tab
+        var exportables  = ['dsd', 'sparql_endpoint', 'http_host', 'host_path', 'graph_type', 'config'];
 
         var methods = {
             /**
@@ -63,8 +67,9 @@ steal(
                         if (options) {
                             $.extend(settings, options, true);
                         }
+                        
                         // Build UI
-                        var ui = $($.View('views/init-accordion.ejs'));
+                        var ui = $($.View('views/init-accordion.ejs', settings));
 
                         $this.html(ui);
                         $(".accordion", $this).tabs(".accordion div.pane",
@@ -80,6 +85,11 @@ steal(
 
                         // Store our state
                         $this.data('grapher', data);
+                        
+                        // Set up sharing tab if available
+                        if (settings.shareable) {
+                            $this.yl_grapher('initSharing');
+                        }
 
                         // Set up initial bindings
                         $this.bind('graphDataLoaded',
@@ -336,6 +346,13 @@ steal(
                         // Store parsed observations and dsd componetry
                         data.observations = obs;
                         data.dsd_components = dsd_comps;
+                        
+                        // Check our config - calculating defaults if necessary
+                        if (!data.settings.config) {
+                            data.settings.config = data.dsd_components.getDefaultConfig();
+                            $this.trigger('grapherConfigChanged');
+                        } 
+                        
                         // Call supplied callback & emit loaded event
                         $this.trigger('graphDataLoaded');
                         if (callback) {
@@ -361,7 +378,63 @@ steal(
                 } else {
                     $.error('No Grapher plugin has been registered with an id of ' + settings.graph_type);
                 }
-            }
+            }, //END drawGraph
+        
+            /**
+             *Set up the sharing interface
+             */
+            initSharing: function(){
+                console.log('initializing sharing');
+                var $this = $(this)
+                        data = $(this).data('grapher');
+                        
+                var shareui = $('#share', $this);
+                
+                // Call for an update of the sharing code whenever
+                // an input element changes
+                $('input', shareui).bind('change', function(evt){
+                    $this.trigger('grapherUpdateSharing');
+                    console.log('update sharing');
+                });
+                
+                // Bind to changes to the configuration
+                $this.bind('grapherConfigChanged grapherUpdateSharing', function(evt){
+                    var req_params = {};
+                    _.each(exportables, function(v,i){
+                        req_params[v] = data.settings[v];    
+                    });
+                    
+                    // Implement shareability
+                    req_params.shareable = $('input[name="reshareable"]', shareui).is(':checked');
+                    // Implement configurability
+                    req_params.configurable = $('input[name="reconfigurable"]', shareui).is(':checked');
+                    
+                    // Discover our share_type
+                    var share_type = $('input[name="share_type"]:checked', shareui).val();
+                    
+                    var base = 'http://' + data.settings.grapher_host;
+                    var link_url = base;
+                    var iframe_url = base + data.settings.grapher_path;
+                    
+                    if (data.settings.ontowiki_path) {
+                        // inside an ontowiki deployment
+                        link_url += data.settings.ontowiki_path;
+                        // add the dsd as a resource param for ow
+                        req_params['r'] = req_params.dsd;
+                    } else {
+                        // No Ontowiki detected
+                        //link direct to grapher
+                        link_url = iframe_url;
+                    }
+                    
+                    var share_data = {link: $.param.querystring(link_url, req_params),
+                                                 iframe_src: $.param.querystring(iframe_url, req_params),
+                                                 params: req_params};
+                    
+                    $('.share_output', shareui).val($.View('views/sharing-' + share_type, share_data));
+                    
+                });
+            } //END initSharing
         }
 
         /**

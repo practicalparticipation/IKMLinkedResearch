@@ -14,7 +14,7 @@
 	<script type='text/javascript'
         src='../steal/steal.js?grapher,development'></script>
 	<script type="text/javascript">
-        var params = jQuery.deparam.querystring();
+        var params = jQuery.deparam.querystring(true);
         var opts = {}; //override/supplement url vars here if needed
 	    $.extend(params, opts);
         $('#grapher').yl_grapher(params);

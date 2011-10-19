@@ -2,8 +2,9 @@
 $params = array();
 $params[] = 'dsd=' . urlencode($this->resource);
 $params[] = 'sparql_endpoint=' . urlencode($this->base . 'service/sparql');
-$params[] = 'http_host=' . urlencode($_SERVER['HTTP_HOST']);
-$params[] = 'host_path=' . urlencode($_SERVER['REDIRECT_URL']);
+$params[] = 'grapher_host=' . urlencode($_SERVER['HTTP_HOST']);
+$params[] = 'ontowiki_path=' . urlencode($_SERVER['REDIRECT_URL']);
+$params[] = 'grapher_path=' . urlencode($this->componentBase . 'graphing/grapher/grapher.html');
 foreach ($_GET as $k => $v) {
    $val = $k . '=' .  urlencode($v);
    if (!in_array($val, $params)) {
