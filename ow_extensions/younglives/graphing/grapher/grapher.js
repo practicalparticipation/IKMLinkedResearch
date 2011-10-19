@@ -237,7 +237,6 @@ steal(
                             }
                             // Return a copy of the cached values array
                             return _cacheValuesFor[componentURI].slice(0);
-
                         }
 
                         /**

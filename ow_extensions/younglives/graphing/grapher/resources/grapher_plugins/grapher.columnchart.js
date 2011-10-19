@@ -121,7 +121,7 @@
 
                     // Create Options for display
                     var options = {};
-                    options.title = 'Bodged Title Element';
+                    options.title = config.title?config.title:'';
                     //options.legend = 'none';
                     options.hAxis = {title: getXLabelFromFixed()};
                     options.vAxis = {title: yMeasure.label,
