@@ -384,7 +384,6 @@ steal(
              *Set up the sharing interface
              */
             initSharing: function(){
-                console.log('initializing sharing');
                 var $this = $(this)
                         data = $(this).data('grapher');
                         
@@ -394,7 +393,6 @@ steal(
                 // an input element changes
                 $('input', shareui).bind('change', function(evt){
                     $this.trigger('grapherUpdateSharing');
-                    console.log('update sharing');
                 });
                 
                 // Bind to changes to the configuration
