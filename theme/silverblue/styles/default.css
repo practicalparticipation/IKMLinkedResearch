@@ -834,6 +834,11 @@ ul ol, ol ul, ul ul, ol ol {
     list-style-type: decimal;
 }
 
+a.hasMenu, a.navigation, a.Model {
+display:block;
+padding:5px 0;
+}
+
 /* ---- 2.2.2. Horizontal/Inline lists -------------------------------------- */
 
 /**
@@ -940,7 +945,7 @@ ul.inline.separated li, ol.inline.separated li
 }
 ul.inline.separated li:after, ol.inline.separated li:after
 {
-    content:" â€¢ ";
+    content:" â?¢ ";
     color:#ccc;
 }
 ul.inline.separated li:last-child:after, ol.inline.separated li:last-child:after,

@@ -17,6 +17,7 @@
     /*top:0; height:100%;*/
     background-color:#999;
     background-image:url(icon-next.png);
+background-position: center center;
     -moz-border-radius:0.5em; border-radius:0.5em;
 }
 

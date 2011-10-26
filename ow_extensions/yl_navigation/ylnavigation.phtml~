@@ -9,12 +9,12 @@
 ?>
 
 <div id="yl-navigation-content" class="width99 init-me-please">
-<p>Hello Neil</p>
+<p>Hello Rupert</p>
 <p><a href="<?php echo($this->urlBase);?>view/r/ylpages%3AEthiopia">Go to Ethiopia!</a> If you have imported the test_markdown.ttl
 </p>
 <?php 
 /*php can go here
-*/ 
-var_dump($this->urlBase);
+ 
+var_dump($this->urlBase);*/
 ?>    
 </div>

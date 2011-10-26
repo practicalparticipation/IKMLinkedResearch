@@ -11,6 +11,7 @@ foreach ($_GET as $k => $v) {
         $params[] = $val;
    }
 }
+$params[] = 'shareable=true';
 $q = implode('&', $params);
 
 ?>

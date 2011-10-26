@@ -20,7 +20,7 @@
     	<echo msg="creating source directory" />
 	<exec command="mkdir -p src/Tar" />
 	<echo msg="downloading ontowiki src if needed" />
-	<exec command="if [ ! -f src/Tar/ontowiki-0.9.6-pre2.zip ]; then  wget -P src/Tar/  http://ontowiki.googlecode.com/files/ontowiki-0.9.6-pre2.zip; fi" />
+	<exec command="if [ ! -f src/Tar/ontowiki-0.9.6-pre2.zip ]; then  curl http://ontowiki.googlecode.com/files/ontowiki-0.9.6-pre2.zip > ./src/Tars/ontowiki-0.9.6-pre2.zip; fi" />
     </target>
     
     
@@ -52,7 +52,7 @@
     
     <target name="jsonrpc_bug_fix_overwrite">
 	    <echo msg="changing default export format to rdf/json in jsonrpc. copying new modelJsonrpcAdapter.php over current one" />
-	    <copy file="./jsonrpc/modelJsonrpcAdapter.php" 
+	    <copy file="./ow_extensions/jsonrpc/modelJsonrpcAdapter.php" 
 		  tofile="./${builddir}/extensions/jsonrpc/modelJsonrpcAdapter.php"
 		  overwrite="true" />
     </target>
@@ -80,8 +80,10 @@
         <exec command="ln -s ${application.startdir}/ow_extensions/csvimport ${builddir}/extensions"/> 
 	<exec command="ln -s ${application.startdir}/ow_extensions/younglives ${builddir}/extensions"/>
 	<exec command="ln -s ${application.startdir}/ow_extensions/yl_navigation ${builddir}/extensions"/>
+	<exec command="rm -f ${builddir}/extensions/navigation/navigation.css;ln -s ${application.startdir}/ow_extensions/navigation/navigation.css ${builddir}/extensions/navigation/"/>
 	<exec command="cp -f ${application.startdir}/ow_extensions/front_page_override/IndexController.php ${builddir}/application/controllers/"/>
 	<exec command="cp -f ${application.startdir}/ow_extensions/front_page_override/news.phtml ${builddir}/application/views/templates/index/"/>
+	
         <mkdir dir="${builddir}/extensions/csvimport/logs"/>
         <chmod file="${builddir}/extensions/csvimport/logs" mode="0777"/>
         <mkdir dir="${builddir}/extensions/csvimport/configs"/>
