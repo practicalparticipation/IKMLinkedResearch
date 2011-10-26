@@ -20,7 +20,7 @@
     	<echo msg="creating source directory" />
 	<exec command="mkdir -p src/Tar" />
 	<echo msg="downloading ontowiki src if needed" />
-	<exec command="if [ ! -f src/Tar/ontowiki-0.9.6-pre2.zip ]; then  curl http://ontowiki.googlecode.com/files/ontowiki-0.9.6-pre2.zip > ./src/Tars/ontowiki-0.9.6-pre2.zip; fi" />
+	<exec command="if [ ! -f src/Tar/ontowiki-0.9.6-pre2.zip ]; then  curl http://ontowiki.googlecode.com/files/ontowiki-0.9.6-pre2.zip > ./src/Tar/ontowiki-0.9.6-pre2.zip; fi" />
     </target>
     
     
