@@ -1,0 +1,22 @@
+<div class="grapher_configurator">
+    <form id="configure">
+        <label for="graph_title">Title</label>
+        <input type="text" name="graph_title" />
+        <br/>
+        <label for="xDimension">xDimension</label>
+        <select name="xDimension">
+            <% $.each(comps.getDimensions(), function(i, dim) { %>
+                <option value="<%= dim.uri %>"><%= dim.label %></option>
+            <% }); %>
+        </select>
+        <br/>
+
+
+        <button class="update">Update</button>
+
+        Debug:<br/>
+        <% $.each(conf, function(key, val) { %>
+            <strong><%= key %></strong>:<em><%= val.toString() %></em><br/>
+        <% }); %>
+    </form>
+</div>
