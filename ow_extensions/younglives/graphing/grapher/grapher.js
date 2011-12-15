@@ -309,10 +309,22 @@ steal(
                         }
 
                         /**
-                         * getDimensions
+                         * @ function getDimensions
+                         * Return all the dsd components which are dimensions
+                         * @param {String} type 'core' or 'optional' get just an arry
+                         * @return {Object}
                          */
-                        dsd_comps.getDimensions = function() {
-                            return this["http://purl.org/linked-data/cube#DimensionProperty"];
+                        dsd_comps.getGroupedDimensions = function(type) {
+                            var grouped = _.groupBy(
+                                this["http://purl.org/linked-data/cube#DimensionProperty"],
+                                function(comp, uri){ return dsd_comps.isCoreComponent(uri)?'core':'optional'; }
+                            );
+                            if (type) {
+                                return grouped[type]
+                            } else {
+                                return grouped
+                            }
+
                         },
 
                         /**
@@ -341,10 +353,7 @@ steal(
                                 )[0].uri;
 
                              // sort dimensions into core components and others
-                            var dim_map = _.groupBy(
-                                this["http://purl.org/linked-data/cube#DimensionProperty"],
-                                function(comp, uri){ return dsd_comps.isCoreComponent(uri)?'core':'optional'; }
-                            );
+                            var dim_map = dsd_comps.getGroupedDimensions();
 
                             // sort the required components - group by the one with the largest range of values
                             // fix the rest to the first of their unique values

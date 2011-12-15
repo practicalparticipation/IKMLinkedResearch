@@ -5,8 +5,8 @@
         <br/>
         <label for="xDimension">xDimension</label>
         <select name="xDimension">
-            <% $.each(comps.getDimensions(), function(i, dim) { %>
-                <option value="<%= dim.uri %>"><%= dim.label %></option>
+            <% $.each(comps.getGroupedDimensions('optional'), function(i, dim) { %>
+                <option value="<%= dim.uri %>" <%= (dim.uri === conf.xDimension)?"selected=2selected":'' %>><%= dim.label %></option>
             <% }); %>
         </select>
         <br/>
