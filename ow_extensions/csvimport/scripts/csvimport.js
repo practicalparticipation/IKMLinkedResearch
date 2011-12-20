@@ -30,7 +30,7 @@ var sdmx_code = 'http://purl.org/linked-data/sdmx/2009/code#';
 var xsd = 'http://www.w3.org/2001/XMLSchema#';
 
 //ontowikis sparql endpoint url
-var sparql_endpoint = 'service/sparql';
+var sparql_endpoint = '../service/sparql';
 
 var measure = {};
 var dimcount = 0;
@@ -702,8 +702,8 @@ $(document).ready(function () {
 	new code for importing younglives summary data.
 	
 	add these lines 
-	<script type="text/javascript" src="<?php echo $this->staticUrlBase;?>extensions/younglives/graphing/js/urlEncode.js"></script>
-	<script type="text/javascript" src="<?php echo $this->staticUrlBase;?>extensions/younglives/graphing/js/jquery.sparql.js"></script>
+	<script type="text/javascript" src="<?php echo $this->staticUrlBase;?>extensions/csvmiport/scripts/urlEncode.js"></script>
+	<script type="text/javascript" src="<?php echo $this->staticUrlBase;?>extensions/csvimport/scripts/jquery.sparql.js"></script>
 	to application/views/templates/layouts/layout.phtml 
 	and add  a symbolic link from  /ow_extensions/younglives to build/extensions/younglives
 	ok upadate trying these in CsvimportController.php now, much batter if it works 
