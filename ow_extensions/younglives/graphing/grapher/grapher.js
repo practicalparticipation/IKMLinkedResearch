@@ -65,7 +65,7 @@ steal(
             init: function(options) {
                 return this.each(function(){
                     var self = this,
-                        $this = $(this)
+                        $this = $(this),
                           data = $(this).data('grapher');
                     if (!data) {
                         data = {};
@@ -119,7 +119,8 @@ steal(
                                 }
                             }
                         );
-
+                        // DEBUG
+                        window.grapherdata = data;
                         /**
                          * Kick off by calling getObservations
                          */
@@ -308,15 +309,30 @@ steal(
                             return (this.valuesFor(componentURI).length === _.keys(obs).length);
                         }
 
+                        dsd_comps.getMeasures = function () {
+                            return _.sortBy(
+                                    this["http://purl.org/linked-data/cube#MeasureProperty"],
+                                    function(comp){ return comp.order; }
+                                );
+                        },
+
                         /**
-                         * @ function getDimensions
+                         * @function getDimensions
+                         * @return {Object}
+                         */
+                        dsd_comps.getDimensions = function () {
+                            return this["http://purl.org/linked-data/cube#DimensionProperty"];
+                        },
+
+                        /**
+                         * @ function getGroupedDimensions
                          * Return all the dsd components which are dimensions
                          * @param {String} type 'core' or 'optional' get just an arry
                          * @return {Object}
                          */
                         dsd_comps.getGroupedDimensions = function(type) {
                             var grouped = _.groupBy(
-                                this["http://purl.org/linked-data/cube#DimensionProperty"],
+                                dsd_comps.getDimensions(),
                                 function(comp, uri){ return dsd_comps.isCoreComponent(uri)?'core':'optional'; }
                             );
                             if (type) {
@@ -337,20 +353,18 @@ steal(
                                 yMeasure: null,
                                 xDimension: null,
                                 xGroup: null,
-                                fixed: {}//{"http://data.younglives.org.uk/data/statistics/structure/components/country":
-                                         //       "http://data.younglives.org.uk/data/statistics/Ethiopia",
-                                            //"http://data.younglives.org.uk/data/statistics/structure/components/year":
-                                            //     2002,
-                                         //   "http://data.younglives.org.uk/data/statistics/structure/components/cohort":
-                                         //       "http://data.younglives.org.uk/data/statistics/AllCohorts"
-                                //}
+                                fixed: {//"http://data.younglives.org.uk/data/statistics/structure/components/country":
+                                           //     "http://data.younglives.org.uk/data/statistics/Ethiopia",
+                                        //"http://data.younglives.org.uk/data/statistics/structure/components/year":
+                                        //         2009,
+                                        //   "http://data.younglives.org.uk/data/statistics/structure/components/cohort":
+                                        //        "http://data.younglives.org.uk/data/statistics/AllCohorts"
+                                }
                             };
 
                             //Sort all the measures by order and grab the first
-                             config.yMeasure =  _.sortBy(
-                                    this["http://purl.org/linked-data/cube#MeasureProperty"],
-                                    function(comp){ return comp.order; }
-                                )[0].uri;
+                             config.yMeasure =  dsd_comps.getMeasures()[0].uri;
+
 
                              // sort dimensions into core components and others
                             var dim_map = dsd_comps.getGroupedDimensions();

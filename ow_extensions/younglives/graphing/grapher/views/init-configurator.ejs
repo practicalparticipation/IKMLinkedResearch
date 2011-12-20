@@ -6,17 +6,42 @@
         <label for="xDimension">xDimension</label>
         <select name="xDimension">
             <% $.each(comps.getGroupedDimensions('optional'), function(i, dim) { %>
-                <option value="<%= dim.uri %>" <%= (dim.uri === conf.xDimension)?"selected=2selected":'' %>><%= dim.label %></option>
+                <option value="<%= dim.uri %>" <%= (dim.uri === conf.xDimension)?'selected="selected"':'' %>><%= dim.label %></option>
             <% }); %>
         </select>
         <br/>
 
+        <% var yMeasures = comps.getMeasures();
+                if (yMeasures.length > 1) { %>
+                    <label for="yMeasure">yMeasure</label>
+                    <select name="xDimension">
+                        <% $.each(yMeasures, function(i, mea) { %>
+                            <option value="<%= mea.uri %>" <%= (mea.uri === conf.yMeasure)?'selected="selected"':'' %>><%= mea.label %></option>
+                        <% }); %>
+                    </select>
+                <% } else { %>
+                    <input type="hidden" name="yMeasure" value="<%= yMeasures[0].uri %>" />
+                <% } %>
+
+        <div class="fixes">Fixed values:<br/>
+        <% $.each(comps.getGroupedDimensions('core'), function(i, dim) { %>
+            <label for="fixed[<%= dim.uri %>]"><%= dim.label %></label>
+            <select name="fixed[<%= dim.uri %>]">
+                <option value="xGroup"
+                    <%= (dim.uri === conf.xGroup)?'selected="selected"':'' %>
+                    >Show All</option>
+                <% $.each(comps.uniqueValuesFor(dim.uri), function(i, val) { %>
+                    <option value="<%= val.value %>"
+                        <%= (val.value === conf.fixed[dim.uri])?'selected="selected"':'' %>
+                        ><%= val.label?val.label:val.value %></option>
+                <% }) %>
+            </select>
+        <% }); %>
+        </div>
+
 
         <button class="update">Update</button>
 
-        Debug:<br/>
-        <% $.each(conf, function(key, val) { %>
-            <strong><%= key %></strong>:<em><%= val.toString() %></em><br/>
-        <% }); %>
+
     </form>
 </div>

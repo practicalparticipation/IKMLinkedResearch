@@ -25,12 +25,31 @@ steal()
             // on click of update
             ui$.delegate('.update', 'click', function(){
                 var data = grapher.data('grapher');
-                console.log(ui$);
-                console.log(grapher);
                 // convert the config form into an object
                 var conf = $.deparam($('#configure', ui$).serialize());
                 // merge it over the top of the existing config
-                var newconf = $.extend({}, data.settings.config, conf);
+                var newconf = conf;//$.extend({}, data.settings.config, conf);
+
+                // Because we've passed through a form we need to check any fixed
+                // values - might they be numbers?
+                // Also - find out of one fixed value has been selected as the
+                // grouping dimension
+                $.each(newconf.fixed, function(i,v){
+                    // Cast number types
+                    if (data.dsd_components.getDimensions()[i].type === 'number') {
+                        newconf.fixed[i] = parseFloat(v);
+                    }
+                    // Check for xGroup
+                    if (v === 'xGroup') {
+                        newconf.xGroup = i;
+                        delete newconf.fixed[i];
+                    }
+                });
+
+                // Fix the measure
+                //newconf.yMeasure = data.dsd_components.getMeasures()[0];
+
+
                 // Set it in
                 data.settings.config = newconf;
                 grapher.trigger('grapherConfigChanged');
