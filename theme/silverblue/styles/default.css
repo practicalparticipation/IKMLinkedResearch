@@ -835,7 +835,7 @@ ul ol, ol ul, ul ul, ol ol {
 }
 
 a.hasMenu, a.navigation, a.Model {
-display:block;
+/*display:block;*/
 padding:5px 0;
 }
 
@@ -945,7 +945,7 @@ ul.inline.separated li, ol.inline.separated li
 }
 ul.inline.separated li:after, ol.inline.separated li:after
 {
-    content:" â?¢ ";
+    content:" ï¿½?ï¿½ ";
     color:#ccc;
 }
 ul.inline.separated li:last-child:after, ol.inline.separated li:last-child:after,
