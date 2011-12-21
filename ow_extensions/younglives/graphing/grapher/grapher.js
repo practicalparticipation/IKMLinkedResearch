@@ -258,19 +258,15 @@ steal(
                         /**
                          * Return an array of values for a dsd component
                          */
-                        var _cacheValuesFor = {};
-                        dsd_comps.valuesFor = function(componentURI) {
-                            if (!_cacheValuesFor[componentURI]) {
-                                var comp = this.getComponent(componentURI);
-                                // Map out its values into the cache
-                                _cacheValuesFor[componentURI] = _.map(comp.observations, function(ob){
-                                    return {label:ob.valueLabel?ob.valueLabel.value:null,
-                                                    value: $.fn.yl_grapher.sparqlCaster(ob.value)};
-                                });
-                            }
-                            // Return a copy of the cached values array
-                            return _cacheValuesFor[componentURI].slice(0);
-                        }
+                        
+                        dsd_comps.valuesFor = _.memoize(function(componentURI) {
+                            var comp = this.getComponent(componentURI);
+                            
+                            return  _.map(comp.observations, function(ob){
+                                return {label:ob.valueLabel?ob.valueLabel.value:null,
+                                                value: $.fn.yl_grapher.sparqlCaster(ob.value)};
+                            });
+                        });
 
                         /**
                          * Return an array of unique values for a dsd component
@@ -551,8 +547,6 @@ steal(
             }
             if (item.type === "typed-literal") {
                 return datatypes[item.datatype](item.value);
-            } else if (item.type === "literal") {
-                return item.value.toString();
             } else {
                 return item.value.toString();
             }
@@ -566,5 +560,6 @@ steal(
     // Load any Plugins we want included by default
     '//grapher/resources/grapher_plugins/grapher.table.js', // Data Table Plugin
     '//grapher/resources/grapher_plugins/grapher.columnchart.js', // Column Chart Plugin
+    '//grapher/resources/grapher_plugins/grapher.linechart.js', // Line Chart Plugin
     '//grapher/resources/grapher_plugins/grapher.configurator.js'// Configurator plugin
 );

@@ -12,16 +12,16 @@
         <br/>
 
         <% var yMeasures = comps.getMeasures();
-                if (yMeasures.length > 1) { %>
-                    <label for="yMeasure">yMeasure</label>
-                    <select name="xDimension">
-                        <% $.each(yMeasures, function(i, mea) { %>
-                            <option value="<%= mea.uri %>" <%= (mea.uri === conf.yMeasure)?'selected="selected"':'' %>><%= mea.label %></option>
-                        <% }); %>
-                    </select>
-                <% } else { %>
-                    <input type="hidden" name="yMeasure" value="<%= yMeasures[0].uri %>" />
-                <% } %>
+            if (yMeasures.length > 1) { %>
+                <label for="yMeasure">yMeasure</label>
+                <select name="xDimension">
+                    <% $.each(yMeasures, function(i, mea) { %>
+                        <option value="<%= mea.uri %>" <%= (mea.uri === conf.yMeasure)?'selected="selected"':'' %>><%= mea.label %></option>
+                    <% }); %>
+                </select>
+            <% } else { %>
+                <input type="hidden" name="yMeasure" value="<%= yMeasures[0].uri %>" />
+        <% } %>
 
         <div class="fixes">Fixed values:<br/>
         <% $.each(comps.getGroupedDimensions('core'), function(i, dim) { %>
