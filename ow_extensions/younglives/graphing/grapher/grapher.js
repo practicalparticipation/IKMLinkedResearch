@@ -38,8 +38,7 @@ steal(
             sparql_endpoint: null,
             grapher_host:'localhost',
             ontowiki_path: null,
-            grapher_path: '/~rupert/IKMLinkedResearch/ow_extensions/younglives/graphing/grapher/grapher.html',
-            graph_type: 'columnchart',
+            grapher_path: '/IKMLinkedResearch/ow_extensions/younglives/graphing/grapher/grapher.html',
             shareable: true,
             configurable: true,
             chart_options: {'height': 400,
@@ -346,6 +345,7 @@ steal(
                          */
                         dsd_comps.getDefaultConfig = function(){
                             var config = {
+                                graph_type: 'columnchart',
                                 yMeasure: null,
                                 xDimension: null,
                                 xGroup: null,
@@ -415,8 +415,8 @@ steal(
              * then hand off to a graph drawing routine
              */
             drawGraph: function(){
-                if (plugins[settings.graph_type] !== undefined) {
-                    var prepped_vis = plugins[settings.graph_type]
+                if (plugins[settings.config.graph_type] !== undefined) {
+                    var prepped_vis = plugins[settings.config.graph_type]
                                                     .prepare(data);
                     // Draw the chart
                     prepped_vis.chart.draw(
@@ -424,7 +424,7 @@ steal(
                         $.extend(settings.chart_options, prepped_vis.options, true)
                     );
                 } else {
-                    $.error('No Grapher plugin has been registered with an id of ' + settings.graph_type);
+                    $.error('No Grapher plugin has been registered with an id of ' + settings.config.graph_type);
                 }
             }, //END drawGraph
 
@@ -460,7 +460,7 @@ steal(
 
                     var base = 'http://' + data.settings.grapher_host;
                     var link_url = base;
-                    var iframe_url = data.settings.grapher_path;
+                    var iframe_url = base + data.settings.grapher_path;
 
                     if (data.settings.ontowiki_path) {
                         // inside an ontowiki deployment
@@ -528,6 +528,19 @@ steal(
         $.fn.yl_grapher.registerPlugin = function(plugin){
             plugins[plugin.id] = plugin;
         };
+        
+        /**
+         * @function plugins
+         * plugin retrieval
+         * @param [{String}] id a plugin id to retrieve
+         */        
+        $.fn.yl_grapher.plugins = function(id) {
+            if (id) {
+                return plugins[id];
+            } else {
+                return plugins;
+            }
+        }
 
         // Configurator registration
         $.fn.yl_grapher.registerConfigurator = function(conf){

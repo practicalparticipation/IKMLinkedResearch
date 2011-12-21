@@ -13,7 +13,7 @@ steal()
             conf =  data.settings.config;
             comps = data.dsd_components;
 
-            markup = $.View('//grapher/views/init-configurator.ejs', {conf:conf, comps:comps});
+            markup = $.View('//grapher/views/init-configurator.ejs', {conf:conf, comps:comps, plugins:$.fn.yl_grapher.plugins()});
 
             return $(markup);
 
