@@ -1,5 +1,5 @@
 <div class="grapher-ui accordion">
-    <h2 class="current">Chart</h2>
+    <h2 id="chart_title" class="current"><%= $.View('views/chart_pane_title.ejs', this) %></h2>
     <div id="grapher-vis" class="pane" style="display:block;"></div>
     <% if (shareable) { %>
         <%= $.View('views/sharing.ejs', this) %>
