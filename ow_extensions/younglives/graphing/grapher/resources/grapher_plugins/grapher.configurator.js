@@ -45,16 +45,31 @@ steal()
                         delete newconf.fixed[i];
                     }
                 });
-
-                // Fix the measure
-                //newconf.yMeasure = data.dsd_components.getMeasures()[0];
-
-
                 // Set it in
                 data.settings.config = newconf;
                 grapher.trigger('grapherConfigChanged');
                 return false;
             });
+            
+            // Handle changes to selects in the fixed section
+            ui$.delegate('.fixes select', 'change', function(){
+                var sibs;
+                // Get our sibling selects
+                sibs = $(this).siblings('select');
+
+                if ($(this).val() === 'xGroup') {
+                    //Disable our siblings' xGroup option
+                    sibs.find('option[value="xGroup"]').attr('disabled', true);
+                } else {
+                    //otherwise enable all xGroup options if none are selected
+                    sibs
+                        .add(this)
+                        .find('option[value="xGroup"]')
+                        .removeAttr('disabled');
+                }
+            });
+            // Trigger a change on any xGroup selected select in order to initialize this
+            ui$.find('.fixes select option:selected[value="xGroup"]').eq(0).parent().trigger('change');
         };
 
 
