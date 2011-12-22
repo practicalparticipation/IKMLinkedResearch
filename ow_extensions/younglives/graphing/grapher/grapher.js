@@ -34,6 +34,7 @@ steal(
 
         var settings = {
             default_graph_title: 'Chart',
+            default_graph_type: 'linechart',
             dsd: null,
             sparql_endpoint: null,
             grapher_host:'localhost',
@@ -345,7 +346,7 @@ steal(
                          */
                         dsd_comps.getDefaultConfig = function(){
                             var config = {
-                                graph_type: 'columnchart',
+                                graph_type: data.settings.default_graph_type,
                                 yMeasure: null,
                                 xDimension: null,
                                 xGroup: null,
