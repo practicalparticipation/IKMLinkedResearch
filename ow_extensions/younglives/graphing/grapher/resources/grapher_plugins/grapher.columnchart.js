@@ -7,6 +7,7 @@
         var vis = {};
         vis.id = 'columnchart';
         vis.title = "Column Chart";
+        vis.configImgUrl = "styles/img/tabs/column.png";
         vis.google_components = ['corechart'];
         vis.options = {};
         vis.prepare = function(data) {
@@ -14,7 +15,7 @@
                     var table = new google.visualization.DataTable();
                     var options = {};
                     var dsd = data.dsd_components;
-                    
+
 
                     //Chosen Measure for the Y axis
                     var yMeasure = dsd.getComponent(data.settings.config.yMeasure);
@@ -77,7 +78,7 @@
                     // Transform the list of ids into a list of objects
                     var obs = _.map(obs_uris, function(v){ return data.observations[v]; });
                     var table_cols = table.getNumberOfColumns();
-                    
+
                     /**
                      *Check the number of entries in a row
                      *against the data table's expectations

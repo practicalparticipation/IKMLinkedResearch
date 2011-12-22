@@ -34,6 +34,7 @@ steal(
 
         var settings = {
             default_graph_title: 'Chart',
+            default_graph_type: 'linechart',
             dsd: null,
             sparql_endpoint: null,
             grapher_host:'localhost',
@@ -50,7 +51,7 @@ steal(
         };
 
         // Settings items which are exportable via the sharing tab
-        var exportables  = ['dsd', 'sparql_endpoint', 'http_host', 'host_path', 'graph_type', 'config'];
+        var exportables  = ['dsd', 'sparql_endpoint', 'http_host', 'host_path', 'config'];
 
         var methods = {
             /**
@@ -257,10 +258,10 @@ steal(
                         /**
                          * Return an array of values for a dsd component
                          */
-                        
+
                         dsd_comps.valuesFor = _.memoize(function(componentURI) {
                             var comp = this.getComponent(componentURI);
-                            
+
                             return  _.map(comp.observations, function(ob){
                                 return {label:ob.valueLabel?ob.valueLabel.value:null,
                                                 value: $.fn.yl_grapher.sparqlCaster(ob.value)};
@@ -345,7 +346,7 @@ steal(
                          */
                         dsd_comps.getDefaultConfig = function(){
                             var config = {
-                                graph_type: 'columnchart',
+                                graph_type: data.settings.default_graph_type,
                                 yMeasure: null,
                                 xDimension: null,
                                 xGroup: null,
@@ -528,12 +529,12 @@ steal(
         $.fn.yl_grapher.registerPlugin = function(plugin){
             plugins[plugin.id] = plugin;
         };
-        
+
         /**
          * @function plugins
          * plugin retrieval
          * @param [{String}] id a plugin id to retrieve
-         */        
+         */
         $.fn.yl_grapher.plugins = function(id) {
             if (id) {
                 return plugins[id];
