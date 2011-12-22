@@ -9,20 +9,22 @@
 
 /* accordion header */
 .accordion h2 {
-	background:#ccc url(./img/tabs/h30.png);
+	background:#4e2f91;
 	margin:0;
 	padding:5px 15px;
 	font-size:14px;
-	font-weight:normal;
+        color:#fff;
 	border:1px solid #fff;
-	border-bottom:1px solid #ddd;
+        border-left-width:2px;
+        border-right-width:2px;
 	cursor:pointer;
+background-color:#B897E3;
 }
 
 /* currently active header */
 .accordion h2.current {
 	cursor:default;
-	background-color:#fff;
+background:#4e2f91;
 }
 
 /* accordion pane */
@@ -37,8 +39,6 @@
 
 /* a title inside pane */
 .accordion .pane h3 {
-	font-weight:normal;
-	margin:0 0 -5px 0;
 	font-size:16px;
 	color:#999;
 }

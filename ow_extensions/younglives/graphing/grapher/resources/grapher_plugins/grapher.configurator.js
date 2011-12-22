@@ -13,7 +13,13 @@ steal()
             conf =  data.settings.config;
             comps = data.dsd_components;
 
-            markup = $.View('//grapher/views/init-configurator.ejs', {conf:conf, comps:comps, plugins:$.fn.yl_grapher.plugins()});
+            markup = $.View('//grapher/views/init-configurator.ejs',
+                            {
+                                conf:conf,
+                                comps:comps,
+                                plugins:$.fn.yl_grapher.plugins()
+                            }
+                        );
 
             return $(markup);
 
@@ -50,7 +56,7 @@ steal()
                 grapher.trigger('grapherConfigChanged');
                 return false;
             });
-            
+
             // Handle changes to selects in the fixed section
             ui$.delegate('.fixes select', 'change', function(){
                 var sibs;
@@ -70,9 +76,13 @@ steal()
             });
             // Trigger a change on any xGroup selected select in order to initialize this
             ui$.find('.fixes select option:selected[value="xGroup"]').eq(0).parent().trigger('change');
+
+            // Handle changes of graph type by reflecting them in the class of the configurator
+            ui$.delegate('select.graph_type', 'change', function(){
+                    var plug = $.fn.yl_grapher.plugins($(this).val());
+                    ui$.find('#axes').css('background-image', 'url(' + plug.configImgUrl + ')');
+            });
         };
-
-
 
         $.fn.yl_grapher.registerConfigurator(cf);
     })(jQuery);
