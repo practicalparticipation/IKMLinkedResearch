@@ -7,7 +7,7 @@
         var vis = {};
         vis.id = 'columnchart';
         vis.title = "Column Chart";
-        vis.configImgUrl = "styles/img/tabs/green.png";
+        vis.configImgUrl = "styles/img/tabs/column.png";
         vis.google_components = ['corechart'];
         vis.options = {};
         vis.prepare = function(data) {

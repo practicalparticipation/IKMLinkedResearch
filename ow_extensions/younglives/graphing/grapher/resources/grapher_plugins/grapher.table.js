@@ -7,7 +7,7 @@
         var vis = {};
         vis.id = 'table';
         vis.title = "Data Table";
-        vis.configImgUrl = "styles/img/tabs/blue.png";
+        vis.configImgUrl = "styles/img/tabs/table.png";
         vis.google_packages = ['table'];
         vis.options = {};
         vis.prepare = function(data) {
