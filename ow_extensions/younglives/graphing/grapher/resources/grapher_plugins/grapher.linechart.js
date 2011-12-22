@@ -7,7 +7,7 @@
         var vis = {};
         vis.id = 'linechart';
         vis.title = "Line Chart";
-        vis.configImgUrl = "styles/img/tabs/blue.png";
+        vis.configImgUrl = "styles/img/tabs/line.png";
         vis.google_components = ['corechart'];
         vis.options = {};
         vis.prepare = function(data) {

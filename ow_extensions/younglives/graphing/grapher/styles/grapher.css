@@ -1,4 +1,4 @@
-body {font-family: verdana;
+body {font-family: arial, sans-serif;
   font-size: 1.4em;
 }
 h1 {
@@ -18,4 +18,123 @@ p {
     height: 50%;
 }
 
+form {
+padding:10px;
+margin:0;
+font-family:arial;
+}
 
+fieldset {
+border:0;
+padding:0;
+background:#ebe7d6;
+margin:0 0 5px;
+}
+
+fieldset#title_type div {
+padding:10px;
+width:40%;
+float:left;
+text-align:center;
+}
+
+fieldset#title_type div + div {
+float:right;
+}
+
+fieldset#axes {
+height:200px;
+}
+fieldset#title_type div + div + div {
+width:100%;
+padding:0;
+clear:both;
+}
+
+input, select, textarea {
+border-color: #888888 #DDDDDD #DDDDDD #888888;
+border-left: 1px solid #888888;
+border-style: solid;
+border-width: 1px;
+color: #333333;
+}
+
+fieldset#filters div {
+width:33%;
+float:left;
+padding:10px 0;
+text-align:center;
+}
+
+div.fixes {
+width:100% !important;
+}
+
+fieldset#filters div.fixes div {
+padding-bottom:0;
+}
+
+fieldset#filters label {
+display:block;
+padding:0 0 5px;
+}
+
+fieldset h3 {
+color: #837562;
+font-size: 1.3em;
+font-weight:bold !important;
+padding:0 0 5px;
+margin:0 10px 5px !important;
+border-bottom:1px solid #bbb;
+}
+
+fieldset#form_controls {
+background:transparent;
+}
+
+fieldset#form_controls button.update {
+float:right;
+border-color: #CCCCCC #999999 #999999 #CCCCCC;
+border-right: 3px double #999999;
+border-style: double;
+border-width: 3px;
+color: #333333;
+cursor: pointer;
+background:#fff;
+}
+
+fieldset#axes {
+background-color:transparent;
+position:relative;
+background-position:center center;
+background-repeat:no-repeat;
+}
+
+fieldset#axes > div {
+position:absolute;
+bottom:5px;
+width:100%;
+text-align:center;
+padding-left:27px;
+}
+
+span.yMeasure {
+position:absolute;
+right:390px;
+bottom:95px;
+display:block;
+width:140px;
+height:auto;
+text-align:center;
+font-size:10px;
+/* Safari */
+-webkit-transform: rotate(-90deg);
+/* Firefox */
+-moz-transform: rotate(-90deg);
+/* IE */
+-ms-transform: rotate(-90deg);
+/* Opera */
+-o-transform: rotate(-90deg);
+/* Internet Explorer */
+filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}

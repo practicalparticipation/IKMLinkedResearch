@@ -1,44 +1,49 @@
 <div class="grapher_configurator">
     <form id="configure">
         <fieldset id="title_type">
-            <label for="graph_title">Title</label>
-            <input type="text" name="graph_title" />
-            <br/>
-            <label for="graph_type">Chart type</label>
-            <select class="graph_type" name="graph_type">
-                <% $.each(plugins, function(k,v){ %>
-                    <option value="<%= v.id %>" <%= (v.id === conf.graph_type)?'selected="selected"':'' %>><%= v.title %></option>
-                <% }) %>
-            </select>
-            <br/>
+			<div>
+				<label for="graph_title">Title</label>
+				<input type="text" name="graph_title" />
+            </div>
+			<div>
+				<label for="graph_type">Chart type</label>
+				<select class="graph_type" name="graph_type">
+					<% $.each(plugins, function(k,v){ %>
+						<option value="<%= v.id %>" <%= (v.id === conf.graph_type)?'selected="selected"':'' %>><%= v.title %></option>
+					<% }) %>
+				</select>
+            </div>
+			<div style="clear:both"></div>
         </fieldset>
         <fieldset id="axes" style="background-image:url(<%=  plugins[conf.graph_type].configImgUrl %>);">
-            <label for="xDimension">xDimension</label>
-            <select name="xDimension">
-                <% $.each(comps.getGroupedDimensions('optional'), function(i, dim) { %>
-                    <option value="<%= dim.uri %>" <%= (dim.uri === conf.xDimension)?'selected="selected"':'' %>><%= dim.label %></option>
-                <% }); %>
-            </select>
-            <br/>
+			<div>
+				<label for="xDimension">xDimension</label>
+				<select name="xDimension">
+					<% $.each(comps.getGroupedDimensions('optional'), function(i, dim) { %>
+						<option value="<%= dim.uri %>" <%= (dim.uri === conf.xDimension)?'selected="selected"':'' %>><%= dim.label %></option>
+					<% }); %>
+				</select>
+			</div>
 
             <span class="yMeasure"><%= comps.getMeasures()[0].label %></span>
             <input type="hidden" name="yMeasure" value="<%= comps.getMeasures()[0].uri %>" />
         </fieldset>
 
         <fieldset id="filters">
-            <div class="fixes">Fixed values:<br/>
+            <div class="fixes">
+			<h3>Fixed values:</h3>
             <% $.each(comps.getGroupedDimensions('core'), function(i, dim) { %>
-                <label for="fixed[<%= dim.uri %>]"><%= dim.label %></label>
-                <select name="fixed[<%= dim.uri %>]">
-                    <option value="xGroup"
-                        <%= (dim.uri === conf.xGroup)?'selected="selected"':'' %>
-                        >Show All</option>
-                    <% $.each(comps.uniqueValuesFor(dim.uri), function(i, val) { %>
-                        <option value="<%= val.value %>"
-                            <%= (val.value === conf.fixed[dim.uri])?'selected="selected"':'' %>
-                            ><%= val.label?val.label:val.value %></option>
-                    <% }) %>
-                </select>
+                <div>
+					<label for="fixed[<%= dim.uri %>]"><%= dim.label %></label>
+					<select name="fixed[<%= dim.uri %>]">
+						<option value="xGroup"<%= (dim.uri === conf.xGroup)?'selected="selected"':'' %>>Show All</option>
+						<% $.each(comps.uniqueValuesFor(dim.uri), function(i, val) { %>
+							<option value="<%= val.value %>"
+								<%= (val.value === conf.fixed[dim.uri])?'selected="selected"':'' %>
+								><%= val.label?val.label:val.value %></option>
+						<% }) %>
+					</select>
+				</div>
             <% }); %>
             </div>
         </fieldset>
