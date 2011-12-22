@@ -1,53 +1,51 @@
 <div class="grapher_configurator">
     <form id="configure">
-        <label for="graph_title">Title</label>
-        <input type="text" name="graph_title" />
-        <br/>
-        <label for="graph_type">Chart type</label>
-        <select class="graph_type" name="graph_type">
-            <% $.each(plugins, function(k,v){ %>
-                <option value="<%= v.id %>" <%= (v.id === conf.graph_type)?'selected="selected"':'' %>><%= v.title %></option>
-            <% }) %>
-        </select>
-        <br/>
-        <label for="xDimension">xDimension</label>
-        <select name="xDimension">
-            <% $.each(comps.getGroupedDimensions('optional'), function(i, dim) { %>
-                <option value="<%= dim.uri %>" <%= (dim.uri === conf.xDimension)?'selected="selected"':'' %>><%= dim.label %></option>
-            <% }); %>
-        </select>
-        <br/>
-
-        <% var yMeasures = comps.getMeasures();
-            if (yMeasures.length > 1) { %>
-                <label for="yMeasure">yMeasure</label>
-                <select name="xDimension">
-                    <% $.each(yMeasures, function(i, mea) { %>
-                        <option value="<%= mea.uri %>" <%= (mea.uri === conf.yMeasure)?'selected="selected"':'' %>><%= mea.label %></option>
-                    <% }); %>
-                </select>
-            <% } else { %>
-                <input type="hidden" name="yMeasure" value="<%= yMeasures[0].uri %>" />
-        <% } %>
-
-        <div class="fixes">Fixed values:<br/>
-        <% $.each(comps.getGroupedDimensions('core'), function(i, dim) { %>
-            <label for="fixed[<%= dim.uri %>]"><%= dim.label %></label>
-            <select name="fixed[<%= dim.uri %>]">
-                <option value="xGroup"
-                    <%= (dim.uri === conf.xGroup)?'selected="selected"':'' %>
-                    >Show All</option>
-                <% $.each(comps.uniqueValuesFor(dim.uri), function(i, val) { %>
-                    <option value="<%= val.value %>"
-                        <%= (val.value === conf.fixed[dim.uri])?'selected="selected"':'' %>
-                        ><%= val.label?val.label:val.value %></option>
+        <fieldset id="title_type">
+            <label for="graph_title">Title</label>
+            <input type="text" name="graph_title" />
+            <br/>
+            <label for="graph_type">Chart type</label>
+            <select class="graph_type" name="graph_type">
+                <% $.each(plugins, function(k,v){ %>
+                    <option value="<%= v.id %>" <%= (v.id === conf.graph_type)?'selected="selected"':'' %>><%= v.title %></option>
                 <% }) %>
             </select>
-        <% }); %>
-        </div>
+            <br/>
+        </fieldset>
+        <fieldset id="axes" style="background-image:url(<%=  plugins[conf.graph_type].configImgUrl %>);">
+            <label for="xDimension">xDimension</label>
+            <select name="xDimension">
+                <% $.each(comps.getGroupedDimensions('optional'), function(i, dim) { %>
+                    <option value="<%= dim.uri %>" <%= (dim.uri === conf.xDimension)?'selected="selected"':'' %>><%= dim.label %></option>
+                <% }); %>
+            </select>
+            <br/>
 
+            <span class="yMeasure"><%= comps.getMeasures()[0].label %></span>
+            <input type="hidden" name="yMeasure" value="<%= comps.getMeasures()[0].uri %>" />
+        </fieldset>
 
-        <button class="update">Update</button>
+        <fieldset id="filters">
+            <div class="fixes">Fixed values:<br/>
+            <% $.each(comps.getGroupedDimensions('core'), function(i, dim) { %>
+                <label for="fixed[<%= dim.uri %>]"><%= dim.label %></label>
+                <select name="fixed[<%= dim.uri %>]">
+                    <option value="xGroup"
+                        <%= (dim.uri === conf.xGroup)?'selected="selected"':'' %>
+                        >Show All</option>
+                    <% $.each(comps.uniqueValuesFor(dim.uri), function(i, val) { %>
+                        <option value="<%= val.value %>"
+                            <%= (val.value === conf.fixed[dim.uri])?'selected="selected"':'' %>
+                            ><%= val.label?val.label:val.value %></option>
+                    <% }) %>
+                </select>
+            <% }); %>
+            </div>
+        </fieldset>
+
+        <fieldset id="form_controls">
+            <button class="update">Update</button>
+        </fieldset>
 
 
     </form>

@@ -13,7 +13,13 @@ steal()
             conf =  data.settings.config;
             comps = data.dsd_components;
 
-            markup = $.View('//grapher/views/init-configurator.ejs', {conf:conf, comps:comps, plugins:$.fn.yl_grapher.plugins()});
+            markup = $.View('//grapher/views/init-configurator.ejs',
+                            {
+                                conf:conf,
+                                comps:comps,
+                                plugins:$.fn.yl_grapher.plugins()
+                            }
+                        );
 
             return $(markup);
 
@@ -74,11 +80,9 @@ steal()
             // Handle changes of graph type by reflecting them in the class of the configurator
             ui$.delegate('select.graph_type', 'change', function(){
                     var plug = $.fn.yl_grapher.plugins($(this).val());
-                    ui$.css('background-image', 'url(' + plug.configImgUrl + ')');
+                    ui$.find('#axes').css('background-image', 'url(' + plug.configImgUrl + ')');
             });
         };
-
-
 
         $.fn.yl_grapher.registerConfigurator(cf);
     })(jQuery);
