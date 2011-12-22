@@ -18,12 +18,13 @@
         border-left-width:2px;
         border-right-width:2px;
 	cursor:pointer;
+background-color:#B897E3;
 }
 
 /* currently active header */
 .accordion h2.current {
 	cursor:default;
-	background-color:#B897E3;
+background:#4e2f91;
 }
 
 /* accordion pane */
@@ -38,8 +39,6 @@
 
 /* a title inside pane */
 .accordion .pane h3 {
-	font-weight:normal;
-	margin:0 0 -5px 0;
 	font-size:16px;
 	color:#999;
 }
