@@ -7,20 +7,21 @@
         var vis = {};
         vis.id = 'table';
         vis.title = "Data Table";
+        vis.configImgUrl = "styles/img/tabs/blue.png";
         vis.google_packages = ['table'];
         vis.options = {};
         vis.prepare = function(data) {
-            
+
                     var chart = new google.visualization.Table(data.graph_target);
                     var table = new google.visualization.DataTable();
                     var dsd = data.dsd_components;
-                    
+
                     var rowspec = dsd.sortType(data.settings.measureType);
                     rowspec = rowspec.concat(dsd.sortType(data.settings.dimensionType));
                     $.each(rowspec, function(i,v){
-                        table.addColumn(v.type, v.label?v.label:v.uri);    
+                        table.addColumn(v.type, v.label?v.label:v.uri);
                     });
-                   
+
                     $.each(data.observations, function(i,obs) {
                         var row = [];
                         $.each(rowspec, function(i,spec){

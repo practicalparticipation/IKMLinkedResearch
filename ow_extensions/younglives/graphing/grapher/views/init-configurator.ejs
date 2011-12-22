@@ -4,9 +4,9 @@
         <input type="text" name="graph_title" />
         <br/>
         <label for="graph_type">Chart type</label>
-        <select name="graph_type">
+        <select class="graph_type" name="graph_type">
             <% $.each(plugins, function(k,v){ %>
-                <option value="<%= v.id %>" <%= (v.id === conf.graph_type)?'selected="selected"':'' %>><%= v.title %></option> 
+                <option value="<%= v.id %>" <%= (v.id === conf.graph_type)?'selected="selected"':'' %>><%= v.title %></option>
             <% }) %>
         </select>
         <br/>
