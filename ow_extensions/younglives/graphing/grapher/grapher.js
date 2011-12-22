@@ -151,7 +151,7 @@ steal(
                     .where('?obs', 'qb:dataSet', '?dataset')
                     .where('?obs', '?property', '?value')
                     .where('?property', 'rdf:type', '?propertyType')
-                    .where('?propertyType', 'rdfs:subClassOf', 'qb:ComponentProperty')
+                    //.where('?propertyType', 'rdfs:subClassOf', 'qb:ComponentProperty')
                     .where('?property', 'rdfs:label', '?propertyLabel')
                     .optional()
                         .where('?propertyClass', 'qb:dimension', '?property')
