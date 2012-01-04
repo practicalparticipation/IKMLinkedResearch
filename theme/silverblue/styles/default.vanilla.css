@@ -54,7 +54,6 @@
 
 @import url('jquery-ui.css');
 
-
 /* 1. Layout ---------------------------------------------------------------- */
 
 
@@ -304,12 +303,12 @@ padding: 0 0 10px !important;
 
 div.section-mainwindows {
 	float:right;
-    width: 80% !important;
+    width: 69% !important;
 }
 
 div.section-sidewindows {
     float:left;
-	width:20% !important;
+	width:30% !important;
 }
 
 /*div.modal-wrapper {
@@ -337,7 +336,7 @@ div.window {
 }
 
 div.window .title {
-    font-size: 1em;
+    font-size: 1.3em;
     font-weight: bold;
     color: #837562;
     border-bottom: solid 1px #d2cdb8;
@@ -487,14 +486,14 @@ div.window span.resizer-vertical {
 /* -------- 1.2.4.1. Inner Window in content -------------------------------- */
 
 div.window div.has-innerwindows div.innercontent { /* content contains inner windows */
-    width: 100%;
+    width: 70%;
     padding-top: 1em;
     float: left;
     overflow: auto;
 }
 
 div.window .content div.innerwindows {
-    width: 100%;
+    width: 29%;
     float: right;
     position: relative;
 }
@@ -2387,16 +2386,4 @@ a.open:hover {
 
 .hidden {
     display: none;
-}
-
-
-/* 0.1. CUSTOM ADDITIONS - YoungLives ---------------------------------------------------------------- */
-
-div.innerwindows div.windowbuttonscount-right-1 {
-	width:48%;
-	float:left;
-}
-
-li#history, li#community {
-	display:none;
 }

@@ -1352,7 +1352,7 @@ $(document).ready(function () {
 				//dimensionString = $.toJSON(jQuery.extend(true, labels, dsd, measure, dimensions));
 			
 				//dimensionString = $.toJSON(observations);
-				dimensionString = $.toJSON(triples);
+				//dimensionString = $.toJSON(triples);
 				
 				//TODO add code for return false here, think of this as a poor mans validation.
 				
@@ -1366,14 +1366,56 @@ $(document).ready(function () {
 			$("#extract_triples_btn").one('click', function(){
 				//check all is well first
 				if (check_before_post()) {
-					$.post(actionURL, {dimensions: dimensionString}, function () {
+                    batch_size = 30;
+                    //batch the posts because there is a limit on virtuoso table import statement lengths. this should avoid that issue. guessing batch size of 30 is safe.
+                    
+                    var itemlist = [],
+                        batches = [],
+                        results = []],
+                        button$ = $(this);
+                        
+                        button$.bind('resultAdded', function() {
+                    
+                            if (results.length === batches.length) {
+                                //$('#out').html(' ,'.join(results));
+                                    alert('Data submited to ontowiki');
+                                            done = true;
+                                            //clear dsd list
+                                            $('#dsd_stuff').html('<label for="dsd_label">Enter label text for dsd:</label><input id="dsd_label_input" type="Text" name="dsd_label"/><br/>   <input type="button" id="extract_triples_btn" value="Extract triples" onclick="" />');
+                                            $('#dsd_label_input').val('');
+                                            $("#import-options").hide();
+                            } else {
+                                //console.log('not done');
+                            }
+                        });
+                        
+                        $.each(triples, function(i,v){
+                            itemlist.push(i);
+                        });
+                        while (itemlist.length) {
+                            var batch = {};
+                            $.each(itemlist.splice(0, batch_size), function(i, v) {
+                                batch[v] = triples[v];
+                            });
+                            batches.push(batch);
+                        }
+                        
+                        $.each(batches, function(i,v){
+                            // Do post here and in succcess/error do
+                            $.post(actionURL, {dimensions: $.toJSON(v)}, function () {results[i] = v;
+                            button$.trigger('resultAdded'); });
+                        });
+
+
+
+					/*$.post(actionURL, {dimensions: dimensionString}, function () {
 						alert('Data submited to ontowiki');
 						done = true;
 						//clear dsd list
 						$('#dsd_stuff').html('<label for="dsd_label">Enter label text for dsd:</label><input id="dsd_label_input" type="Text" name="dsd_label"/><br/>	<input type="button" id="extract_triples_btn" value="Extract triples" onclick="" />');
 						$('#dsd_label_input').val('');
 						$("#import-options").hide();
-					});
+					});*/
 				}
 			});
 		}
