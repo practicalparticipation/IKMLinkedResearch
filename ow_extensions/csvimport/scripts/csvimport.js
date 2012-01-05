@@ -1376,7 +1376,7 @@ $(document).ready(function () {
                         
                         button$.bind('resultAdded', function() {
                     
-                            if (results.length === batches.length) {
+                            if (results.length === batches.length) { //warning in use this has proven to not work as expected, unfortuately many altert can sometimes be shown.
                                 //$('#out').html(' ,'.join(results));
                                     alert('Data submited to ontowiki');
                                             done = true;
