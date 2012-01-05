@@ -2400,7 +2400,7 @@ div.innerwindows div.windowbuttonscount-right-1 {
 li#history, li#community {
 	display:none;
 }
-
+/*
 li#Young_lives_graphs {
 font-weight: 500;
 }
@@ -2412,6 +2412,6 @@ li#Young_lives_graphs a:hover {
 background: url("./../images/layout-tab-gradient.png") repeat-x scroll center 17px #c19eEb;
 }
 
-
+*/
 
 

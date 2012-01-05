@@ -40,7 +40,7 @@ class YounglivesHelper extends OntoWiki_Component_Helper
 			OntoWiki_Navigation::register('Young_lives_graphs', array(
 			'controller' => 'younglives',     // younglives controller
 			'action'     => 'display',       // display action
-			'name'       => '&#x2605; Young lives Graphs',
+			'name'       => '&#x2605; View on graph',
 			'priority'   => -1));
 		}
 	}
