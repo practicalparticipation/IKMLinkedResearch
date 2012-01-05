@@ -37,11 +37,11 @@ class YounglivesHelper extends OntoWiki_Component_Helper
 
 	if ($_SERVER["REQUEST_URI"]) {
 		if (strpos($_SERVER["REQUEST_URI"], 'SumaryStatistics-')) {
-			OntoWiki_Navigation::register('Young lives graphs', array(
+			OntoWiki_Navigation::register('Young_lives_graphs', array(
 			'controller' => 'younglives',     // younglives controller
 			'action'     => 'display',       // display action
-			'name'       => 'Young lives Graphs',
-			'priority'   => 70));
+			'name'       => '&#x2605; Young lives Graphs',
+			'priority'   => -1));
 		}
 	}
 
