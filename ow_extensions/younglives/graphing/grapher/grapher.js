@@ -460,8 +460,11 @@ steal(
                     var share_type = $('input[name="share_type"]:checked', shareui).val();
 
                     var base = 'http://' + data.settings.grapher_host;
-                    var link_url = base;
+                    /* data.settings.grapher_path is already a full url
                     var iframe_url = base + data.settings.grapher_path;
+                    */
+                    var link_url = base;
+                    var iframe_url = data.settings.grapher_path;
 
                     if (data.settings.ontowiki_path) {
                         // inside an ontowiki deployment
