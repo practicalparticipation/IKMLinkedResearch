@@ -560,7 +560,8 @@ steal(
         $.fn.yl_grapher.sparqlCaster = function(item){
             var datatypes = {
                 "http://www.w3.org/2001/XMLSchema#integer": parseInt,
-                "http://www.w3.org/2001/XMLSchema#double":parseFloat
+                "http://www.w3.org/2001/XMLSchema#double":parseFloat,
+                "http://www.w3.org/2001/XMLSchema#decimal":parseFloat
             }
             if (item.type === "typed-literal") {
                 return datatypes[item.datatype](item.value);

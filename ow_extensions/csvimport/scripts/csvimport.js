@@ -30,7 +30,7 @@ var sdmx_code = 'http://purl.org/linked-data/sdmx/2009/code#';
 var xsd = 'http://www.w3.org/2001/XMLSchema#';
 
 //ontowikis sparql endpoint url
-var sparql_endpoint = '../service/sparql';
+var sparql_endpoint = './service/sparql';
 
 var measure = {};
 var dimcount = 0;
@@ -1371,7 +1371,7 @@ $(document).ready(function () {
                     
                     var itemlist = [],
                         batches = [],
-                        results = []],
+                        results = [],
                         button$ = $(this);
                         
                         button$.bind('resultAdded', function() {
