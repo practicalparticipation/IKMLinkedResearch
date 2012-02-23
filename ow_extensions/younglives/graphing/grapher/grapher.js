@@ -278,7 +278,8 @@ steal(
                                     false,
                                    function(val){return val.value; }
                                 ),
-                                function(val) {return val.label?val.label:val.value;}
+                                //sort on the value which includes sorting order numbers
+                                function(val) {return val.value;}
                             );
                         }
 
